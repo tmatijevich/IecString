@@ -1,0 +1,4 @@
+VAR CONSTANT
+	FORMAT_STR_MAX_INDEX_ARGS : USINT := 4; (*Maximum index of arguments for the specified variable type*)
+	FORMAT_STR_STR_LEN_ARGS : USINT := 80; (*Maximum length of any of the formatted string's string arguments*)
+END_VAR
