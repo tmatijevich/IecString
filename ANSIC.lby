@@ -5,7 +5,7 @@
     <File Description="Exported data types">Types.typ</File>
     <File Description="Exported constants">Constants.var</File>
     <File Description="Exported functions and function blocks">IecFrmtStr.fun</File>
-    <File Description="Format an IEC string similar to sprintf">iec_format_string.c</File>
+    <File Description="Format an IEC string similar to sprintf">IecFormatString.c</File>
   </Files>
   <Dependencies>
     <Dependency ObjectName="AsBrStr" />
