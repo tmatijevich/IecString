@@ -33,6 +33,7 @@ unsigned long IecFormatString(unsigned long pDestination, unsigned long destinat
 	char sDint[12]; // -2,147,483,648 to 2,147,483647, plus null terminator
 	
 	/* Counters */
+	unsigned short countBools = 0;
 	unsigned short countFloats = 0;
 	unsigned short countDints = 0;
 	unsigned short countStrings = 0;
@@ -47,6 +48,26 @@ unsigned long IecFormatString(unsigned long pDestination, unsigned long destinat
 			*dst = '\0';
 			
 			switch(*(++src)) {
+				case 'b':
+					if(countBools <= FORMAT_STR_MAX_INDEX_ARGS) {
+						i += 4;
+						if(i < destinationLength){
+							// Determine if the boolean is true or false
+							if(args->b[countBools])
+								brsstrcat((unsigned long)dst, (unsigned long)&sTrue);
+							else
+								brsstrcat((unsigned long)dst, (unsigned long)&sFalse);
+							
+							// Increment the argument index and the destination address
+							countBools++;
+							dst += 4;
+						}
+						else
+							flagDestinationFull = true;
+					}
+					src++;
+					break;
+				
 				case 'r':
 					if(countFloats <= FORMAT_STR_MAX_INDEX_ARGS) {
 						i += brsftoa(args->r[countFloats++], (unsigned long)sFloat);
