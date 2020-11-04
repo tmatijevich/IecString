@@ -1,5 +1,15 @@
+/*********************************************************************************
+ * Copyright: B&R Industrial Automation GmbH 
+ * Author:    Tyler Matijevich
+ * Created:   May 5, 2020/12:07 
+ *********************************************************************************/ 
+
 /* Must include the automatically generated header file for this library - dynamic linking */
-#include "IecFrmtStr.h"
+#include <IecFrmtStr.h>
+#include <stdbool.h>
+
+static char sTrue[] = "TRUE";
+static char sFalse[] = "FALSE";
 
 /* Function declaration */
 //void fnFormatString(char* dst, char* src, FormatStringArguments_typ* pArgs) { - does not match the declaration datatypes
@@ -19,17 +29,16 @@ unsigned long IecFormatString(unsigned long pDestination, unsigned long destinat
 	FormatStringArgumentsType *args; args = (FormatStringArgumentsType*)pArguments;
 	
 	/* Temporary strings */
-	char sFloat[13]; // sign, 6 significant digits (or 0.0001...), one decimal, scientific notation e.g. 'e+010'
-	// Scientific notation starts at 1e+006 or 1e-005
-	char sInt[6];
+	char sFloat[13]; // sign, 6 significant digits (or 0.0001...), one decimal, scientific notation e.g. 'e+11', plus null terminator
+	char sDint[12]; // -2,147,483,648 to 2,147,483647, plus null terminator
 	
 	/* Counters */
 	unsigned short countFloats = 0;
-	unsigned short countInts = 0;
+	unsigned short countDints = 0;
 	unsigned short countStrings = 0;
 	
 	unsigned long i = 0;
-	char flagDestinationFull = 0;
+	unsigned char flagDestinationFull = false; // BOOL is a plcbit is a unsigned char (C)
 	
 	while(*src != '\0') {
 		
@@ -46,20 +55,20 @@ unsigned long IecFormatString(unsigned long pDestination, unsigned long destinat
 							dst += brsstrlen((unsigned long)sFloat);
 						}
 						else
-							flagDestinationFull = 1;
+							flagDestinationFull = true;
 					}
 					src++; // Move on to the next character
 					break;
 					
 				case 'i':
-					if(countInts <= FORMAT_STR_MAX_INDEX_ARGS) {
-						i += brsitoa((signed long)(args->i[countInts++]), (unsigned long)sInt);
+					if(countDints <= FORMAT_STR_MAX_INDEX_ARGS) {
+						i += brsitoa((signed long)(args->i[countDints++]), (unsigned long)sDint);
 						if(i < destinationLength) {
-							brsstrcat((unsigned long)dst, (unsigned long)sInt);
-							dst += brsstrlen((unsigned long)sInt);
+							brsstrcat((unsigned long)dst, (unsigned long)sDint);
+							dst += brsstrlen((unsigned long)sDint);
 						}
 						else
-							flagDestinationFull = 1;
+							flagDestinationFull = true;
 					}
 					src++;
 					break;
@@ -77,7 +86,7 @@ unsigned long IecFormatString(unsigned long pDestination, unsigned long destinat
 							dst += brsstrlen((unsigned long)(args->s[countStrings++])); 
 						}
 						else
-							flagDestinationFull = 1;
+							flagDestinationFull = true;
 					}
 					src++;
 					break;
@@ -86,7 +95,7 @@ unsigned long IecFormatString(unsigned long pDestination, unsigned long destinat
 					if((++i) < destinationLength) 
 						*dst++ = *src++;
 					else 
-						flagDestinationFull = 1;
+						flagDestinationFull = true;
 				default:
 					src++;
 					break;
@@ -98,7 +107,7 @@ unsigned long IecFormatString(unsigned long pDestination, unsigned long destinat
 			if((++i) < destinationLength) 
 				*dst++ = *src++;
 			else 
-				flagDestinationFull = 1;
+				flagDestinationFull = true;
 			
 		} // end if
 	
