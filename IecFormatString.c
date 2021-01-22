@@ -12,7 +12,7 @@ static char sTrue[] = "TRUE";
 static char sFalse[] = "FALSE";
 
 /* Function declaration */
-unsigned long IecFormatString(unsigned long pDestination, unsigned long destinationLength, unsigned long pSource, unsigned long pArguments) {
+unsigned long IecFormatString(unsigned long pDestination, unsigned long DestinationLength, unsigned long pSource, unsigned long pArguments) {
 	/*
 		This function has been extracted from the Swedish BRSE_ARL library where it exists 
 		solely as an internal function. Minimal changes have been made to ensure stability. 
@@ -49,9 +49,9 @@ unsigned long IecFormatString(unsigned long pDestination, unsigned long destinat
 			
 			switch(*(++src)) {
 				case 'b':
-					if(countBools <= FORMAT_STR_MAX_INDEX_ARGS) {
+					if(countBools <= FORMAT_STR_ARGS_INDEX) {
 						i += 4;
-						if(i < destinationLength){
+						if(i < DestinationLength){
 							// Determine if the boolean is true or false
 							if(args->b[countBools])
 								brsstrcat((unsigned long)dst, (unsigned long)&sTrue);
@@ -69,9 +69,9 @@ unsigned long IecFormatString(unsigned long pDestination, unsigned long destinat
 					break;
 				
 				case 'r':
-					if(countFloats <= FORMAT_STR_MAX_INDEX_ARGS) {
+					if(countFloats <= FORMAT_STR_ARGS_INDEX) {
 						i += brsftoa(args->r[countFloats++], (unsigned long)sFloat);
-						if(i < destinationLength) {
+						if(i < DestinationLength) {
 							brsstrcat((unsigned long)dst, (unsigned long)sFloat);
 							dst += brsstrlen((unsigned long)sFloat);
 						}
@@ -82,9 +82,9 @@ unsigned long IecFormatString(unsigned long pDestination, unsigned long destinat
 					break;
 					
 				case 'i':
-					if(countDints <= FORMAT_STR_MAX_INDEX_ARGS) {
+					if(countDints <= FORMAT_STR_ARGS_INDEX) {
 						i += brsitoa((signed long)(args->i[countDints++]), (unsigned long)sDint);
-						if(i < destinationLength) {
+						if(i < DestinationLength) {
 							brsstrcat((unsigned long)dst, (unsigned long)sDint);
 							dst += brsstrlen((unsigned long)sDint);
 						}
@@ -95,12 +95,12 @@ unsigned long IecFormatString(unsigned long pDestination, unsigned long destinat
 					break;
 					
 				case 's':
-					if(countStrings <= FORMAT_STR_MAX_INDEX_ARGS) {
+					if(countStrings <= FORMAT_STR_ARGS_INDEX) {
 						// Increment by the length of the string argument
 						i += brsstrlen((unsigned long)(args->s[countStrings])); 
 						
 						// Check if it exceeds the destination length
-						if(i < destinationLength) { 
+						if(i < DestinationLength) { 
 							brsstrcat((unsigned long)dst, (unsigned long)(args->s[countStrings]));
 							
 							// Increment the destination pointer and the string argument count
@@ -113,7 +113,7 @@ unsigned long IecFormatString(unsigned long pDestination, unsigned long destinat
 					break;
 					
 				case '%':
-					if((++i) < destinationLength) 
+					if((++i) < DestinationLength) 
 						*dst++ = *src++;
 					else 
 						flagDestinationFull = true;
@@ -125,7 +125,7 @@ unsigned long IecFormatString(unsigned long pDestination, unsigned long destinat
 		} 
 		
 		else {
-			if((++i) < destinationLength) 
+			if((++i) < DestinationLength) 
 				*dst++ = *src++;
 			else 
 				flagDestinationFull = true;
