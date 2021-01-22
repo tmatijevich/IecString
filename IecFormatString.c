@@ -12,12 +12,11 @@ static char sTrue[] = "TRUE";
 static char sFalse[] = "FALSE";
 
 /* Function declaration */
-//void fnFormatString(char* dst, char* src, FormatStringArguments_typ* pArgs) { - does not match the declaration datatypes
 unsigned long IecFormatString(unsigned long pDestination, unsigned long destinationLength, unsigned long pSource, unsigned long pArguments) {
 	/*
-		This function has been extracted from the BRSE_ARL library where it exists solely 
-		as an internal function. Minimal changes have been made to ensure stability. This 
-		function can be used with C, C++, and IEC programs.
+		This function has been extracted from the Swedish BRSE_ARL library where it exists 
+		solely as an internal function. Minimal changes have been made to ensure stability. 
+		This function can be used with C, C++, and IEC programs.
 		Date: 2020-05-01
 		Created by: Unknown
 		Updated by: Tyler Matijevich
@@ -29,7 +28,8 @@ unsigned long IecFormatString(unsigned long pDestination, unsigned long destinat
 	FormatStringArgumentsType *args; args = (FormatStringArgumentsType*)pArguments;
 	
 	/* Temporary strings */
-	char sFloat[13]; // sign, 6 significant digits (or 0.0001...), one decimal, scientific notation e.g. 'e+11', plus null terminator
+	char sFloat[13]; // optional sign, 6 significant digits (0.0001 to 999999 without scientific notation), 
+					 // optional decimal, scientific notation (4) e.g. 'e+11', plus null terminator
 	char sDint[12]; // -2,147,483,648 to 2,147,483647, plus null terminator
 	
 	/* Counters */
