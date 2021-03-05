@@ -8,8 +8,7 @@
 #include <IecFrmtStr.h>
 #include <stdbool.h>
 
-static char sTrue[] = "TRUE";
-static char sFalse[] = "FALSE";
+static char sBool[2][6] = {"FALSE", "TRUE"}; // Two elements, five characters plus null terminator
 
 /* Function declaration */
 unsigned long IecFormatString(unsigned long pDestination, unsigned long DestinationLength, unsigned long pSource, unsigned long pArguments) {
@@ -50,24 +49,15 @@ unsigned long IecFormatString(unsigned long pDestination, unsigned long Destinat
 			switch(*(++src)) {
 				case 'b':
 					if(countBools <= FORMAT_STR_ARGS_INDEX) {
-						if(args->b[countBools]) 
-							i += 4; // Four characters for a TRUE bit
-						else
-							i += 5; // Five characters for a FALSE bit
+						i += brsstrlen((unsigned long)sBool[args->b[countBools]]); // Index based on boolean argument, can only be 0 or 1
 						
 						if(i < DestinationLength){
-							// Determine if the boolean is true or false
-							if(args->b[countBools])
-								brsstrcat((unsigned long)dst, (unsigned long)&sTrue);
-							else
-								brsstrcat((unsigned long)dst, (unsigned long)&sFalse);
+							brsstrcat((unsigned long)dst, (unsigned long)sBool[args->b[countBools]]);
 							
 							// Increment the argument index and the destination address
+							dst += brsstrlen((unsigned long)sBool[args->b[countBools]]); // Update the destination before count bools
 							countBools++;
-							if(args->b[countBools]) 
-								dst += 4; // Four characters for a TRUE bit
-							else
-								dst += 5; // Five characters for a FALSE bit
+							
 						}
 						else
 							flagDestinationFull = true;
