@@ -50,7 +50,11 @@ unsigned long IecFormatString(unsigned long pDestination, unsigned long Destinat
 			switch(*(++src)) {
 				case 'b':
 					if(countBools <= FORMAT_STR_ARGS_INDEX) {
-						i += 4;
+						if(args->b[countBools]) 
+							i += 4; // Four characters for a TRUE bit
+						else
+							i += 5; // Five characters for a FALSE bit
+						
 						if(i < DestinationLength){
 							// Determine if the boolean is true or false
 							if(args->b[countBools])
@@ -60,7 +64,10 @@ unsigned long IecFormatString(unsigned long pDestination, unsigned long Destinat
 							
 							// Increment the argument index and the destination address
 							countBools++;
-							dst += 4;
+							if(args->b[countBools]) 
+								dst += 4; // Four characters for a TRUE bit
+							else
+								dst += 5; // Five characters for a FALSE bit
 						}
 						else
 							flagDestinationFull = true;
