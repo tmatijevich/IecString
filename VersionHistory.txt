@@ -1,0 +1,26 @@
+# IecFrmtStr Version History
+
+See [releases on GitHub](https://github.com/tmatijevich/LibIecFrmtStr/releases).
+
+## 0.2.5 (2021-05-31)
+- Rename library files and include version history
+
+## 0.2.4 (2021-03-17)
+- Fix [#1](https://github.com/tmatijevich/LibIecFrmtStr/issues/1) when displaying FALSE booleans
+- Update project and runtime version
+
+## 0.2.3 (2021-01-22)
+- First public release
+- Add comments
+- Minor spelling changes
+
+## 0.2.2 (2020-11-04)
+- Support for DINTs
+- Add new arguments for BOOLs
+- Fix string buffer for brsitoa and brsftoa functions
+
+## 0.2.1 (2020-09-27)
+- Normalize naming convention
+
+## 0.2.0 (2020-04-30)
+- First release
