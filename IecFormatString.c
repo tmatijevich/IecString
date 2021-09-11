@@ -5,7 +5,7 @@
  *********************************************************************************/ 
 
 /* Must include the automatically generated header file for this library - dynamic linking */
-#include <IecFrmtStr.h>
+#include <IecString.h>
 #include <stdbool.h>
 
 static char sBool[2][6] = {"FALSE", "TRUE"}; // Two elements, five characters plus null terminator
