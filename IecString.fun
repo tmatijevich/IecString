@@ -1,9 +1,9 @@
 
-FUNCTION IecFormatString : UDINT (*Format and IEC STRING with runtime arguments of type REAL, INT, or STRING*)
+FUNCTION IecFormatString : UDINT (*Format an IEC STRING with runtime date of type boolean, integer, floating point, or string. Returns formatted string length.*)
 	VAR_INPUT
-		pDestination : UDINT; (*The address of the destination string*)
-		DestinationLength : UDINT; (*Size of the destination string variable, not necessarily the string length*)
-		pSource : UDINT; (*The address of the source string*)
-		pArguments : UDINT; (*The address of the structure holding the argument values of type FormatStringArgumentsType*)
+		pDestination : UDINT; (*Destination string*)
+		DestinationLength : UDINT; (*Size of destination string*)
+		pSource : UDINT; (*Format string*)
+		pArguments : UDINT; (*Format arguments*)
 	END_VAR
 END_FUNCTION

@@ -1,43 +1,42 @@
 /*********************************************************************************
- * File:      IecFormatString.c
- * Author:    Tyler Matijevich
- * Created:   May 5, 2020/12:07 
- *********************************************************************************/ 
+ * File:       IecFormatString.c
+ * Date:       May 5, 2020/12:07 
+ * Created by: Tyler Matijevich
+ *********************************************************************************
+ * Description: Perform string formatting similar to sprintf in IEC programs. The
+ number of arguments is configurable but limited. This function can be used to C, 
+ C++, and Structured Text programs.
+ ********************************************************************************/ 
 
-/* Must include the automatically generated header file for this library - dynamic linking */
-#include <IecString.h>
+#include <IecString.h> /* Automatically generated */
+#include <string.h>
 #include <stdbool.h>
-
-static char sBool[2][6] = {"FALSE", "TRUE"}; // Two elements, five characters plus null terminator
 
 /* Function declaration */
 unsigned long IecFormatString(unsigned long pDestination, unsigned long DestinationLength, unsigned long pSource, unsigned long pArguments) {
-	/*
-		This function has been extracted from the Swedish BRSE_ARL library where it exists 
-		solely as an internal function. Minimal changes have been made to ensure stability. 
-		This function can be used with C, C++, and IEC programs.
-		Date: 2020-05-01
-		Created by: Unknown
-		Updated by: Tyler Matijevich
-	*/
 
 	/* Create the necessary pointers, and convert from UDINTs */
 	char *dst; dst = (char*)pDestination;
 	char *src; src = (char*)pSource;
 	FormatStringArgumentsType *args; args = (FormatStringArgumentsType*)pArguments;
 	
-	/* Temporary strings */
-	char sFloat[13]; // optional sign, 6 significant digits (0.0001 to 999999 without scientific notation), 
-					 // optional decimal, scientific notation (4) e.g. 'e+11', plus null terminator
-	char sDint[12]; // -2,147,483,648 to 2,147,483647, plus null terminator
+	/* Local variables */
+	/* Argument strings */
+	const char sBool[][6] = { 	/* Up to fize characters plus null terminator */
+		"FALSE",
+		"TRUE"
+	};
+	char sFloat[13]; 			/* optional sign, 6 significant digits (0.0001 to 999999 without scientific notation), 
+					 			   optional decimal, scientific notation (4) e.g. 'e+11', plus null terminator */
+	char sDint[12]; 			/* -2,147,483,648 to 2,147,483647, plus null terminator */
 	
 	/* Counters */
-	unsigned short countBools = 0;
-	unsigned short countFloats = 0;
-	unsigned short countDints = 0;
-	unsigned short countStrings = 0;
+	unsigned char countBools = 0;
+	unsigned char countFloats = 0;
+	unsigned char countDints = 0;
+	unsigned char countStrings = 0;
 	
-	unsigned long i = 0;
+	unsigned short i = 0;
 	unsigned char flagDestinationFull = false; // BOOL is a plcbit is a unsigned char (C)
 	
 	while(*src != '\0') {
