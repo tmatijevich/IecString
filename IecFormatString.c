@@ -12,13 +12,8 @@
 #include <string.h>
 #include <stdbool.h>
 
-/* Function declaration */
-unsigned long IecFormatString(unsigned long pDestination, unsigned long DestinationLength, unsigned long pSource, unsigned long pArguments) {
-
-	/* Create the necessary pointers, and convert from UDINTs */
-	char *dst; dst = (char*)pDestination;
-	char *src; src = (char*)pSource;
-	FormatStringArgumentsType *args; args = (FormatStringArgumentsType*)pArguments;
+/* Function definition */
+unsigned long IecFormatString(char *str, unsigned long size, char *format, struct FormatStringArgumentsType *args) {
 	
 	/* Local variables */
 	/* Argument strings */
@@ -26,117 +21,76 @@ unsigned long IecFormatString(unsigned long pDestination, unsigned long Destinat
 		"FALSE",
 		"TRUE"
 	};
-	char sFloat[13]; 			/* optional sign, 6 significant digits (0.0001 to 999999 without scientific notation), 
-					 			   optional decimal, scientific notation (4) e.g. 'e+11', plus null terminator */
-	char sDint[12]; 			/* -2,147,483,648 to 2,147,483647, plus null terminator */
+	/*
+		LREAL
+		optional sign, 6 significant digits (0.0001 to 999999 without scientific notation), 
+		optional decimal, scientific notation (4) e.g. 'e+11', plus null terminator 
+		
+		DINT
+		-2,147,483,648 to 2,147,483647, plus null terminator
+	*/
+	char sNum[13];
 	
 	/* Counters */
-	unsigned char countBools = 0;
-	unsigned char countFloats = 0;
-	unsigned char countDints = 0;
-	unsigned char countStrings = 0;
+	unsigned char countBools 	= 0;
+	unsigned char countFloats 	= 0;
+	unsigned char countDints 	= 0;
+	unsigned char countStrings 	= 0;
 	
-	unsigned short i = 0;
-	unsigned char flagDestinationFull = false; // BOOL is a plcbit is a unsigned char (C)
+	unsigned long bytesLeft = size - 1; /* Leave room for null terminator */
+	unsigned long length;
 	
-	while(*src != '\0') {
+	while(*format != '\0' && bytesLeft > 0) {
 		
-		if(*src == '%'){
-			/* Add a null character before perform concatination */
-			*dst = '\0';
+		if(*format == '%'){ /* Format specifier */
 			
-			switch(*(++src)) {
+			*str = '\0'; /* Temporarily add null terminator to perform concatination */
+			length = 0;
+			
+			switch(*(++format)) {
 				case 'b':
-					if(countBools <= FORMAT_STR_ARGS_INDEX) {
-						i += brsstrlen((unsigned long)sBool[args->b[countBools]]); // Index based on boolean argument, can only be 0 or 1
-						
-						if(i < DestinationLength){
-							brsstrcat((unsigned long)dst, (unsigned long)sBool[args->b[countBools]]);
-							
-							// Increment the argument index and the destination address
-							dst += brsstrlen((unsigned long)sBool[args->b[countBools]]); // Update the destination before count bools
-							countBools++;
-							
-						}
-						else
-							flagDestinationFull = true;
-					}
-					src++;
+					if(countBools <= FORMAT_STR_ARGS_INDEX) 
+						length = strlen(strncat(str, sBool[args->b[countBools++]], bytesLeft));
 					break;
 				
-				case 'r':
-					if(countFloats <= FORMAT_STR_ARGS_INDEX) {
-						i += brsftoa(args->r[countFloats++], (unsigned long)sFloat);
-						if(i < DestinationLength) {
-							brsstrcat((unsigned long)dst, (unsigned long)sFloat);
-							dst += brsstrlen((unsigned long)sFloat);
-						}
-						else
-							flagDestinationFull = true;
-					}
-					src++; // Move on to the next character
-					break;
-					
-				case 'i':
-					if(countDints <= FORMAT_STR_ARGS_INDEX) {
-						i += brsitoa((signed long)(args->i[countDints++]), (unsigned long)sDint);
-						if(i < DestinationLength) {
-							brsstrcat((unsigned long)dst, (unsigned long)sDint);
-							dst += brsstrlen((unsigned long)sDint);
-						}
-						else
-							flagDestinationFull = true;
-					}
-					src++;
-					break;
-					
-				case 's':
-					if(countStrings <= FORMAT_STR_ARGS_INDEX) {
-						// Increment by the length of the string argument
-						i += brsstrlen((unsigned long)(args->s[countStrings])); 
-						
-						// Check if it exceeds the destination length
-						if(i < DestinationLength) { 
-							brsstrcat((unsigned long)dst, (unsigned long)(args->s[countStrings]));
-							
-							// Increment the destination pointer and the string argument count
-							dst += brsstrlen((unsigned long)(args->s[countStrings++])); 
-						}
-						else
-							flagDestinationFull = true;
-					}
-					src++;
-					break;
-					
-				case '%':
-					if((++i) < DestinationLength) 
-						*dst++ = *src++;
-					else 
-						flagDestinationFull = true;
-				default:
-					src++;
+				 case 'r':
+				 	if(countFloats <= FORMAT_STR_ARGS_INDEX) {
+						brsftoa((float)(args->r[countFloats++]), (unsigned long)sNum);
+						length = strlen(strncat(str, sNum, bytesLeft));
+				 	}
+				 	break;
+				 
+				 case 'i':
+				 	if(countDints <= FORMAT_STR_ARGS_INDEX) {
+						brsitoa(args->i[countDints++], (unsigned long)sNum);
+						length = strlen(strncat(str, sNum, bytesLeft));
+				 	}
+				 	break;
+				 
+				 case 's':
+				 	if(countStrings <= FORMAT_STR_ARGS_INDEX) 
+						length = strlen(strncat(str, args->s[countStrings++], bytesLeft));
+				 	break;
+				 
+				 case '%':
+				 	*str = '%';
+					length = 1;
 					break;
 				
 			} // end switch
+			str += length;
+			bytesLeft -= length;
+			format++;
 		} 
-		
 		else {
-			if((++i) < DestinationLength) 
-				*dst++ = *src++;
-			else 
-				flagDestinationFull = true;
-			
-		} // end if
-	
-		
-		if(flagDestinationFull) {
-			break; // Break the while loop
+			*str++ = *format++;
+			bytesLeft--;
 		} // end if
 		
 	} // end while
 	
 	/* Add the null character to the end */
-	*dst = '\0';
+	*str = '\0';
 	
-	return brsstrlen(pDestination);
+	return strlen(str);
 } // end function
