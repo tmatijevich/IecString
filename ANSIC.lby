@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <?AutomationStudio FileVersion="4.9"?>
-<Library Version="0.02.5" SubType="ANSIC" Description="IEC string functions" xmlns="http://br-automation.co.at/AS/Library">
+<Library Version="0.03.0" SubType="ANSIC" Description="IEC string functions" xmlns="http://br-automation.co.at/AS/Library">
   <Files>
     <File Description="Exported functions">IecString.fun</File>
     <File Description="Exported data types">IecString.typ</File>
