@@ -1,5 +1,5 @@
 
-FUNCTION IecFormatString : UDINT (*Format an IEC STRING with runtime date of type boolean, integer, floating point, or string. Returns formatted string length.*)
+FUNCTION IecFormatString : UDINT (*Format a string with runtime data similiar to snprintf. Return string length.*)
 	VAR_INPUT
 		str : STRING[0]; (*Destination string*)
 		size : UDINT; (*Size of destination string*)

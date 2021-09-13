@@ -3,7 +3,7 @@
  * Date:       May 5, 2020/12:07 
  * Created by: Tyler Matijevich
  *********************************************************************************
- * Description: Perform string formatting similar to sprintf in IEC programs. The
+ * Description: Perform string formatting similar to snprintf in IEC programs. The
  number of arguments is configurable but limited. This function can be used to C, 
  C++, and Structured Text programs.
  ********************************************************************************/ 
@@ -12,15 +12,12 @@
 #include <string.h>
 #include <stdbool.h>
 
-/* Function definition */
+/* Format a string with runtime data similiar to snprintf. Return string length. */
 unsigned long IecFormatString(char *str, unsigned long size, char *format, struct FormatStringArgumentsType *args) {
 	
 	/* Local variables */
 	/* Argument strings */
-	const char sBool[][6] = { 	/* Up to fize characters plus null terminator */
-		"FALSE",
-		"TRUE"
-	};
+	const char sBool[][6] = {"FALSE", "TRUE"}; /* Up to fize characters plus null terminator */
 	/*
 		LREAL
 		optional sign, 6 significant digits (0.0001 to 999999 without scientific notation), 
@@ -37,6 +34,7 @@ unsigned long IecFormatString(char *str, unsigned long size, char *format, struc
 	unsigned char countDints 	= 0;
 	unsigned char countStrings 	= 0;
 	
+	/* Buffer */
 	unsigned long bytesLeft = size - 1; /* Leave room for null terminator */
 	unsigned long length;
 	
@@ -45,7 +43,7 @@ unsigned long IecFormatString(char *str, unsigned long size, char *format, struc
 		if(*format == '%'){ /* Format specifier */
 			
 			*str = '\0'; /* Temporarily add null terminator to perform concatination */
-			length = 0;
+			length = 0; /* Set the length to zero if the format specifier is invalid */
 			
 			switch(*(++format)) {
 				case 'b':
@@ -77,20 +75,20 @@ unsigned long IecFormatString(char *str, unsigned long size, char *format, struc
 					length = 1;
 					break;
 				
-			} // end switch
+			} /* End switch */
 			str += length;
 			bytesLeft -= length;
 			format++;
 		} 
 		else {
-			*str++ = *format++;
+			*str++ = *format++; /* Direct copy */
 			bytesLeft--;
-		} // end if
+		} /* End if format specifier */ 
 		
-	} // end while
+	} /* End while */
 	
-	/* Add the null character to the end */
+	/* Add the null terminator to end the string */
 	*str = '\0';
 	
-	return strlen(str);
-} // end function
+	return size - bytesLeft - 1;
+} /* End function */
