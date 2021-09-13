@@ -38,6 +38,9 @@ unsigned long IecFormatString(char *str, unsigned long size, char *format, struc
 	unsigned long bytesLeft = size - 1; /* Leave room for null terminator */
 	unsigned long length;
 	
+	if(str == NULL || format == NULL || args == NULL)
+		return 0;
+	
 	while(*format != '\0' && bytesLeft > 0) {
 		
 		if(*format == '%'){ /* Format specifier */

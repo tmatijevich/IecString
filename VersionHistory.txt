@@ -1,6 +1,12 @@
-# IecFrmtStr Version History
+# IecString Version History
 
-See [releases on GitHub](https://github.com/tmatijevich/LibIecFrmtStr/releases).
+See [releases on GitHub](https://github.com/tmatijevich/IecString/releases).
+
+## 0.3.0 (2021-09-12)
+- Rename library from IecFrmtStr to IecString 
+- Update IecFormatString implementation to use C string standard runtime library, specifically strncat
+- Collect all target string updates after switch statement in IecFormatString 
+- Modify IecFormatString parameter types for compatibility with C source
 
 ## 0.2.5 (2021-05-31)
 - Rename library files and include version history
