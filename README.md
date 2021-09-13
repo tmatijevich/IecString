@@ -4,6 +4,8 @@ IecString is an Automation Studio library of string functions to be used with IE
 
 The IecString library adds functionality of some C runtime libraries which are not permitted to use in Automation Studio.
 
+[Download the library here](https://github.com/tmatijevich/IecString/releases/latest/download/IecString.zip).
+
 ## Clone
 
 Clone to a reference location
