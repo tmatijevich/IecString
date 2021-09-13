@@ -65,6 +65,7 @@ Version 4.9.3.144 SP
 
 You may notice build warnings such as "Additional directory/file found ..." from the IecString submodule.
 
+![Build warnings project independent](https://user-images.githubusercontent.com/33841634/133009811-98cf2414-ec89-40d3-a529-34980b59e27f.png)
 
 Add `-W 9232 9233` to your CPU's build properties window under *Additional build options* to suppress.
 
