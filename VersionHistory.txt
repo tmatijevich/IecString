@@ -2,6 +2,9 @@
 
 See [releases on GitHub](https://github.com/tmatijevich/IecString/releases).
 
+## 0.3.1 (2022-01-05)
+- Rename constants and update comments
+
 ## 0.3.0 (2021-09-12)
 - Rename library from IecFrmtStr to IecString 
 - Update IecFormatString implementation to use C string standard runtime library, specifically strncat

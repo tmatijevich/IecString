@@ -1,10 +1,8 @@
 # IecString
 
-IecString is an Automation Studio library of string functions to be used with IEC 61131-1 languages such as [Structured Text](https://en.wikipedia.org/wiki/Structured_text).
-
-The IecString library adds functionality of some C runtime libraries which are not permitted to use in Automation Studio.
-
-[Download the library here](https://github.com/tmatijevich/IecString/releases/latest/download/IecString.zip).
+IecString is an Automation Studio library of string functions to be used with IEC 61131-1 languages such as [Structured Text](https://en.wikipedia.org/wiki/Structured_text).  
+**NOTE:** This is not an official library. IecString is provided as is under the GNU GPL v3.0 license agreement.  
+[Download the library here](https://github.com/tmatijevich/IecString/releases/latest/download/IecString.zip).  
 
 ## Clone
 
@@ -26,8 +24,8 @@ Then add as an existing library from the Automation Studio toolbox.
 ## Functions
 
 ```C
-/* Format string similar to snprintf in the C stdio library */
-unsigned long IecFormatString(char *str, unsigned long size, char *format, struct FormatStringArgumentsType *args);
+/* Format a string with runtime data similiar to snprintf. Returns string length. */
+unsigned long IecFormatString(char *str, unsigned long size, char *format, FormatStringArgumentsType *args);
 ```
 
 ### Usage
@@ -40,13 +38,10 @@ FormatArgs.b[0] := FALSE; // BOOL
 FormatArgs.r[0] := 78.768; // LREAL
 FormatArgs.i[0] := -2144327918; // DINT, e.g. Status ID
 FormatArgs.s[0] := 'INIT'; // STRING
+
+Format := 'Status %b, Temp %r F, Code %i, State %s';
 	
-FormatMessage := 'Status %b, Temp %r F, Code %i, State %s';
-	
-MessageLength := IecFormatString(str := Message,
-                                 size := SIZEOF(Message),
-                                 format := FormatMessage,
-                                 args := FormatArgs);
+Length := IecFormatString(Message, Size, Format, FormatArgs);
 ```
 
 Message is `'Status FALSE, Temp 78.768 F, Code -2144327918, State INIT'`.
@@ -56,14 +51,10 @@ Message is `'Status FALSE, Temp 78.768 F, Code -2144327918, State INIT'`.
 The library and also be used with C or C++ programs.
 
 ```C
-messageLength = IecFormatString(message, sizeof(message), formatMessage, &formatArgs);
+length = IecFormatString(message, sizeof(message), format, &formatArgs);
 ```
 
-## Automation Studio
-
-Version 4.9.3.144 SP
-
-### Build
+## Build
 
 You may notice build warnings such as "Additional directory/file found ..." from the IecString submodule.
 
