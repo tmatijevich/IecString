@@ -1,3 +1,10 @@
+(*******************************************************************************
+ * File: IecString.typ
+ * Author: Tyler Matijevich
+ * Created: 2020-05-14
+*******************************************************************************
+ * Description: IEC type declarations
+********************************************************************************)
 
 TYPE
 	FormatStringArgumentsType : 	STRUCT  (*Argument structure for runtime data to place in string*)
