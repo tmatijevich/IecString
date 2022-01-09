@@ -7,6 +7,7 @@
  ********************************************************************************/ 
  
 #include <IecString.h>
+#include <limits.h>
 #include <string.h>
 
 /* Function prototypes */
@@ -24,7 +25,7 @@ unsigned long IecPadNumber(long num, char *str, unsigned char digits, unsigned c
 	unsigned char i = 0, offset = (num < 0 ? 1 : 0);
 	
 	/* Handle max negative exception */
-	if(num == -2147483648) {
+	if(num == LONG_MIN) {
 		strcpy(str, "-2147483648");
 		return (unsigned long)str;
 	}
