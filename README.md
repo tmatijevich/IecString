@@ -21,9 +21,14 @@ git submodule add https://github.com/tmatijevich/IecString.git <apj_root>/Logica
 
 Then add as an existing library from the Automation Studio toolbox.
 
-## Functions
+# Functions
 
-```C
+- [IecFormatString](#iecformatstring)
+- [IecPadNumber](#iecpadnumber)
+
+## [IecFormatString](https://github.com/tmatijevich/IecString/blob/main/IecFormatString.c?ts=4)
+
+```c
 /* Format a string with runtime data similiar to snprintf. Returns string length. */
 unsigned long IecFormatString(char *str, unsigned long size, char *format, FormatStringArgumentsType *args);
 ```
@@ -32,7 +37,7 @@ unsigned long IecFormatString(char *str, unsigned long size, char *format, Forma
 
 #### IEC Structured Text 
 
-```
+```iecst
 // Runtime values
 FormatArgs.b[0] := FALSE; // BOOL
 FormatArgs.r[0] := 78.768; // LREAL
@@ -48,10 +53,42 @@ Message is `'Status FALSE, Temp 78.768 F, Code -2144327918, State INIT'`.
 
 #### ANSI C 
 
-The library and also be used with C or C++ programs.
+IecString library is compatible with C/C++ programs.
 
-```C
+```c
 length = IecFormatString(message, sizeof(message), format, &formatArgs);
+```
+
+## [IecPadNumber](https://github.com/tmatijevich/IecString/blob/main/IecPadNumber.c?ts=4)
+
+```c
+/* Pad a whole number with zeros or spaces (up to 10 digits). Return address to string. */
+unsigned long IecPadNumber(long num, char *str, unsigned char digits, unsigned char spaces);
+```
+
+### Usage
+
+#### IEC Structured Text
+
+```iecst
+MyNumber := -1234;
+Padding := 6;
+Spaces := FALSE;
+
+// Pad a number
+IecPadNumber(MyNumber, Number, Padding, Spaces);
+```
+
+`Number` is a STRING and displays `-001234`.
+
+#### ANSI C
+
+```c
+myNumber = -1234;
+digits = 6;
+spaces = false;
+
+IecPadNumber(myNumber, number, digits, spaces);
 ```
 
 ## Build
