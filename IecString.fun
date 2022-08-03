@@ -6,6 +6,14 @@
  * Description: IEC function declarations
 ********************************************************************************)
 
+FUNCTION IecStringCopy : UDINT (*Copies source to destination up to size (of destination) or source length. Returns source*)
+	VAR_INPUT
+		destination : STRING[0]; (*Destination string*)
+		source : STRING[0]; (*Source string*)
+		size : UDINT; (*Size (of destination string)*)
+	END_VAR
+END_FUNCTION
+
 FUNCTION IecFormatString : UDINT (*Format a string with runtime data similiar to snprintf. Return string length.*)
 	VAR_INPUT
 		str : STRING[0]; (*Destination string*)
