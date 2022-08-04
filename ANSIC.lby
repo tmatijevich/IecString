@@ -6,6 +6,7 @@
     <File Description="Data types">IecString.typ</File>
     <File Description="Constants">IecString.var</File>
     <File Description="String copy">copy.c</File>
+    <File Description="String concatenation">concat.c</File>
     <File Description="Format a string">IecFormatString.c</File>
     <File Description="Pad a whole number">IecPadNumber.c</File>
     <File Description="Version update history">VersionHistory.txt</File>

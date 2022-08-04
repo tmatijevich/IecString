@@ -7,7 +7,7 @@ Date: 2022-08-03
 #include <IecString.h>
 #include <stdint.h>
 
-/* Copies source to destination up to size (of destination) or source length. Returns source */
+/* Copies source to destination up to size (of destination) or source length. Returns destination */
 uint32_t IecStringCopy(char *destination, char *source, uint32_t size) {
 	
 	/* Declare local variables */
@@ -24,6 +24,6 @@ uint32_t IecStringCopy(char *destination, char *source, uint32_t size) {
 		if(bytesRemaining) *dst = '\0';
 	}
 	
-	return source;
+	return destination;
 	
 } /* End function */
