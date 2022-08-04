@@ -21,7 +21,7 @@ uint32_t IecStringCopy(char *destination, char *source, uint32_t size) {
 		}
 		*dst++ = *src++;
 		bytesRemaining--;
-		if(bytesRemaining) *dst = '\0';
+		if(bytesRemaining == 0) *dst = '\0';
 	}
 	
 	return destination;

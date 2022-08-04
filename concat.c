@@ -12,7 +12,7 @@ Date: 2022-08-03
 uint32_t IecStringConcat(char *destination, char *source, uint32_t size) {
 	
 	/* Declare local variables */
-	char *src = source, *dst = destination;
+	char *dst = destination;
 	uint32_t bytesRemaining = size - 1, length;
 	
 	length = strlen(destination);

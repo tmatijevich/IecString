@@ -22,6 +22,16 @@ FUNCTION IecStringConcat : UDINT (*Concatentate source to destination up to size
 	END_VAR
 END_FUNCTION
 
+FUNCTION IecStringReplace : UDINT (*Find in source and replace in destination up to size (of destination). Returns destination*)
+	VAR_INPUT
+		destination : STRING[0]; (*Destination string*)
+		source : STRING[0]; (*Source string*)
+		find : STRING[0]; (*Find string*)
+		replace : STRING[0]; (*Replace string*)
+		size : UDINT; (*Size (of destination string)*)
+	END_VAR
+END_FUNCTION
+
 FUNCTION IecFormatString : UDINT (*Format a string with runtime data similiar to snprintf. Return string length.*)
 	VAR_INPUT
 		str : STRING[0]; (*Destination string*)
