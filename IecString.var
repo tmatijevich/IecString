@@ -2,10 +2,9 @@
  * File: IecString.var
  * Author: Tyler Matijevich
  * Created: 2020-05-14
-*******************************************************************************
- * Description: IEC constant declarations
 ********************************************************************************)
+
 VAR CONSTANT
-	IECSTRING_FORMATARGS_INDEX : USINT := 4; (*Maximum index of each argument type*)
-	IECSTRING_FORMATARGS_LEN : USINT := 80; (*Maximum length of string argument*)
+	IECSTRING_FORMATARG_INDEX : USINT := 4; (*Maximum index of each argument type*)
+	IECSTRING_FORMATARG_STRLEN : USINT := 80; (*Maximum length of string argument*)
 END_VAR

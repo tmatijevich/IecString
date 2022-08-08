@@ -32,12 +32,12 @@ FUNCTION IecStringReplace : UDINT (*Find in source and replace in destination up
 	END_VAR
 END_FUNCTION
 
-FUNCTION IecFormatString : UDINT (*Format a string with runtime data similiar to snprintf. Return string length.*)
+FUNCTION IecStringFormat : UDINT (*Format string with runtime data. Returns destination*)
 	VAR_INPUT
-		str : STRING[0]; (*Destination string*)
-		size : UDINT; (*Size of destination string*)
-		format : STRING[0]; (*Format string*)
-		args : FormatStringArgumentsType; (*Format arguments*)
+		destination : STRING[0]; (*Destination string (formatted)*)
+		source : STRING[0]; (*Source string (unformatted)*)
+		args : IecStringFormatArgumentType; (*Format arguments*)
+		size : UDINT; (*Size (of destination string)*)
 	END_VAR
 END_FUNCTION
 

@@ -1,81 +1,78 @@
-/*********************************************************************************
- * File:        IecFormatString.c
- * Date:        May 5, 2020/12:07 
- * Created by:  Tyler Matijevich
- *********************************************************************************
- * Description: Perform string formatting in IEC programs similar to snprintf. The
- number of arguments is configurable but limited. This function can be used in C, 
- C++, and IEC programs.
- ********************************************************************************/ 
+/*******************************************************************************
+File: IecString\format.c
+Author: Tyler Matijevich
+Date: 2020-05-05
+*******************************************************************************/
 
-#include <IecString.h> /* Automatically generated */
+#include <IecString.h>
 #include <string.h>
 #include <stdbool.h>
+#include <stdint.h>
 
-/* Format a string with runtime data similiar to snprintf. Returns string length. */
-unsigned long IecFormatString(char *str, unsigned long size, char *format, FormatStringArgumentsType *args) {
+/* Format string with runtime data. Returns destination */
+uint32_t IecStringFormat(char *destination, char *source, IecStringFormatArgumentType *args, uint32_t size) {
 	
-	/* Local variables */
+	/* Declare local variables */
+	char *src = source, *dst = destination;
 	const char sBool[][6] = {"FALSE", "TRUE"}; 	/* Boolean arguments = 5 + null terminator */
-	char sNum[13]; 								/* Floats: [<+->]1.23456[e<+->12] = 12 + null terminator, Longs: -2147483648 to 2147483647 = 11 + null terminator */
-	unsigned char countBools = 0;
-	unsigned char countFloats = 0;
-	unsigned char countLongs = 0;
-	unsigned char countStrings = 0; 
-	unsigned long length, bytesLeft = size - 1; /* Guard output, leave room for null terminator */
+	char sNumber[13]; /* Floats: [<+->]1.23456[e<+->12] = 12 + null terminator, Longs: -2147483648 to 2147483647 = 11 + null terminator */
+	uint8_t countBool = 0;
+	uint8_t countFloat = 0;
+	uint8_t countInteger = 0;
+	uint8_t countString = 0; 
+	uint32_t length, bytesRemaining = size - 1;
 	
-	/* Guard null pointers */
-	if(str == NULL || format == NULL || args == NULL) 
-		return 0;
+	/* Check argument structure */
+	if(args == NULL) return destination; 
 	
-	while(*format != '\0' && bytesLeft > 0) {
-		if(*format != '%') {
-			*str++ = *format++; /* Direct copy */
-			bytesLeft--;
+	while(*src != '\0' && bytesRemaining > 0) {
+		if(*src != '%') {
+			*dst++ = *src++; /* Direct copy */
+			bytesRemaining--;
 			continue;
 		}
 		
-		*str = '\0'; /* Temporarily add null terminator to perform concatination */
+		*dst = '\0'; /* Temporarily add null terminator to perform concatenation */
 		length = 0; /* Set the length to zero if the format specifier is invalid */
 		
-		switch(*(++format)) {
+		switch(*(++src)) {
 			case 'b':
-				if(countBools <= IECSTRING_FORMATARGS_INDEX) 
-					length = strlen(strncat(str, sBool[args->b[countBools++]], bytesLeft));
+				if(countBool <= IECSTRING_FORMATARG_INDEX) 
+					length = strlen(strncat(dst, sBool[args->b[countBool++]], bytesRemaining));
 				break;
 			
-			 case 'r':
-			 	if(countFloats <= IECSTRING_FORMATARGS_INDEX) {
-					brsftoa((float)(args->r[countFloats++]), (unsigned long)sNum);
-					length = strlen(strncat(str, sNum, bytesLeft));
+			 case 'f':
+			 	if(countFloat <= IECSTRING_FORMATARG_INDEX) {
+					brsftoa((float)(args->f[countFloat++]), (uint32_t)sNumber);
+					length = strlen(strncat(dst, sNumber, bytesRemaining));
 			 	}
 			 	break;
 			 
 			 case 'i':
-			 	if(countLongs <= IECSTRING_FORMATARGS_INDEX) {
-					brsitoa(args->i[countLongs++], (unsigned long)sNum);
-					length = strlen(strncat(str, sNum, bytesLeft));
+			 	if(countInteger <= IECSTRING_FORMATARG_INDEX) {
+					brsitoa(args->i[countInteger++], (uint32_t)sNumber);
+					length = strlen(strncat(dst, sNumber, bytesRemaining));
 			 	}
 			 	break;
 			 
 			 case 's':
-			 	if(countStrings <= IECSTRING_FORMATARGS_INDEX) 
-					length = strlen(strncat(str, args->s[countStrings++], bytesLeft));
+			 	if(countString <= IECSTRING_FORMATARG_INDEX) 
+					length = strlen(strncat(dst, args->s[countString++], bytesRemaining));
 			 	break;
 			 
 			 case '%':
-			 	*str = '%';
+			 	*dst = '%';
 				length = 1;
 				break;
 		} /* End switch */
 		
-		str += length;
-		bytesLeft -= length;
-		format++;
+		dst += length;
+		bytesRemaining -= length;
+		src++;
 		
 	} /* End while */
 	
-	*str = '\0'; /* Add the null terminator to end the string */
-	return size - bytesLeft - 1;
+	*dst = '\0'; /* Add the null terminator to end the string */
+	return destination;
 	
 } /* End function */
