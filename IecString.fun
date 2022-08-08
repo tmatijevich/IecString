@@ -2,8 +2,6 @@
  * File: IecString.fun
  * Author: Tyler Matijevich
  * Created: 2020-05-14
-*******************************************************************************
- * Description: IEC function declarations
 ********************************************************************************)
 
 FUNCTION IecStringCopy : UDINT (*Copies source to destination up to size (of destination) or source length. Returns destination*)

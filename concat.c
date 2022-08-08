@@ -16,11 +16,11 @@ uint32_t IecStringConcat(char *destination, char *source, uint32_t size) {
 	uint32_t bytesRemaining = size - 1, length;
 	
 	length = strlen(destination);
-	if(length >= bytesRemaining) return destination;
+	if(length >= bytesRemaining) return (uint32_t)destination;
 	
 	dst += length;
 	bytesRemaining -= length;
 	IecStringCopy(dst, source, bytesRemaining + 1);
-	return destination;
+	return (uint32_t)destination;
 
 } /* End function */

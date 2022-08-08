@@ -8,9 +8,8 @@
     <File Description="String copy">copy.c</File>
     <File Description="String concatenation">concat.c</File>
     <File Description="Find &amp; replace">replace.c</File>
-    <File Description="Format a string">IecFormatString.c</File>
+    <File Description="Format string">format.c</File>
     <File Description="Pad a whole number">IecPadNumber.c</File>
-    <File Description="Version update history">VersionHistory.txt</File>
   </Files>
   <Dependencies>
     <Dependency ObjectName="AsBrStr" />

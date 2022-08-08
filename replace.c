@@ -19,7 +19,7 @@ uint32_t IecStringReplace(char *destination, char *source, char *find, char *rep
 	
 	if(strlen(find) > strlen(source) || strlen(find) == 0) {
 		IecStringCopy(destination, source, size);
-		return destination;
+		return (uint32_t)destination;
 	}
 	
 	length = strlen(find);
@@ -41,6 +41,6 @@ uint32_t IecStringReplace(char *destination, char *source, char *find, char *rep
 		}
 		if(offset == size - 1) *dst = '\0';
 	}
-	return destination;
+	return (uint32_t)destination;
 	
 } /* End function */

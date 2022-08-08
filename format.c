@@ -23,7 +23,7 @@ uint32_t IecStringFormat(char *destination, char *source, IecStringFormatArgumen
 	uint32_t length, bytesRemaining = size - 1;
 	
 	/* Check argument structure */
-	if(args == NULL) return destination; 
+	if(args == NULL) return (uint32_t)destination; 
 	
 	while(*src != '\0' && bytesRemaining > 0) {
 		if(*src != '%') {
@@ -73,6 +73,6 @@ uint32_t IecStringFormat(char *destination, char *source, IecStringFormatArgumen
 	} /* End while */
 	
 	*dst = '\0'; /* Add the null terminator to end the string */
-	return destination;
+	return (uint32_t)destination;
 	
 } /* End function */
