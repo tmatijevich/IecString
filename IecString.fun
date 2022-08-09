@@ -39,11 +39,12 @@ FUNCTION IecStringFormat : UDINT (*Format string with runtime data. Returns dest
 	END_VAR
 END_FUNCTION
 
-FUNCTION IecPadNumber : UDINT (*Pad a whole number with zeros or spaces (up to 10 digits). Return address to string.*)
+FUNCTION IecStringNumber : UDINT (*Pad an integer with zeros or spaces. Returns destination*)
 	VAR_INPUT
-		num : DINT; (*Signed 32-bit value*)
-		str : STRING[0]; (*String reference, ensure at least 12 characters (including null terminator)*)
-		digits : USINT; (*Width of digits not including sign*)
-		spaces : USINT; (*0 - zeros, spaces otherwise*)
+		destination : STRING[0]; (*Destination string*)
+		number : DINT; (*Integer value*)
+		width : USINT; (*Digit width not including sign*)
+		mode : USINT; (*0 - zeros, spaces otherwise*)
+		size : UDINT; (*Size (of destination string)*)
 	END_VAR
 END_FUNCTION

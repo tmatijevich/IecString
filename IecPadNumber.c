@@ -1,62 +1,61 @@
-/*********************************************************************************
- * File:      IecPadNumber.c
- * Author:    Tyler Matijevich
- * Created:   January 6, 2022/1:12 PM 
- *********************************************************************************
- * Description: Pad 32-bit signed integers with zeros or spaces to string output
- ********************************************************************************/ 
+/*******************************************************************************
+File: IecString\number.c
+Author: Tyler Matijevich
+Date: 2022-01-06
+*******************************************************************************/
  
 #include <IecString.h>
-#include <limits.h>
+#include <stdint.h>
 #include <string.h>
 
-/* Function prototypes */
-long TenPow(unsigned char digit);
-unsigned char CountDigits(long num);
-char DigitChar(unsigned char digit);
+static int32_t powerOfTen(uint8_t power);
+static uint8_t countDigits(int32_t number);
+static char digitToChar(uint8_t digit);
 
-/* Pad a whole number with zeros or spaces (up to 10 digits). Return address to string. */
-unsigned long IecPadNumber(long num, char *str, unsigned char digits, unsigned char spaces) {
+/* Pad an integer with zeros or spaces. Returns destination */
+uint32_t IecStringNumber(char *destination, int32_t number, uint8_t width, uint8_t mode, uint32_t size) {
 	
 	/* Declare local variables */
-	char pad = (spaces ? ' ' : '0');	
-	unsigned char numDigits = CountDigits(num);
-	unsigned char maxDigits, curDigit;
-	unsigned char i = 0, offset = (num < 0 ? 1 : 0);
+	char pad = mode ? ' ' : '0';
+	uint8_t numberOfDigits = countDigits(number);
+	uint8_t maxDigits, digit;
+	uint8_t i, offset = number < 0 ? 1 : 0;
 	
-	/* Handle max negative exception */
-	if(num == LONG_MIN) {
-		strcpy(str, "-2147483648");
-		return (unsigned long)str;
+	/* Do not proceed if not enough space */
+	if(numberOfDigits + offset > size - 1) return (uint32_t)destination;
+	
+	/* Negative exception */
+	if(number == INT32_MIN) {
+		IecStringCopy(destination, "-2147483648", size);
+		return (uint32_t)destination;
 	}
 	
-	/* Accommodate sign, then use positive numbers */
+	/* Accommodate sign */
 	if(offset) {
-		str[0] = '-';
-		num = -num;
+		destination[0] = '-';
+		number = -number;
 	}
 	
-	digits = (digits > 10 ? 10 : digits); /* Saturate to 10 digits for 32-bit numbers */
-	maxDigits = (digits > numDigits ? digits : numDigits);
+	width = (width > 10 ? 10 : width); /* Saturate to 10 */
+	maxDigits = (width > numberOfDigits ? width : numberOfDigits);
 	
 	for(i = 0; i < maxDigits; i++) {
-		curDigit = maxDigits - i;
-		if(curDigit > numDigits)
-			str[offset + i] = pad;
-		else if(curDigit == 10)
-			str[offset + i] = DigitChar(num / TenPow(curDigit - 1));
+		digit = maxDigits - i;
+		if(digit > numberOfDigits)
+			destination[offset + i] = pad;
+		else if(digit == 10)
+			destination[offset + i] = digitToChar(number / powerOfTen(digit - 1));
 		else
-			str[offset + i] = DigitChar((num % TenPow(curDigit)) / TenPow(curDigit - 1));
+			destination[offset + i] = digitToChar((number % powerOfTen(digit)) / powerOfTen(digit - 1));
 	}
 	
-	str[offset + i] = '\0';
-	return (unsigned long)str;
+	destination[offset + i] = '\0';
+	return (uint32_t)destination;
  	
-} /* Function defintion */
+} /* End function */
 
-/* Return ten to the power of digit, up to 10 digits (32-bits) */
-long TenPow(unsigned char power) {
-	
+/* Return power of ten up to the ninth power (10 characters) */
+int32_t powerOfTen(uint8_t power) {
 	switch(power) {
 		case 0: return 1;
 		case 1: return 10;
@@ -67,26 +66,22 @@ long TenPow(unsigned char power) {
 		case 6: return 1000000;
 		case 7: return 10000000;
 		case 8: return 100000000;
-		default: return 1000000000; /* Maximum is 10 digits or power of 9 */
+		default: return 1000000000;
 	}
-	
-} 
+}
 
-/* Determine number of digits in a 32-bit integer */
-unsigned char CountDigits(long num) {
-	
-	unsigned char i;
+/* Count number of digits in a 32-bit integer */
+uint8_t countDigits(int32_t number) {
+	uint8_t i;
 	for(i = 10; i > 1; i--) {
-		if(num / TenPow(i - 1)) /* Integer division rounds down */
+		if(number / powerOfTen(i - 1)) /* Round down integer division */
 			return i;
 	}
 	return 1;
-	
-} 
+}
 
-/* Get the character for a single digit */
-char DigitChar(unsigned char digit) {
-	
+/* Return character of a single digit (0-9) */
+char digitToChar(uint8_t digit) {
 	switch(digit) {
 		case 1: return '1';
 		case 2: return '2';
@@ -99,5 +94,4 @@ char DigitChar(unsigned char digit) {
 		case 9: return '9';
 		default: return '0'; /* Zero or out-of-range */
 	}
-	
-} 
+}
