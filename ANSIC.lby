@@ -9,7 +9,7 @@
     <File Description="String concatenation">concat.c</File>
     <File Description="Find &amp; replace">replace.c</File>
     <File Description="Format string">format.c</File>
-    <File Description="Pad a whole number">IecPadNumber.c</File>
+    <File Description="Pad integer">number.c</File>
   </Files>
   <Dependencies>
     <Dependency ObjectName="AsBrStr" />
