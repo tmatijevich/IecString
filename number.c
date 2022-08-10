@@ -21,8 +21,13 @@ uint32_t IecStringNumber(char *destination, int32_t number, uint8_t width, uint8
 	uint8_t maxDigits, digit;
 	uint8_t i, offset = number < 0 ? 1 : 0;
 	
-	/* Do not proceed if not enough space */
-	if(numberOfDigits + offset > size - 1) return (uint32_t)destination;
+	/* Verify parameters */
+	if(destination == NULL || size == 0) return (uint32_t)destination;
+	
+	/* Verify length */
+	width = (width > 10 ? 10 : width); /* Saturate to 10 */
+	maxDigits = (width > numberOfDigits ? width : numberOfDigits);
+	if(maxDigits + offset > size - 1) return (uint32_t)destination;
 	
 	/* Negative exception */
 	if(number == INT32_MIN) {
@@ -36,9 +41,7 @@ uint32_t IecStringNumber(char *destination, int32_t number, uint8_t width, uint8
 		number = -number;
 	}
 	
-	width = (width > 10 ? 10 : width); /* Saturate to 10 */
-	maxDigits = (width > numberOfDigits ? width : numberOfDigits);
-	
+	/* Pad */
 	for(i = 0; i < maxDigits; i++) {
 		digit = maxDigits - i;
 		if(digit > numberOfDigits)

@@ -17,12 +17,19 @@ uint32_t IecStringReplace(char *destination, char *source, char *find, char *rep
 	char *src = source, *dst = destination;
 	uint32_t offset = 0, length, count;
 	
-	if(strlen(find) > strlen(source) || strlen(find) == 0) {
+	/* Verify parameters */
+	if(destination == NULL || source == NULL || find == NULL || replace == NULL || size == 0) return (uint32_t)destination;
+	
+	length = strlen(find);
+	if(length > strlen(source) || length == 0) {
 		IecStringCopy(destination, source, size);
 		return (uint32_t)destination;
 	}
 	
-	length = strlen(find);
+	/* Initialize (size = 1) */
+	*dst = '\0';
+	
+	/* Find & replace */
 	while(offset < size - 1) {
 		if(*src == '\0') {
 			*dst = '\0';

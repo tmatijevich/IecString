@@ -15,9 +15,14 @@ uint32_t IecStringConcat(char *destination, char *source, uint32_t size) {
 	char *dst = destination;
 	uint32_t bytesRemaining = size - 1, length;
 	
+	/* Verify parameters */
+	if(destination == NULL || source == NULL || size == 0) return (uint32_t)destination;
+	
+	/* Current length */
 	length = strlen(destination);
 	if(length >= bytesRemaining) return (uint32_t)destination;
 	
+	/* Concatenate */
 	dst += length;
 	bytesRemaining -= length;
 	IecStringCopy(dst, source, bytesRemaining + 1);

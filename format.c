@@ -22,9 +22,10 @@ uint32_t IecStringFormat(char *destination, char *source, IecStringFormatArgumen
 	uint8_t countString = 0; 
 	uint32_t length, bytesRemaining = size - 1;
 	
-	/* Check argument structure */
-	if(args == NULL) return (uint32_t)destination; 
+	/* Verify parameters */
+	if(destination == NULL || source == NULL || args == NULL || size == 0) return (uint32_t)destination;
 	
+	/* Format */
 	while(*src != '\0' && bytesRemaining > 0) {
 		if(*src != '%') {
 			*dst++ = *src++; /* Direct copy */
