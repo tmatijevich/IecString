@@ -8,6 +8,7 @@
     <File Description="String copy">copy.c</File>
     <File Description="String concatenation">concat.c</File>
     <File Description="Find &amp; replace">replace.c</File>
+    <File Description="Find substring">substring.c</File>
     <File Description="Format string">format.c</File>
     <File Description="Pad integer">number.c</File>
   </Files>

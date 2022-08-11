@@ -30,6 +30,14 @@ FUNCTION IecStringReplace : UDINT (*Find in source and replace in destination up
 	END_VAR
 END_FUNCTION
 
+FUNCTION IecStringSubstring : UDINT (*Search source for first occurence of find. Returns address of first occurence or zero if no occurence.*)
+	VAR_INPUT
+		source : STRING[0]; (*Source string*)
+		find : STRING[0]; (*Find string*)
+		k : USINT; (*kth occurrence*)
+	END_VAR
+END_FUNCTION
+
 FUNCTION IecStringFormat : UDINT (*Format string with runtime data. Returns destination*)
 	VAR_INPUT
 		destination : STRING[0]; (*Destination string (formatted)*)
