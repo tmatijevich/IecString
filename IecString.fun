@@ -56,3 +56,15 @@ FUNCTION IecStringNumber : UDINT (*Pad an integer with zeros or spaces. Returns 
 		size : UDINT; (*Size (of destination string)*)
 	END_VAR
 END_FUNCTION
+
+FUNCTION IecStringToUpper : UDINT (*Convert lowercase letters to uppercase (mutable). Returns source*)
+	VAR_INPUT
+		source : STRING[0]; (*Source string*)
+	END_VAR
+END_FUNCTION
+
+FUNCTION IecStringToLower : UDINT (*Convert uppercase letters to lowercase (mutable). Returns source*)
+	VAR_INPUT
+		source : STRING[0]; (*Source string*)
+	END_VAR
+END_FUNCTION
