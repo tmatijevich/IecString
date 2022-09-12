@@ -4,8 +4,8 @@
  * Created: 2020-05-14
 ********************************************************************************)
 VAR CONSTANT
-	IECSTRING_FORMATARG_INDEX : USINT := 4; (*Maximum index of each argument type*)
-	IECSTRING_FORMATARG_STRLEN : USINT := 80; (*Maximum length of string argument*)
+	IECSTRING_FORMAT_INDEX : USINT := 4; (*Maximum index of each format argument type*)
+	IECSTRING_FORMAT_LENGTH : USINT := 80; (*Length of string format argument*)
 END_VAR
 (*ASCII Characters*)
 VAR CONSTANT

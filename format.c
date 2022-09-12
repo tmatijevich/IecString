@@ -39,26 +39,26 @@ uint32_t IecStringFormat(char *Destination, char *Source, IecStringFormatArgumen
 		
 		switch(*(++src)) {
 			case 'b':
-				if(countBool <= IECSTRING_FORMATARG_INDEX) 
+				if(countBool <= IECSTRING_FORMAT_INDEX) 
 					length = strlen(strncat(dst, sBool[Args->b[countBool++]], bytesRemaining));
 				break;
 			
 			 case 'f':
-			 	if(countFloat <= IECSTRING_FORMATARG_INDEX) {
+			 	if(countFloat <= IECSTRING_FORMAT_INDEX) {
 					brsftoa((float)(Args->f[countFloat++]), (uint32_t)sNumber);
 					length = strlen(strncat(dst, sNumber, bytesRemaining));
 			 	}
 			 	break;
 			 
 			 case 'i':
-			 	if(countInteger <= IECSTRING_FORMATARG_INDEX) {
+			 	if(countInteger <= IECSTRING_FORMAT_INDEX) {
 					brsitoa(Args->i[countInteger++], (uint32_t)sNumber);
 					length = strlen(strncat(dst, sNumber, bytesRemaining));
 			 	}
 			 	break;
 			 
 			 case 's':
-			 	if(countString <= IECSTRING_FORMATARG_INDEX) 
+			 	if(countString <= IECSTRING_FORMAT_INDEX) 
 					length = strlen(strncat(dst, Args->s[countString++], bytesRemaining));
 			 	break;
 			 
