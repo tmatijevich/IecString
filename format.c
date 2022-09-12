@@ -23,7 +23,8 @@ uint32_t IecStringFormat(char *Destination, char *Source, IecStringFormatArgumen
 	uint32_t length, bytesRemaining = Size - 1;
 	
 	/* Verify parameters */
-	if(Destination == NULL || Source == NULL || Args == NULL || Size == 0) return (uint32_t)Destination;
+	if(Destination == NULL || Source == NULL || Size == 0) return (uint32_t)Destination;
+	if(Args == NULL) return IecStringCopy(Destination, Source, Size);
 	
 	/* Format */
 	while(*src != '\0' && bytesRemaining > 0) {
