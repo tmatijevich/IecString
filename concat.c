@@ -8,24 +8,24 @@ Date: 2022-08-03
 #include <string.h>
 #include <stdint.h>
 
-/* Concatentate source to destination up to size (of destination) or source length. Returns destination */
-uint32_t IecStringConcat(char *destination, char *source, uint32_t size) {
+/* Concatentate Source to Destination up to Size (of Destination) or Source length. Returns Destination */
+uint32_t IecStringConcat(char *Destination, char *Source, uint32_t Size) {
 	
 	/* Declare local variables */
-	char *dst = destination;
-	uint32_t bytesRemaining = size - 1, length;
+	char *dst = Destination;
+	uint32_t bytesRemaining = Size - 1, length;
 	
 	/* Verify parameters */
-	if(destination == NULL || source == NULL || size == 0) return (uint32_t)destination;
+	if(Destination == NULL || Source == NULL || Size == 0) return (uint32_t)Destination;
 	
 	/* Current length */
-	length = strlen(destination);
-	if(length >= bytesRemaining) return (uint32_t)destination;
+	length = strlen(Destination);
+	if(length >= bytesRemaining) return (uint32_t)Destination;
 	
 	/* Concatenate */
 	dst += length;
 	bytesRemaining -= length;
-	IecStringCopy(dst, source, bytesRemaining + 1);
-	return (uint32_t)destination;
+	IecStringCopy(dst, Source, bytesRemaining + 1);
+	return (uint32_t)Destination;
 
 } /* End function */

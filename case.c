@@ -8,12 +8,12 @@ Date: 2022-08-16
 #include <stdint.h>
 #include <string.h>
 
-/* Convert lowercase letters to uppercase (mutable). Returns source */
-uint32_t IecStringToUpper(char *source) {
+/* Convert lowercase letters to uppercase (mutable). Returns Source */
+uint32_t IecStringToUpper(char *Source) {
 	
-	char *src = source;
+	char *src = Source;
 	
-	if(source == NULL) return (uint32_t)source;
+	if(Source == NULL) return (uint32_t)Source;
 	
 	while(*src != '\0') {
 		if(IECSTRING_ASCII_LOWER_A <= *src && *src <= IECSTRING_ASCII_LOWER_Z) {
@@ -22,16 +22,16 @@ uint32_t IecStringToUpper(char *source) {
 		src++;
 	}
 	
-	return (uint32_t)source;
+	return (uint32_t)Source;
 	
 } /* End function */
 
-/* Convert uppercase letters to lowercase (mutable). Returns source */
-uint32_t IecStringToLower(char *source) {
+/* Convert uppercase letters to lowercase (mutable). Returns Source */
+uint32_t IecStringToLower(char *Source) {
 	
-	char *src = source;
+	char *src = Source;
 	
-	if(source == NULL) return (uint32_t)source;
+	if(Source == NULL) return (uint32_t)Source;
 	
 	while(*src != '\0') {
 		if(IECSTRING_ASCII_UPPER_A <= *src && *src <= IECSTRING_ASCII_UPPER_Z) {
@@ -40,6 +40,6 @@ uint32_t IecStringToLower(char *source) {
 		src++;
 	}
 	
-	return (uint32_t)source;
+	return (uint32_t)Source;
 	
 } /* End function */

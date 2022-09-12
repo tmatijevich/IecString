@@ -8,33 +8,33 @@ Date: 2022-08-10
 #include <string.h>
 #include <stdint.h>
 
-/* Search source for kth occurrence of find. Use k = 0 to search last occurrence. Returns address of kth occurrence or zero if no occurrence. */
-uint32_t IecStringSubstring(char *source, char *find, uint8_t k) {
+/* Search Source for Kth occurence of Find. Use K = 0 to search last occurrence. Returns address of occurence or zero if no occurence. */
+uint32_t IecStringSubstring(char *Source, char *Find, uint8_t K) {
 	
 	/* Declare local variables */
-	char *src = source, *ptr = 0;
+	char *src = Source, *ptr = 0;
 	uint32_t length;
 	uint8_t i = 0;
 	
 	/* Verify parameters */
-	if(source == NULL || find == NULL) return 0;
+	if(Source == NULL || Find == NULL) return 0;
 	
 	/* Verify length */
-	length = strlen(find);
-	if(length > strlen(source)) return 0;
+	length = strlen(Find);
+	if(length > strlen(Source)) return 0;
 	
 	/* Find */
 	while(strlen(src) >= length) {
-		if(memcmp(src, find, length) == 0) {
+		if(memcmp(src, Find, length) == 0) {
 			if(i < UINT8_MAX) i++;
 			else break;
-			if(i == k) return (uint32_t)src;
+			if(i == K) return (uint32_t)src;
 			else ptr = src;
 		}
 		src++;
 	}
 	
-	if(k == 0 && ptr != 0) return (uint32_t)ptr;
+	if(K == 0 && ptr != 0) return (uint32_t)ptr;
 	
 	return 0;
 	

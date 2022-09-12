@@ -10,34 +10,34 @@ Date: 2022-08-03
 
 #define MIN(x,y) (((x) < (y)) ? (x) : (y))
 
-/* Find in source and replace in destination up to size (of destination). Returns destination */
-uint32_t IecStringReplace(char *destination, char *source, char *find, char *replace, uint32_t size) {
+/* Find in Source and replace in Destination up to Size (of Destination). Returns Destination */
+uint32_t IecStringReplace(char *Destination, char *Source, char *Find, char *Replace, uint32_t Size) {
 	
 	/* Declare local variables */
-	char *src = source, *dst = destination;
+	char *src = Source, *dst = Destination;
 	uint32_t offset = 0, length, count;
 	
 	/* Verify parameters */
-	if(destination == NULL || source == NULL || find == NULL || replace == NULL || size == 0) return (uint32_t)destination;
+	if(Destination == NULL || Source == NULL || Find == NULL || Replace == NULL || Size == 0) return (uint32_t)Destination;
 	
-	length = strlen(find);
-	if(length > strlen(source) || length == 0) {
-		IecStringCopy(destination, source, size);
-		return (uint32_t)destination;
+	length = strlen(Find);
+	if(length > strlen(Source) || length == 0) {
+		IecStringCopy(Destination, Source, Size);
+		return (uint32_t)Destination;
 	}
 	
-	/* Initialize (size = 1) */
+	/* Initialize (Size = 1) */
 	*dst = '\0';
 	
-	/* Find & replace */
-	while(offset < size - 1) {
+	/* Find & Replace */
+	while(offset < Size - 1) {
 		if(*src == '\0') {
 			*dst = '\0';
 			break;
 		}
-		else if(memcmp(src, find, length) == 0) {
-			IecStringCopy(dst, replace, size - offset);
-			count = MIN(strlen(replace), size - offset - 1);
+		else if(memcmp(src, Find, length) == 0) {
+			IecStringCopy(dst, Replace, Size - offset);
+			count = MIN(strlen(Replace), Size - offset - 1);
 			dst += count;
 			offset += count;
 			src += length;
@@ -46,8 +46,8 @@ uint32_t IecStringReplace(char *destination, char *source, char *find, char *rep
 			*dst++ = *src++;
 			offset++;
 		}
-		if(offset == size - 1) *dst = '\0';
+		if(offset == Size - 1) *dst = '\0';
 	}
-	return (uint32_t)destination;
+	return (uint32_t)Destination;
 	
 } /* End function */
