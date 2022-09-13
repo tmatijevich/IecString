@@ -8,7 +8,7 @@ FUNCTION IecStringCopy : UDINT (*Copies source to destination up to size (of des
 	VAR_INPUT
 		destination : STRING[0]; (*Destination string*)
 		source : STRING[0]; (*Source string*)
-		size : UDINT; (*Size (of destination string)*)
+		size : UDINT; (*Size (of destination)*)
 	END_VAR
 END_FUNCTION
 
@@ -16,7 +16,7 @@ FUNCTION IecStringConcat : UDINT (*Concatentate source to destination up to size
 	VAR_INPUT
 		destination : STRING[0]; (*Destination string*)
 		source : STRING[0]; (*Source string*)
-		size : UDINT; (*Size (of destination string)*)
+		size : UDINT; (*Size (of destination)*)
 	END_VAR
 END_FUNCTION
 
@@ -26,11 +26,11 @@ FUNCTION IecStringReplace : UDINT (*Find in source and replace in destination up
 		source : STRING[0]; (*Source string*)
 		find : STRING[0]; (*Find string*)
 		replace : STRING[0]; (*Replace string*)
-		size : UDINT; (*Size (of destination string)*)
+		size : UDINT; (*Size (of destination)*)
 	END_VAR
 END_FUNCTION
 
-FUNCTION IecStringSubstring : UDINT (*Search source for first occurence of find. Returns address of first occurence or zero if no occurence.*)
+FUNCTION IecStringSubstring : UDINT (*Search source for kth occurrence of find. Use k = 0 to search last occurrence. Returns address of kth occurrence or zero if no occurrence.*)
 	VAR_INPUT
 		source : STRING[0]; (*Source string*)
 		find : STRING[0]; (*Find string*)
@@ -53,7 +53,7 @@ FUNCTION IecStringNumber : UDINT (*Pad an integer with zeros or spaces. Returns 
 		number : DINT; (*Integer value*)
 		width : USINT; (*Digit width not including sign*)
 		mode : USINT; (*0 - zeros, spaces otherwise*)
-		size : UDINT; (*Size (of destination string)*)
+		size : UDINT; (*Size (of destination)*)
 	END_VAR
 END_FUNCTION
 

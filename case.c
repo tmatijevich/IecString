@@ -9,37 +9,41 @@ Date: 2022-08-16
 #include <string.h>
 
 /* Convert lowercase letters to uppercase (mutable). Returns source */
-uint32_t IecStringToUpper(char *source) {
+uint32_t IecStringToUpper (char * source)
+{	
+	/* Verify parameter */
+	if (source == NULL) return (uint32_t)source;
 	
-	char *src = source;
-	
-	if(source == NULL) return (uint32_t)source;
-	
-	while(*src != '\0') {
-		if(IECSTRING_ASCII_LOWER_A <= *src && *src <= IECSTRING_ASCII_LOWER_Z) {
-			*src = (char)(IECSTRING_ASCII_UPPER_A + ((uint8_t)*src - IECSTRING_ASCII_LOWER_A));
+	/* Search all of source for lowercase letters */
+	while (*source != '\0')
+	{
+		if (IECSTRING_ASCII_LOWER_A <= *source && *source <= IECSTRING_ASCII_LOWER_Z)
+		{
+			/* Convert lowercase letter to uppercase */
+			*source = (char)(IECSTRING_ASCII_UPPER_A + ((uint8_t)*source - IECSTRING_ASCII_LOWER_A));
 		}
-		src++;
+		source++;
 	}
 	
 	return (uint32_t)source;
-	
-} /* End function */
+}
 
 /* Convert uppercase letters to lowercase (mutable). Returns source */
-uint32_t IecStringToLower(char *source) {
+uint32_t IecStringToLower (char * source)
+{	
+	/* Verify parameter */
+	if (source == NULL) return (uint32_t)source;
 	
-	char *src = source;
-	
-	if(source == NULL) return (uint32_t)source;
-	
-	while(*src != '\0') {
-		if(IECSTRING_ASCII_UPPER_A <= *src && *src <= IECSTRING_ASCII_UPPER_Z) {
-			*src = (char)(IECSTRING_ASCII_LOWER_A + ((uint8_t)*src - IECSTRING_ASCII_UPPER_A));
+	/* Search all of source for uppercase letters */
+	while (*source != '\0')
+	{
+		if (IECSTRING_ASCII_UPPER_A <= *source && *source <= IECSTRING_ASCII_UPPER_Z)
+		{
+			/* Convert uppercase letter to lowercase */
+			*source = (char)(IECSTRING_ASCII_LOWER_A + ((uint8_t)*source - IECSTRING_ASCII_UPPER_A));
 		}
-		src++;
+		source++;
 	}
 	
 	return (uint32_t)source;
-	
-} /* End function */
+}

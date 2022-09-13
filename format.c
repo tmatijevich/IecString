@@ -10,71 +10,88 @@ Date: 2020-05-05
 #include <stdint.h>
 
 /* Format string with runtime data. Returns destination */
-uint32_t IecStringFormat(char *destination, char *source, IecStringFormatArgumentType *args, uint32_t size) {
-	
+uint32_t IecStringFormat (char *destination, char *source, IecStringFormatArgumentType *args, uint32_t size)
+{	
 	/* Declare local variables */
-	char *src = source, *dst = destination;
-	const char sBool[][6] = {"FALSE", "TRUE"}; 	/* Boolean arguments = 5 + null terminator */
-	char sNumber[13]; /* Floats: [<+->]1.23456[e<+->12] = 12 + null terminator, Longs: -2147483648 to 2147483647 = 11 + null terminator */
-	uint8_t countBool = 0;
-	uint8_t countFloat = 0;
-	uint8_t countInteger = 0;
-	uint8_t countString = 0; 
-	uint32_t length, bytesRemaining = size - 1;
+	const uint32_t destination_address = (uint32_t)destination;
+	
+	/* Boolean arguments = 5 + null terminator */
+	const char boolean[][6] = {"FALSE", "TRUE"}; 	
+	
+	/* Floats: [<+->]1.23456[e<+->12] = 12 + null terminator, Longs: -2147483648 to 2147483647 = 11 + null terminator */
+	char number[13]; 
+	
+	uint8_t count_bool = 0;
+	uint8_t count_float = 0;
+	uint8_t count_integer = 0;
+	uint8_t count_string = 0;
+	uint32_t length, bytes_remaining = size - 1;
 	
 	/* Verify parameters */
-	if(destination == NULL || source == NULL || size == 0) return (uint32_t)destination;
-	if(args == NULL) return IecStringCopy(destination, source, size);
+	if (destination == NULL || source == NULL || size == 0) return destination_address;
+	if (args == NULL) return IecStringCopy(destination, source, size);
 	
 	/* Format */
-	while(*src != '\0' && bytesRemaining > 0) {
-		if(*src != '%') {
-			*dst++ = *src++; /* Direct copy */
-			bytesRemaining--;
+	while (*source != '\0' && bytes_remaining > 0)
+	{
+		if (*source != '%')
+		{
+			/* Direct copy */
+			*destination++ = *source++;
+			bytes_remaining--;
 			continue;
 		}
 		
-		*dst = '\0'; /* Temporarily add null terminator to perform concatenation */
-		length = 0; /* Set the length to zero if the format specifier is invalid */
+		/* Temporarily add null terminator to perform concatenation */
+		*destination = '\0';
 		
-		switch(*(++src)) {
+		/* Set the length to zero if the format specifier is invalid */
+		length = 0;
+		
+		switch (*(++source))
+		{
+			/* Use strncat to concatenate the formatted value up to bytes_remaining */
+			/* strlen(strncat(destination, ...)) returns the length of characters appended because destination began as null */
 			case 'b':
-				if(countBool <= IECSTRING_FORMAT_INDEX) 
-					length = strlen(strncat(dst, sBool[args->b[countBool++]], bytesRemaining));
+				if (count_bool <= IECSTRING_FORMAT_INDEX) 
+					length = strlen(strncat(destination, boolean[args->b[count_bool++]], bytes_remaining));
 				break;
 			
 			 case 'f':
-			 	if(countFloat <= IECSTRING_FORMAT_INDEX) {
-					brsftoa((float)(args->f[countFloat++]), (uint32_t)sNumber);
-					length = strlen(strncat(dst, sNumber, bytesRemaining));
+			 	if (count_float <= IECSTRING_FORMAT_INDEX)
+				{
+					brsftoa((float)(args->f[count_float++]), (uint32_t)number);
+					length = strlen(strncat(destination, number, bytes_remaining));
 			 	}
 			 	break;
 			 
 			 case 'i':
-			 	if(countInteger <= IECSTRING_FORMAT_INDEX) {
-					brsitoa(args->i[countInteger++], (uint32_t)sNumber);
-					length = strlen(strncat(dst, sNumber, bytesRemaining));
+			 	if (count_integer <= IECSTRING_FORMAT_INDEX)
+				{
+					brsitoa(args->i[count_integer++], (uint32_t)number);
+					length = strlen(strncat(destination, number, bytes_remaining));
 			 	}
 			 	break;
 			 
 			 case 's':
-			 	if(countString <= IECSTRING_FORMAT_INDEX) 
-					length = strlen(strncat(dst, args->s[countString++], bytesRemaining));
+			 	if (count_string <= IECSTRING_FORMAT_INDEX) 
+					length = strlen(strncat(destination, args->s[count_string++], bytes_remaining));
 			 	break;
 			 
 			 case '%':
-			 	*dst = '%';
+			 	*destination = '%';
 				length = 1;
 				break;
-		} /* End switch */
+		}
 		
-		dst += length;
-		bytesRemaining -= length;
-		src++;
+		destination += length;
+		bytes_remaining -= length;
+		source++;
 		
-	} /* End while */
+	}
 	
-	*dst = '\0'; /* Add the null terminator to end the string */
-	return (uint32_t)destination;
+	/* Complete with null terminator */
+	*destination = '\0';
 	
-} /* End function */
+	return destination_address;
+}
