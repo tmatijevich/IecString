@@ -12,48 +12,48 @@ static int32_t powerOfTen(uint8_t power);
 static uint8_t countDigits(int32_t number);
 static char digitToChar(uint8_t digit);
 
-/* Pad an integer with zeros or spaces. Returns Destination */
-uint32_t IecStringNumber(char *Destination, int32_t Number, uint8_t Width, uint8_t Mode, uint32_t Size) {
+/* Pad an integer with zeros or spaces. Returns destination */
+uint32_t IecStringNumber(char *destination, int32_t number, uint8_t width, uint8_t mode, uint32_t size) {
 	
 	/* Declare local variables */
-	char pad = Mode ? ' ' : '0';
-	uint8_t numberOfDigits = countDigits(Number);
+	char pad = mode ? ' ' : '0';
+	uint8_t numberOfDigits = countDigits(number);
 	uint8_t maxDigits, digit;
-	uint8_t i, offset = Number < 0 ? 1 : 0;
+	uint8_t i, offset = number < 0 ? 1 : 0;
 	
 	/* Verify parameters */
-	if(Destination == NULL || Size == 0) return (uint32_t)Destination;
+	if(destination == NULL || size == 0) return (uint32_t)destination;
 	
 	/* Verify length */
-	Width = (Width > 10 ? 10 : Width); /* Saturate to 10 */
-	maxDigits = (Width > numberOfDigits ? Width : numberOfDigits);
-	if(maxDigits + offset > Size - 1) return (uint32_t)Destination;
+	width = (width > 10 ? 10 : width); /* Saturate to 10 */
+	maxDigits = (width > numberOfDigits ? width : numberOfDigits);
+	if(maxDigits + offset > size - 1) return (uint32_t)destination;
 	
 	/* Negative exception */
-	if(Number == INT32_MIN) {
-		IecStringCopy(Destination, "-2147483648", Size);
-		return (uint32_t)Destination;
+	if(number == INT32_MIN) {
+		IecStringCopy(destination, "-2147483648", size);
+		return (uint32_t)destination;
 	}
 	
 	/* Accommodate sign */
 	if(offset) {
-		Destination[0] = '-';
-		Number = -Number;
+		destination[0] = '-';
+		number = -number;
 	}
 	
 	/* Pad */
 	for(i = 0; i < maxDigits; i++) {
 		digit = maxDigits - i;
 		if(digit > numberOfDigits)
-			Destination[offset + i] = pad;
+			destination[offset + i] = pad;
 		else if(digit == 10)
-			Destination[offset + i] = digitToChar(Number / powerOfTen(digit - 1));
+			destination[offset + i] = digitToChar(number / powerOfTen(digit - 1));
 		else
-			Destination[offset + i] = digitToChar((Number % powerOfTen(digit)) / powerOfTen(digit - 1));
+			destination[offset + i] = digitToChar((number % powerOfTen(digit)) / powerOfTen(digit - 1));
 	}
 	
-	Destination[offset + i] = '\0';
-	return (uint32_t)Destination;
+	destination[offset + i] = '\0';
+	return (uint32_t)destination;
  	
 } /* End function */
 

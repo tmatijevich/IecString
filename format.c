@@ -9,22 +9,22 @@ Date: 2020-05-05
 #include <stdbool.h>
 #include <stdint.h>
 
-/* Format string with runtime data. Returns Destination */
-uint32_t IecStringFormat(char *Destination, char *Source, IecStringFormatArgumentType *Args, uint32_t Size) {
+/* Format string with runtime data. Returns destination */
+uint32_t IecStringFormat(char *destination, char *source, IecStringFormatArgumentType *args, uint32_t size) {
 	
 	/* Declare local variables */
-	char *src = Source, *dst = Destination;
+	char *src = source, *dst = destination;
 	const char sBool[][6] = {"FALSE", "TRUE"}; 	/* Boolean arguments = 5 + null terminator */
 	char sNumber[13]; /* Floats: [<+->]1.23456[e<+->12] = 12 + null terminator, Longs: -2147483648 to 2147483647 = 11 + null terminator */
 	uint8_t countBool = 0;
 	uint8_t countFloat = 0;
 	uint8_t countInteger = 0;
 	uint8_t countString = 0; 
-	uint32_t length, bytesRemaining = Size - 1;
+	uint32_t length, bytesRemaining = size - 1;
 	
 	/* Verify parameters */
-	if(Destination == NULL || Source == NULL || Size == 0) return (uint32_t)Destination;
-	if(Args == NULL) return IecStringCopy(Destination, Source, Size);
+	if(destination == NULL || source == NULL || size == 0) return (uint32_t)destination;
+	if(args == NULL) return IecStringCopy(destination, source, size);
 	
 	/* Format */
 	while(*src != '\0' && bytesRemaining > 0) {
@@ -40,26 +40,26 @@ uint32_t IecStringFormat(char *Destination, char *Source, IecStringFormatArgumen
 		switch(*(++src)) {
 			case 'b':
 				if(countBool <= IECSTRING_FORMAT_INDEX) 
-					length = strlen(strncat(dst, sBool[Args->b[countBool++]], bytesRemaining));
+					length = strlen(strncat(dst, sBool[args->b[countBool++]], bytesRemaining));
 				break;
 			
 			 case 'f':
 			 	if(countFloat <= IECSTRING_FORMAT_INDEX) {
-					brsftoa((float)(Args->f[countFloat++]), (uint32_t)sNumber);
+					brsftoa((float)(args->f[countFloat++]), (uint32_t)sNumber);
 					length = strlen(strncat(dst, sNumber, bytesRemaining));
 			 	}
 			 	break;
 			 
 			 case 'i':
 			 	if(countInteger <= IECSTRING_FORMAT_INDEX) {
-					brsitoa(Args->i[countInteger++], (uint32_t)sNumber);
+					brsitoa(args->i[countInteger++], (uint32_t)sNumber);
 					length = strlen(strncat(dst, sNumber, bytesRemaining));
 			 	}
 			 	break;
 			 
 			 case 's':
 			 	if(countString <= IECSTRING_FORMAT_INDEX) 
-					length = strlen(strncat(dst, Args->s[countString++], bytesRemaining));
+					length = strlen(strncat(dst, args->s[countString++], bytesRemaining));
 			 	break;
 			 
 			 case '%':
@@ -75,6 +75,6 @@ uint32_t IecStringFormat(char *Destination, char *Source, IecStringFormatArgumen
 	} /* End while */
 	
 	*dst = '\0'; /* Add the null terminator to end the string */
-	return (uint32_t)Destination;
+	return (uint32_t)destination;
 	
 } /* End function */

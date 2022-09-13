@@ -8,17 +8,17 @@ Date: 2022-08-03
 #include <stdint.h>
 #include <string.h>
 
-/* Copies Source to Destination up to Size (of Destination) or Source length. Returns Destination */
-uint32_t IecStringCopy(char *Destination, char *Source, uint32_t Size) {
+/* Copies source to destination up to size (of destination) or source length. Returns destination */
+uint32_t IecStringCopy(char *destination, char *source, uint32_t size) {
 	
 	/* Declare local variables */
-	char *src = Source, *dst = Destination;
-	uint32_t bytesRemaining = Size - 1;
+	char *src = source, *dst = destination;
+	uint32_t bytesRemaining = size - 1;
 	
 	/* Verify parameters */
-	if(Destination == NULL || Source == NULL || Size == 0) return (uint32_t)Destination;
+	if(destination == NULL || source == NULL || size == 0) return (uint32_t)destination;
 	
-	/* Initialize (Size = 1) */
+	/* Initialize (size = 1) */
 	*dst = '\0';
 	
 	/* Copy */
@@ -32,6 +32,6 @@ uint32_t IecStringCopy(char *Destination, char *Source, uint32_t Size) {
 		if(bytesRemaining == 0) *dst = '\0';
 	}
 	
-	return (uint32_t)Destination;
+	return (uint32_t)destination;
 	
 } /* End function */
