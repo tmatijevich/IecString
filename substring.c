@@ -25,7 +25,7 @@ uint32_t IecStringSubstring(char *Source, char *Find, uint8_t K) {
 	
 	/* Find */
 	while(strlen(src) >= length) {
-		if(memcmp(src, Find, length) == 0) {
+		if(strncmp(src, Find, length) == 0) {
 			if(i < UINT8_MAX) i++;
 			else break;
 			if(i == K) return (uint32_t)src;

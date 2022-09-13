@@ -35,7 +35,7 @@ uint32_t IecStringReplace(char *Destination, char *Source, char *Find, char *Rep
 			*dst = '\0';
 			break;
 		}
-		else if(memcmp(src, Find, length) == 0) {
+		else if(strncmp(src, Find, length) == 0) {
 			IecStringCopy(dst, Replace, Size - offset);
 			count = MIN(strlen(Replace), Size - offset - 1);
 			dst += count;
