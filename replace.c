@@ -11,43 +11,59 @@ Date: 2022-08-03
 #define MIN(x,y) (((x) < (y)) ? (x) : (y))
 
 /* Find in source and replace in destination up to size (of destination). Returns destination */
-uint32_t IecStringReplace(char *destination, char *source, char *find, char *replace, uint32_t size) {
-	
+uint32_t IecStringReplace (char *destination, char *source, char *find, char *replace, uint32_t size)
+{
 	/* Declare local variables */
-	char *src = source, *dst = destination;
+	const uint32_t destination_address = (uint32_t)destination;
 	uint32_t offset = 0, length, count;
 	
-	/* Verify parameters */
-	if(destination == NULL || source == NULL || find == NULL || replace == NULL || size == 0) return (uint32_t)destination;
+	/* Verify parameters, attempt to copy if failed */
+	if (destination == NULL || source == NULL || find == NULL || replace == NULL || size == 0) 
+		return IecStringCopy(destination, source, size);
 	
+	/* Verify length, attempt to copy if failed */
 	length = strlen(find);
-	if(length > strlen(source) || length == 0) {
-		IecStringCopy(destination, source, size);
-		return (uint32_t)destination;
-	}
+	if (length > strlen(source) || length == 0)
+		return IecStringCopy(destination, source, size);
 	
-	/* Initialize (size = 1) */
-	*dst = '\0';
+	/* Initialize if size = 1 */
+	*destination = '\0';
 	
 	/* Find & replace */
-	while(offset < size - 1) {
-		if(*src == '\0') {
-			*dst = '\0';
+	while (offset < size - 1)
+	{
+		/* End of search */
+		if (*source == '\0')
+		{
+			*destination = '\0';
 			break;
 		}
-		else if(strncmp(src, find, length) == 0) {
-			IecStringCopy(dst, replace, size - offset);
+		
+		/* Compare up to strlen(find) characters */
+		else if (strncmp(source, find, length) == 0)
+		{
+			/* Copy replace to current destination pointer with remaining bytes */
+			IecStringCopy(destination, replace, size - offset);
+			
+			/* Determine how many bytes were copied and update destination and offset */
 			count = MIN(strlen(replace), size - offset - 1);
-			dst += count;
+			destination += count;
 			offset += count;
-			src += length;
+			
+			/* Update source from strlen(find) */
+			source += length;
 		}
-		else {
-			*dst++ = *src++;
+		
+		/* Direct copy of source to destination */
+		else
+		{
+			*destination++ = *source++;
 			offset++;
 		}
-		if(offset == size - 1) *dst = '\0';
 	}
-	return (uint32_t)destination;
 	
-} /* End function */
+	/* Complete with null terminator */
+	*destination = '\0';
+	
+	return destination_address;	
+}

@@ -27,9 +27,9 @@ uint32_t IecStringFormat (char *destination, char *source, IecStringFormatArgume
 	uint8_t count_string = 0;
 	uint32_t length, bytes_remaining = size - 1;
 	
-	/* Verify parameters */
-	if (destination == NULL || source == NULL || size == 0) return destination_address;
-	if (args == NULL) return IecStringCopy(destination, source, size);
+	/* Verify parameters, attempt to copy if failed */
+	if (destination == NULL || source == NULL || args == NULL || size == 0) 
+		return IecStringCopy(destination, source, size);
 	
 	/* Format */
 	while (*source != '\0' && bytes_remaining > 0)

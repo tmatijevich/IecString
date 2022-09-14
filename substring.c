@@ -9,33 +9,39 @@ Date: 2022-08-10
 #include <stdint.h>
 
 /* Search source for kth occurrence of find. Use k = 0 to search last occurrence. Returns address of kth occurrence or zero if no occurrence. */
-uint32_t IecStringSubstring(char *source, char *find, uint8_t k) {
-	
+uint32_t IecStringSubstring (char *source, char *find, uint8_t k)
+{	
 	/* Declare local variables */
-	char *src = source, *ptr = 0;
+	char *found = 0;
 	uint32_t length;
 	uint8_t i = 0;
 	
 	/* Verify parameters */
-	if(source == NULL || find == NULL) return 0;
+	if (source == NULL || find == NULL) return 0;
 	
 	/* Verify length */
 	length = strlen(find);
-	if(length > strlen(source)) return 0;
+	if (length > strlen(source)) return 0;
 	
 	/* Find */
-	while(strlen(src) >= length) {
-		if(strncmp(src, find, length) == 0) {
-			if(i < UINT8_MAX) i++;
-			else break;
-			if(i == k) return (uint32_t)src;
-			else ptr = src;
+	while (strlen(source) >= length)
+	{
+		if (strncmp(source, find, length) == 0)
+		{
+			/* If the 256th occurrence is reached, k must be zero, does not find last occurrence */
+			if (i == UINT8_MAX) return 0;
+			
+			/* 1st through 255th occurrence */
+			i++;
+			if (i == k) return (uint32_t)source;
+			else found = source;
 		}
-		src++;
+		source++;
 	}
 	
-	if(k == 0 && ptr != 0) return (uint32_t)ptr;
+	/* Last occurrence */
+	if (k == 0 && found) return (uint32_t)found;
 	
+	/* Nothing found */
 	return 0;
-	
-} /* End function */
+}
