@@ -18,19 +18,11 @@ uint32_t IecStringCopy (char *destination, char *source, uint32_t size)
 	/* Verify parameters */
 	if (destination == NULL || source == NULL || size == 0) return destination_address;
 	
-	/* Initialize if size = 1 */
-	*destination = '\0';
-	
 	/* Copy */
-	while(bytes_remaining)
+	while (bytes_remaining--)
 	{
-		if (*source == '\0')
-		{
-			*destination = '\0';
-			break;
-		}
+		if (*source == '\0') break;
 		*destination++ = *source++;
-		bytes_remaining--;
 	}
 	
 	/* Complete with null terminator */
