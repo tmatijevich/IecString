@@ -87,7 +87,6 @@ uint32_t IecStringFormat (char *destination, char *source, IecStringFormatArgume
 		destination += length;
 		bytes_remaining -= length;
 		source++;
-		
 	}
 	
 	/* Complete with null terminator */

@@ -15,14 +15,13 @@ uint32_t IecStringToUpper (char * source)
 	if (source == NULL) return (uint32_t)source;
 	
 	/* Search all of source for lowercase letters */
-	while (*source != '\0')
+	while (*source++ != '\0')
 	{
 		if (IECSTRING_ASCII_LOWER_A <= *source && *source <= IECSTRING_ASCII_LOWER_Z)
 		{
 			/* Convert lowercase letter to uppercase */
 			*source = (char)(IECSTRING_ASCII_UPPER_A + ((uint8_t)*source - IECSTRING_ASCII_LOWER_A));
 		}
-		source++;
 	}
 	
 	return (uint32_t)source;
@@ -35,14 +34,13 @@ uint32_t IecStringToLower (char * source)
 	if (source == NULL) return (uint32_t)source;
 	
 	/* Search all of source for uppercase letters */
-	while (*source != '\0')
+	while (*source++ != '\0')
 	{
 		if (IECSTRING_ASCII_UPPER_A <= *source && *source <= IECSTRING_ASCII_UPPER_Z)
 		{
 			/* Convert uppercase letter to lowercase */
 			*source = (char)(IECSTRING_ASCII_LOWER_A + ((uint8_t)*source - IECSTRING_ASCII_UPPER_A));
 		}
-		source++;
 	}
 	
 	return (uint32_t)source;

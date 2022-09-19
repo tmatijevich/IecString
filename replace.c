@@ -26,18 +26,11 @@ uint32_t IecStringReplace (char *destination, char *source, char *find, char *re
 	if (length > strlen(source) || length == 0)
 		return IecStringCopy(destination, source, size);
 	
-	/* Initialize if size = 1 */
-	*destination = '\0';
-	
 	/* Find & replace */
 	while (offset < size - 1)
 	{
 		/* End of search */
-		if (*source == '\0')
-		{
-			*destination = '\0';
-			break;
-		}
+		if (*source == '\0') break;
 		
 		/* Compare up to strlen(find) characters */
 		else if (strncmp(source, find, length) == 0)
