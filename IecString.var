@@ -7,6 +7,14 @@ VAR CONSTANT
 	IECSTRING_FORMAT_INDEX : USINT := 4; (*Maximum index of each format argument type*)
 	IECSTRING_FORMAT_LENGTH : USINT := 80; (*Length of string format argument*)
 END_VAR
+(*Event IDs*)
+VAR CONSTANT
+	IECSTRING_ERROR_NULLPOINTER : DINT := -536624304; (*Source or destination is null, no operation is performed*)
+	IECSTRING_WARNING_NULLPOINTER : DINT := -1610366128; (*Source and destination are non-null, but another parameter is null, therefore only a copy is performed*)
+	IECSTRING_ERROR_SIZE : DINT := -536624294; (*Destination size is zero, no operation is performed*)
+	IECSTRING_ERROR_OVERLAP : DINT := -536624284; (*Source and destination will overlap, no operation is performed*)
+	IECSTRING_WARNING_TRUNCATION : DINT := -1610366098; (*Destination would be overwritten by the operation given size, therefore truncation is performed*)
+END_VAR
 (*ASCII Characters*)
 VAR CONSTANT
 	IECSTRING_ASCII_NUL : USINT := 0; (*Null*)

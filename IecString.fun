@@ -4,11 +4,11 @@
  * Created: 2020-05-14
 ********************************************************************************)
 
-FUNCTION IecStringCopy : UDINT (*Copies source to destination up to size (of destination) or source length. Returns destination*)
+FUNCTION IecStringCopy : DINT (*Copies source to destination up to size (of destination) or source length. Returns 0 if successful*)
 	VAR_INPUT
 		destination : STRING[0]; (*Destination string*)
-		source : STRING[0]; (*Source string*)
 		size : UDINT; (*Size (of destination)*)
+		source : STRING[0]; (*Source string*)
 	END_VAR
 END_FUNCTION
 
