@@ -1,18 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <?AutomationStudio FileVersion="4.9"?>
-<Library Version="0.03.1" SubType="ANSIC" Description="IEC string functions" xmlns="http://br-automation.co.at/AS/Library">
+<Library Version="1.00.0" SubType="ANSIC" Description="IEC string functions" xmlns="http://br-automation.co.at/AS/Library">
   <Files>
     <File Description="Function declarations">IecString.fun</File>
     <File Description="Data types">IecString.typ</File>
     <File Description="Constants">IecString.var</File>
-    <File Description="Common header">main.h</File>
-    <File Description="String copy">copy.c</File>
-    <File Description="String concatenation">concat.c</File>
-    <File Description="Find &amp; replace">replace.c</File>
-    <File Description="Find substring">substring.c</File>
-    <File Description="Format string">format.c</File>
-    <File Description="Pad integer">number.c</File>
-    <File Description="Set case">case.c</File>
   </Files>
   <Dependencies>
     <Dependency ObjectName="AsBrStr" />
