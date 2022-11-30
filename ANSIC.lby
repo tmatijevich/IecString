@@ -5,6 +5,8 @@
     <File Description="Function declarations">IecString.fun</File>
     <File Description="Data types">IecString.typ</File>
     <File Description="Constants">IecString.var</File>
+    <File Description="String copy">Copy.c</File>
+    <File Description="String concatenation">Concat.c</File>
   </Files>
   <Dependencies>
     <Dependency ObjectName="AsBrStr" />
