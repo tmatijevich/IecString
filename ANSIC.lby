@@ -7,6 +7,7 @@
     <File Description="Constants">IecString.var</File>
     <File Description="String copy">Copy.c</File>
     <File Description="String concatenation">Concat.c</File>
+    <File Description="Format string">Format.c</File>
   </Files>
   <Dependencies>
     <Dependency ObjectName="AsBrStr" />

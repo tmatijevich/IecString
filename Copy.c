@@ -26,5 +26,5 @@ int32_t IecStringCopy(char *Destination, uint32_t Size, char *Source) {
 	*Destination = '\0';
 	
 	/* Warn if copy was truncated */
-	return IECSTRING_WARNING_TRUNCATION * (*Source == '\0' && Size);
+	return IECSTRING_WARNING_TRUNCATION * (*Source != '\0' && Size == 0);
 }
