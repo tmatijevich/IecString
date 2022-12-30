@@ -1,12 +1,10 @@
 /*******************************************************************************
-File: IecString\Format.c
-Author: Tyler Matijevich
-Date: 2020-05-05
-*******************************************************************************/
+ * File: IecString\Format.c
+ * Author: Tyler Matijevich
+ * Date: 2020-05-05
+ ******************************************************************************/
 
-#include <IecString.h>
-#include <stdint.h>
-#include <string.h>
+#include "Main.h"
 
 /* Format string with runtime data, returns 0 if successful */
 int32_t IecStringFormat(char *Destination, uint32_t Size, char *Source, IecStringFormatType *Arguments) {
@@ -28,6 +26,8 @@ int32_t IecStringFormat(char *Destination, uint32_t Size, char *Source, IecStrin
 		return IECSTRING_ERROR_NULLPOINTER;
 	if(Size == 0)
 		return IECSTRING_ERROR_SIZE;
+	if(Overlap(Destination, Size, Source))
+		return IECSTRING_ERROR_OVERLAP;
 		
 	/* Format */
 	while(*Source != '\0' && BytesRemaining) {

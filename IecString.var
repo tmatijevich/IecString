@@ -6,6 +6,7 @@ END_VAR
 VAR CONSTANT
 	IECSTRING_ERROR_NULLPOINTER : DINT := 0; (*Source or destination is null, no operation is performed*)
 	IECSTRING_ERROR_SIZE : DINT := 0; (*Destination size is zero, no operation is performed*)
+	IECSTRING_ERROR_OVERLAP : DINT := 0; (*Two input strings overlap*)
 	IECSTRING_WARNING_TRUNCATION : DINT := 0; (*Destination would be overwritten given the size, therefore truncation is performed*)
 END_VAR
 (*ASCII Characters*)

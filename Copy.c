@@ -1,12 +1,10 @@
 /*******************************************************************************
-File: IecString\Copy.c
-Author: Tyler Matijevich
-Date: 2022-08-03
-*******************************************************************************/
+ * File: IecString\Copy.c
+ * Author: Tyler Matijevich
+ * Date: 2022-08-03
+ ******************************************************************************/
 
-#include <IecString.h>
-#include <stdint.h>
-#include <string.h>
+#include "Main.h"
 
 /* Copy source to destination up to size (of destination) or source length, returns 0 if successful */
 int32_t IecStringCopy(char *Destination, uint32_t Size, char *Source) {
@@ -16,6 +14,8 @@ int32_t IecStringCopy(char *Destination, uint32_t Size, char *Source) {
 		return IECSTRING_ERROR_NULLPOINTER;
 	if(Size == 0)
 		return IECSTRING_ERROR_SIZE;
+	if(Overlap(Destination, Size, Source))
+		return IECSTRING_ERROR_OVERLAP;
 		
 	/* Copy */
 	/* Decrement first, loop up to size - 1 */
