@@ -8,6 +8,7 @@
     <File Description="Common header">Main.h</File>
     <File Description="String copy">Copy.c</File>
     <File Description="String concatenation">Concat.c</File>
+    <File Description="Find and replace">Replace.c</File>
     <File Description="Format string">Format.c</File>
     <File Description="Check memory overlap">Overlap.c</File>
   </Files>
