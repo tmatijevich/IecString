@@ -6,7 +6,7 @@
 
 #include "Main.h"
 
-/* Check if destination overlaps with source.  Returns 1 if overlapped, 0 otherwise */
+/* Check if destination overlaps with source */
 uint8_t Overlap(char *Destination, uint32_t Size, char *Source) {
 
 	/* Local variables */

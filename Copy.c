@@ -6,7 +6,7 @@
 
 #include "Main.h"
 
-/* Copy source to destination up to size (of destination) or source length, returns 0 if successful */
+/* Copy source to destination up to size of destination or source length */
 int32_t IecStringCopy(char *Destination, uint32_t Size, char *Source) {
 	
 	/* Verify parameters */

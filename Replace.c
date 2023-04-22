@@ -6,6 +6,7 @@
 
 #include "Main.h"
 
+/* Find is source and replace in destination up to size of destination */
 int32_t IecStringReplace(char *Destination, uint32_t Size, char *Find, char *Replace, char *Source) {
 	
 	/* Local variables */

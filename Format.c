@@ -6,7 +6,7 @@
 
 #include "Main.h"
 
-/* Format string with runtime data, returns 0 if successful */
+/* Format string with runtime data */
 int32_t IecStringFormat(char *Destination, uint32_t Size, char *Source, IecStringFormatType *Arguments) {
 	
 	/* Local variables */

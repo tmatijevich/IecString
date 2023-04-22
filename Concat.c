@@ -6,7 +6,7 @@
 
 #include "Main.h"
 
-/* Concatenate source to destination up to size (of destination) or source length, returns 0 if successful */
+/* Concatenate source to destination up to size of destination or source length */
 int32_t IecStringConcat(char *Destination, uint32_t Size, char *Source) {
 	
 	/* Local variables */
