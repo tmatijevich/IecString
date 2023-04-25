@@ -4,11 +4,11 @@ VAR CONSTANT
 END_VAR
 (*Event IDs*)
 VAR CONSTANT
-	IECSTRING_ERROR_NULLPOINTER : DINT := 0; (*Input string is null*)
-	IECSTRING_ERROR_SIZE : DINT := 0; (*Size is zero*)
-	IECSTRING_ERROR_OVERLAP : DINT := 0; (*Two input strings overlap*)
-	IECSTRING_WARNING_TRUNCATION : DINT := 0; (*Write to destination has be truncated*)
-	IECSTRING_ERROR_LENGTH : DINT := 0; (*Input string length is invalid*)
+	IECSTRING_ERROR_NULLPOINTER : DINT := -515898392; (*Input string is null*)
+	IECSTRING_ERROR_SIZE : DINT := -515897392; (*Size is zero*)
+	IECSTRING_ERROR_OVERLAP : DINT := -515896392; (*Two input strings overlap*)
+	IECSTRING_WARNING_TRUNCATION : DINT := -1589637216; (*Write to destination has be truncated*)
+	IECSTRING_ERROR_LENGTH : DINT := -515894392; (*Input string length is invalid*)
 END_VAR
 (*ASCII Characters*)
 VAR CONSTANT

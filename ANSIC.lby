@@ -5,6 +5,10 @@
     <File Description="Function declarations">IecString.fun</File>
     <File Description="Data types">IecString.typ</File>
     <File Description="Constants">IecString.var</File>
+    <File Description="Library information">README.md</File>
+    <File Description="Library license">LICENSE</File>
+    <File Description="Form status IDs">StatusID.csv</File>
+    <File Description="Calculate status IDs">StatusID.py</File>
     <File Description="Common header">Main.h</File>
     <File Description="String copy">Copy.c</File>
     <File Description="String concatenation">Concat.c</File>
