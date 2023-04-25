@@ -16,6 +16,7 @@ extern "C"
 #include <IecString.h>
 #include <stdint.h>
 #include <string.h>
+#include <stdbool.h>
 
 /* Macros */
 #define MIN(x,y) (((x) < (y)) ? (x) : (y))

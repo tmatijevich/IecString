@@ -24,6 +24,6 @@ int32_t IecStringConcat(char *Destination, uint32_t Size, char *Source) {
 	Length = strlen(Destination);
 	strncat(Destination, Source, Size - 1 - Length);
 	
-	/* Warn if concatenation was truncated */
+	/* Warn if truncated (current length and source length strictly exceeds size) */
 	return IECSTRING_WARNING_TRUNCATION * (Length + strlen(Source) > Size - 1);
 }

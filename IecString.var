@@ -1,6 +1,6 @@
 VAR CONSTANT
-	IECSTRING_FORMAT_INDEX : USINT := 4; (*Maximum index of each format argument*)
-	IECSTRING_FORMAT_LENGTH : USINT := 80; (*Length of string format argument*)
+	IECSTRING_FORMAT_INDEX : USINT := 5; (*Maximum index of each runtime data type*)
+	IECSTRING_FORMAT_LENGTH : USINT := 80; (*Length of string runtime data*)
 END_VAR
 (*Event IDs*)
 VAR CONSTANT

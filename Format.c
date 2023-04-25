@@ -7,7 +7,7 @@
 #include "Main.h"
 
 /* Format string with runtime data */
-int32_t IecStringFormat(char *Destination, uint32_t Size, char *Source, IecStringFormatType *Arguments) {
+int32_t IecStringFormat(char *Destination, uint32_t Size, char *Source, IecStringFormatType *Values) {
 	
 	/* Local variables */
 	/* Boolean arguments: 5 characters + null terminator */
@@ -22,7 +22,7 @@ int32_t IecStringFormat(char *Destination, uint32_t Size, char *Source, IecStrin
 	uint32_t Length, BytesRemaining = Size - 1;
 	
 	/* Verify parameters */
-	if(Destination == NULL || Source == NULL || Arguments == NULL)
+	if(Destination == NULL || Source == NULL || Values == NULL)
 		return IECSTRING_ERROR_NULLPOINTER;
 	if(Size == 0)
 		return IECSTRING_ERROR_SIZE;
@@ -48,26 +48,26 @@ int32_t IecStringFormat(char *Destination, uint32_t Size, char *Source, IecStrin
 		switch(*(++Source)) {
 			case 'b':
 				if(CountBool <= IECSTRING_FORMAT_INDEX)
-					Length = strlen(strncat(Destination, Boolean[Arguments->b[CountBool++]], BytesRemaining));
+					Length = strlen(strncat(Destination, Boolean[Values->b[CountBool++]], BytesRemaining));
 				break;
 				
 			case 'f':
 				if(CountFloat <= IECSTRING_FORMAT_INDEX) {
-					brsftoa((float)Arguments->f[CountFloat++], (uint32_t)Number);
+					brsftoa((float)Values->f[CountFloat++], (uint32_t)Number);
 					Length = strlen(strncat(Destination, Number, BytesRemaining));
 				}
 				break;
 				
 			case 'i':
 				if(CountInteger <= IECSTRING_FORMAT_INDEX) {
-					brsitoa(Arguments->i[CountInteger++], (uint32_t)Number);
+					brsitoa(Values->i[CountInteger++], (uint32_t)Number);
 					Length = strlen(strncat(Destination, Number, BytesRemaining));
 				}
 				break;
 				
 			case 's':
 				if(CountString <= IECSTRING_FORMAT_INDEX) 
-					Length = strlen(strncat(Destination, Arguments->s[CountString++], BytesRemaining));
+					Length = strlen(strncat(Destination, Values->s[CountString++], BytesRemaining));
 				break;
 				
 			case '%':
@@ -81,9 +81,9 @@ int32_t IecStringFormat(char *Destination, uint32_t Size, char *Source, IecStrin
 		Source++;
 	}
 	
-	/* Complete with null terminator */
+	/* Null terminator */
 	*Destination = '\0';
 	
-	/* Warn if format was truncated */
+	/* Warn if truncated (used up size but characters from source remain) */
 	return IECSTRING_WARNING_TRUNCATION * (*Source != '\0' && BytesRemaining == 0);
 }

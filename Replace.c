@@ -6,7 +6,7 @@
 
 #include "Main.h"
 
-/* Find is source and replace in destination up to size of destination */
+/* Find in source and replace in destination up to size of destination */
 int32_t IecStringReplace(char *Destination, uint32_t Size, char *Find, char *Replace, char *Source) {
 	
 	/* Local variables */
@@ -51,6 +51,6 @@ int32_t IecStringReplace(char *Destination, uint32_t Size, char *Find, char *Rep
 	/* Null terminator */
 	*Destination = '\0';
 	
-	/* Warn if truncated */
+	/* Warn if truncated (used up size but characters from source remain) */
 	return IECSTRING_WARNING_TRUNCATION * (*Source != '\0' && Offset == Size - 1);
 }

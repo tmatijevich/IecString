@@ -14,17 +14,17 @@ uint8_t Overlap(char *Destination, uint32_t Size, char *Source) {
 	
 	/* Verify parameters */
 	if(Destination == NULL || Source == NULL)
-		return 0;
+		return false;
 		
 	/* Does destination's start overlap source's string length including null terminator */
 	Length = strlen(Source);
 	if(Source <= Destination && Destination <= Source + Length)
-		return 1;
+		return true;
 		
 	/* Does destination's end overlap source's string length */
 	if(Source <= Destination + Size - 1 && Destination + Size - 1 <= Source + Length)
-		return 1;
+		return true;
 		
 	/* No overlap */
-	return 0;
+	return false;
 }

@@ -22,9 +22,9 @@ int32_t IecStringCopy(char *Destination, uint32_t Size, char *Source) {
 	while(--Size && *Source != '\0')
 		*Destination++ = *Source++;
 		
-	/* Complete with null terminator */
+	/* Null terminator */
 	*Destination = '\0';
 	
-	/* Warn if copy was truncated */
+	/* Warn if truncated (used up size but characters from source remain) */
 	return IECSTRING_WARNING_TRUNCATION * (*Source != '\0' && Size == 0);
 }

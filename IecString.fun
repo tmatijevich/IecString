@@ -15,7 +15,7 @@ FUNCTION IecStringConcat : DINT (*Concatenate source to destination up to size o
 	END_VAR
 END_FUNCTION
 
-FUNCTION IecStringReplace : DINT (*Find is source and replace in destination up to size of destination*)
+FUNCTION IecStringReplace : DINT (*Find in source and replace in destination up to size of destination*)
 	VAR_INPUT
 		Destination : STRING[0]; (*Destination string*)
 		Size : UDINT; (*Size of destination*)
@@ -28,8 +28,8 @@ END_FUNCTION
 FUNCTION IecStringFormat : DINT (*Format string with runtime data*)
 	VAR_INPUT
 		Destination : STRING[0]; (*Destination string*)
-		Size : UDINT; (*Size (of destination)*)
+		Size : UDINT; (*Size of destination*)
 		Source : STRING[0]; (*Source string*)
-		Arguments : IecStringFormatType; (*Format arguments*)
+		Values : IecStringFormatType; (*Format values*)
 	END_VAR
 END_FUNCTION
