@@ -20,6 +20,7 @@ extern "C"
 
 /* Macros */
 #define MIN(x,y) (((x) < (y)) ? (x) : (y))
+#define MAX(x,y) (((x) > (y)) ? (x) : (y))
 
 /* Prototypes */
 uint8_t Overlap(char *Destination, uint32_t Size, char *Source);
