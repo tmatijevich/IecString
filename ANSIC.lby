@@ -15,7 +15,6 @@
     <File Description="Find and replace">Replace.c</File>
     <File Description="Format string">Format.c</File>
     <File Description="Check memory overlap">Overlap.c</File>
-    <File Description="Pad number">Pad.c</File>
   </Files>
   <Dependencies>
     <Dependency ObjectName="AsBrStr" />
