@@ -4,7 +4,7 @@
  * Date: 2022-08-03
  ******************************************************************************/
 
-#include "Main.h"
+#include "main_new.h"
 
 /* Find in source and replace in destination up to size of destination */
 int32_t IecStringReplace(char *Destination, uint32_t Size, char *Find, char *Replace, char *Source) {
