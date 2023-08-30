@@ -4,7 +4,7 @@
  * Date: 2020-05-05
  ******************************************************************************/
 
-#include "main_new.h"
+#include "main.h"
 
 /* Format string with runtime data */
 int32_t IecStringFormat(char *Destination, uint32_t Size, char *Source, IecStringFormatType *Values) {

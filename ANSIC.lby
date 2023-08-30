@@ -9,12 +9,12 @@
     <File Description="Library license">LICENSE</File>
     <File Description="Write status list">status.csv</File>
     <File Description="Generate status numbers">status.py</File>
-    <File Description="Common header">main_new.h</File>
-    <File Description="String copy">copy_new.c</File>
-    <File Description="String concatenation">concat_new.c</File>
-    <File Description="Find and replace">replace_new.c</File>
-    <File Description="Format string">format_new.c</File>
-    <File Description="Check memory overlap">overlap_new.c</File>
+    <File Description="Common header">main.h</File>
+    <File Description="Copy string">copy.c</File>
+    <File Description="Concatenate string">concat.c</File>
+    <File Description="Find and replace substring">replace.c</File>
+    <File Description="Format string">format.c</File>
+    <File Description="Check memory overlap">overlap.c</File>
   </Files>
   <Dependencies>
     <Dependency ObjectName="AsBrStr" />
