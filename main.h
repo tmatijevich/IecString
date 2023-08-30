@@ -1,16 +1,18 @@
 /*******************************************************************************
- * File: IecString\Main.h
- * Author: Tyler Matijevich
- * Date: 2022-09-20
+ * File: main.h
+ * Created: 2022-09-20
+ * 
+ * Contributors: 
+ * - Tyler Matijevich
+ * 
+ * License:
+ *  This file main.h is part of the IecString project released under the
+ *  GNU General Public License v3.0 agreement.  For more information, please 
+ *  visit https://github.com/tmatijevich/IecString/blob/main/LICENSE.
  ******************************************************************************/
 
 #ifndef IECSTRING_MAIN_H
 #define IECSTRING_MAIN_H
-
-#ifdef __cplusplus
-extern "C" 
-{
-#endif
 
 /* Headers */
 #include <IecString.h>
@@ -23,9 +25,5 @@ extern "C"
 
 /* Prototypes */
 uint8_t Overlap(char *Destination, uint32_t Size, char *Source);
-
-#ifdef __cplusplus
-};
-#endif
 
 #endif /* IECSTRING_MAIN_H */
