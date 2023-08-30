@@ -11,7 +11,7 @@ int32_t IecStringCopy(char *Destination, uint32_t Size, char *Source) {
 	
 	/* Verify parameters */
 	if(Destination == NULL || Source == NULL)
-		return IECSTRING_ERROR_NULLPOINTER;
+		return IECSTRING_ERROR_NULL;
 	if(Size == 0)
 		return IECSTRING_ERROR_SIZE;
 	if(Overlap(Destination, Size, Source))
@@ -26,5 +26,5 @@ int32_t IecStringCopy(char *Destination, uint32_t Size, char *Source) {
 	*Destination = '\0';
 	
 	/* Warn if truncated (used up size but characters from source remain) */
-	return IECSTRING_WARNING_TRUNCATION * (*Source != '\0' && Size == 0);
+	return IECSTRING_WARNING_TRUNCATE * (*Source != '\0' && Size == 0);
 }

@@ -2,13 +2,13 @@ VAR CONSTANT
 	IECSTRING_FORMAT_INDEX : USINT := 5; (*Maximum index of each runtime data type*)
 	IECSTRING_FORMAT_LENGTH : USINT := 80; (*Length of string runtime data*)
 END_VAR
-(*Event IDs*)
+(*Status numbers*)
 VAR CONSTANT
-	IECSTRING_ERROR_NULLPOINTER : DINT := -515898392; (*Input string is null*)
+	IECSTRING_ERROR_NULL : DINT := -515898392; (*String is null*)
 	IECSTRING_ERROR_SIZE : DINT := -515897392; (*Size is zero*)
-	IECSTRING_ERROR_OVERLAP : DINT := -515896392; (*Two input strings overlap*)
-	IECSTRING_WARNING_TRUNCATION : DINT := -1589637216; (*Write to destination has be truncated*)
-	IECSTRING_ERROR_LENGTH : DINT := -515894392; (*Input string length is invalid*)
+	IECSTRING_ERROR_OVERLAP : DINT := -515896392; (*The size of destination overlaps with a source string's length*)
+	IECSTRING_WARNING_TRUNCATE : DINT := -1589637216; (*The string written to destination has been truncated*)
+	IECSTRING_ERROR_LENGTH : DINT := -515894392; (*The find substring's length exceeds the source length*)
 END_VAR
 (*ASCII Characters*)
 VAR CONSTANT
