@@ -1,7 +1,7 @@
 import csv
 import ctypes
 
-InputFile = 'StatusID.csv'
+InputFile = 'status.csv'
 
 with open(InputFile, mode = 'r', encoding = 'utf-8-sig') as OpenFile:
     DataCSV = csv.reader(OpenFile)
