@@ -17,17 +17,17 @@
 int32_t IecStringCopy(char *destination, uint32_t size, char *source) {
     
     /* Verify parameters */
-    if(destination == NULL || source == NULL)
+    if (destination == NULL || source == NULL)
         return IECSTRING_ERROR_NULL;
     
-    if(size == 0)
+    if (size == 0)
         return IECSTRING_ERROR_SIZE;
     
-    if(Overlap(destination, size, source))
+    if (Overlap(destination, size, source))
         return IECSTRING_ERROR_OVERLAP;
         
     /* Copy and ecrement size first to ensure byte for null terminator */
-    while(--size && *source != '\0')
+    while (--size && *source != '\0')
         *destination++ = *source++;
         
     /* Null terminator */
