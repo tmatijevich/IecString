@@ -1,9 +1,9 @@
 
 FUNCTION IecStringCopy : DINT (*Copy source to destination up to size of destination or source length*)
 	VAR_INPUT
-		Destination : STRING[0]; (*Destination string*)
-		Size : UDINT; (*Size of destination*)
-		Source : STRING[0]; (*Source string*)
+		destination : STRING[0]; (*Destination string*)
+		size : UDINT; (*Size of destination*)
+		source : STRING[0]; (*Source string*)
 	END_VAR
 END_FUNCTION
 
