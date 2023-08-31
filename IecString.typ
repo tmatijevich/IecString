@@ -1,6 +1,6 @@
 
 TYPE
-	IecStringFormatType : 	STRUCT  (*Data structure to replace format specifier with runtime values*)
+	IecStringFormatType : 	STRUCT  (*Data structure to replace format specifiers with runtime values*)
 		b : ARRAY[0..IECSTRING_FORMAT_INDEX]OF BOOL; (*Place boolean (TRUE or FALSE)*)
 		f : ARRAY[0..IECSTRING_FORMAT_INDEX]OF LREAL; (*Place double*)
 		i : ARRAY[0..IECSTRING_FORMAT_INDEX]OF DINT; (*Place integer (32-bit signed)*)

@@ -27,9 +27,9 @@ END_FUNCTION
 
 FUNCTION IecStringFormat : DINT (*Format string with runtime data*)
 	VAR_INPUT
-		Destination : STRING[0]; (*Destination string*)
-		Size : UDINT; (*Size of destination*)
-		Source : STRING[0]; (*Source string*)
-		Values : IecStringFormatType; (*Format values*)
+		destination : STRING[0]; (*Destination string*)
+		size : UDINT; (*Size of destination*)
+		source : STRING[0]; (*Source string*)
+		values : IecStringFormatType; (*Format values*)
 	END_VAR
 END_FUNCTION
