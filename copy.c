@@ -26,13 +26,13 @@ int32_t IecStringCopy(char *destination, uint32_t size, char *source) {
     if (Overlap(destination, size, source))
         return IECSTRING_ERROR_OVERLAP;
         
-    /* Copy and ecrement size first to ensure byte for null terminator */
+    /* Copy and decrement size first to ensure byte for null terminator */
     while (--size && *source != '\0')
         *destination++ = *source++;
         
     /* Null terminator */
     *destination = '\0';
     
-    /* Warn if truncated by checking remaining source characters and size */
+    /* Truncated if source characters remain and no bytes left */
     return IECSTRING_WARNING_TRUNCATE * (*source != '\0' && size == 0);
 }

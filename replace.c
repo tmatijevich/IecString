@@ -18,7 +18,7 @@ int32_t IecStringReplace(char *destination, uint32_t size, char *find,
                         char *replace, char *source) {
     
     /* Local variables */
-    uint32_t find_length, replace_length, offset = 0, count;
+    uint32_t find_length, replace_length, offset = 0, min_length;
     
     /* Verify parameters */
     if (destination == NULL || find == NULL || 
@@ -32,12 +32,11 @@ int32_t IecStringReplace(char *destination, uint32_t size, char *find,
         Overlap(destination, size, replace) || 
         Overlap(destination, size, source))
         return IECSTRING_ERROR_OVERLAP;
-        
-    /* Verify length */
+    
     find_length = strlen(find);
     if (find_length > strlen(source) || find_length == 0)
         return IECSTRING_ERROR_LENGTH;
-        
+    
     /* Find and replace */
     replace_length = strlen(replace);
     while (offset < size - 1) {
@@ -48,9 +47,10 @@ int32_t IecStringReplace(char *destination, uint32_t size, char *find,
         /* Compare */
         else if (strncmp(source, find, find_length) == 0) {
             IecStringCopy(destination, size - offset, replace);
-            count = MIN(replace_length, size - offset - 1);
-            destination += count;
-            offset += count;
+            /* Count full or truncated length*/
+            min_length = MIN(replace_length, size - offset - 1);
+            destination += min_length;
+            offset += min_length;
             source += find_length;
         }
         
@@ -64,6 +64,6 @@ int32_t IecStringReplace(char *destination, uint32_t size, char *find,
     /* Null terminator */
     *destination = '\0';
     
-    /* Warn if truncated by checking remaining source characters and size */
+    /* Truncated if source characters remain and no bytes left */
     return IECSTRING_WARNING_TRUNCATE * (*source != '\0' && offset == size - 1);
 }

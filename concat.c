@@ -30,10 +30,10 @@ int32_t IecStringConcat(char *destination, uint32_t size, char *source) {
     if (Overlap(destination, size, source))
         return IECSTRING_ERROR_OVERLAP;
         
-    /* Use string library to append the first size - 1 - length characters */
+    /* Append size - 1 - length characters */
     length = strlen(destination);
     strncat(destination, source, size - 1 - length);
     
-    /* Warn of truncation if combined length exceeds size */
+    /* Truncated if combined length exceeds size */
     return IECSTRING_WARNING_TRUNCATE * (length + strlen(source) > size - 1);
 }

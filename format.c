@@ -38,7 +38,7 @@ int32_t IecStringFormat(char *destination, uint32_t size, char *source,
     /* Format */
     while (*source != '\0' && bytes_remaining) {
         
-        /* Check for specifier, copy otherwise */
+        /* Copy if no specifier */
         if (*source != '%') {
             *destination++ = *source++;
             bytes_remaining--;
@@ -99,7 +99,7 @@ int32_t IecStringFormat(char *destination, uint32_t size, char *source,
     /* Null terminator */
     *destination = '\0';
     
-    /* Warn if truncated by checking remaining source characters and size */
+    /* Truncated if source characters remain and no bytes left */
     return IECSTRING_WARNING_TRUNCATE * (*source != '\0' && 
         bytes_remaining == 0);
 }
