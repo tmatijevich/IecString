@@ -17,7 +17,8 @@
 uint8_t Overlap(char *destination, uint32_t size, char *source) {
 
     /* Local variables */
-    uint8_t overlap, end;
+    char *end;
+    uint8_t overlap;
     uint32_t length;
     
     /* Verify parameters */
