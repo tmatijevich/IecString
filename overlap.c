@@ -33,6 +33,9 @@ uint8_t Overlap(char *destination, uint32_t size, char *source) {
     /* Does destination's end overlap source's length */
     end = destination + size - 1;
     overlap |= source <= end && end <= source + length;
+
+    /* Does destination's size contain source's length */
+    overlap |= destination < source && source < end;
     
     /* No overlap */
     return overlap ? true : false;
