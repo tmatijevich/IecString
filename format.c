@@ -19,6 +19,7 @@ int32_t IecStringFormat(char *destination, uint32_t size, char *source,
     
     /* Local variables */
     const char bool_text[][6] = {"FALSE", "TRUE"};
+    uint8_t bool_index;
     /* Floats: [<+->]1.23456[e<+->12] = 12 characters + null terminator */
     /* Longs: -2147483648 to 2147483647 = 11 characters + null terminator */
     char number_text[13];
@@ -53,10 +54,12 @@ int32_t IecStringFormat(char *destination, uint32_t size, char *source,
         
         switch (*(++source)) {
             case 'b':
-                if (count_bool <= IECSTRING_FORMAT_INDEX)
+                if (count_bool <= IECSTRING_FORMAT_INDEX) {
+                    bool_index = values->b[count_bool++] > 0 ? true : false;
                     length = strlen(strncat(destination, 
-                                            bool_text[values->b[count_bool++]], 
+                                            bool_text[bool_index], 
                                             bytes_remaining));
+                }
                 break;
                 
             case 'f':
