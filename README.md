@@ -1,14 +1,14 @@
-# IecString
+# IecString [![Made for B&R](https://raw.githubusercontent.com/hilch/BandR-badges/dfd5e264d7d2dd369fd37449605673f779db437d/Made-For-BrAutomation.svg)](https://www.br-automation.com)
 
-IecString is an Automation Studio library of string handling functions.  It is intended to supplement the AsBrStr library.
+**IecString** is an Automation Studio library of string handling functions.  It is intended to supplement the **AsBrStr** library.
 
-**NOTE**:  This is not an official library.  IecString is provided as-is under the GNU GPL v3.0 licence agreement.  Support for this library is provided through the [GitHub Issues List](https://github.com/tmatijevich/UserLog/issues).
+**NOTE**: This is not an official library.  IecString is provided as-is under the [GNU General Public License v3](https://www.gnu.org/licenses/gpl-3.0.txt) agreement.  Support for this library is provided through the [GitHub Issues List](https://github.com/tmatijevich/UserLog/issues).
 
 ## Features
 
-- Improve memory handling with function argument for destination size
+- Improve memory handling with function argument for destination size and overlap check
 - Manipulate strings in ANSI C and IEC languages
-- Support for functions from the [standard C string library](https://cplusplus.com/reference/cstring/)
+- Support for functions from the [standard C string library](https://cplusplus.com/reference/cstring/) (*coming soon*)
 
 ## Functions
 
