@@ -33,3 +33,13 @@ FUNCTION IecStringFormat : DINT (*Format string with runtime data*)
 		values : IecStringFormatType; (*Format values*)
 	END_VAR
 END_FUNCTION
+
+FUNCTION IecStringInteger : DINT (*Pad a whole number with zeros or spaces*)
+	VAR_INPUT
+		destination : STRING[0]; (*Destination string*)
+		size : UDINT; (*Size of destination*)
+		value : DINT; (*Signed integer*)
+		width : USINT; (*Minimum character width of destination string 1 to 10*)
+		space : USINT; (*Pad with zeros if zero and spaces otherwise*)
+	END_VAR
+END_FUNCTION

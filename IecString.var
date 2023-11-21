@@ -5,7 +5,7 @@ END_VAR
 (*Status numbers*)
 VAR CONSTANT
 	IECSTRING_ERROR_NULL : DINT := -515898392; (*String is null*)
-	IECSTRING_ERROR_SIZE : DINT := -515897392; (*Size is zero*)
+	IECSTRING_ERROR_SIZE : DINT := -515897392; (*Size is zero or the size if insufficient for a padded integer*)
 	IECSTRING_ERROR_OVERLAP : DINT := -515896392; (*The size of destination overlaps with a source string's length*)
 	IECSTRING_WARNING_TRUNCATE : DINT := -1589637216; (*The string written to destination has been truncated*)
 	IECSTRING_ERROR_LENGTH : DINT := -515894392; (*The find substring's length exceeds the source length*)
