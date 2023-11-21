@@ -46,7 +46,7 @@ int32_t IecStringInteger(char *destination, uint32_t size, int32_t value,
     }
 
     /* Write text */
-    for (i = width; i > 0; i--) {
+    for (i = char_width; i > 0; i--) {
         if (i > value_width)
             text[offset++] = pad;
         else
