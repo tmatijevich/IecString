@@ -25,6 +25,6 @@
 #define MAX(x,y) (((x) > (y)) ? (x) : (y))
 
 /* Prototypes */
-uint8_t Overlap(char *Destination, uint32_t Size, char *Source);
+uint8_t Overlap(char *destination, uint32_t size, char *source);
 
 #endif /* IECSTRING_MAIN_H */
