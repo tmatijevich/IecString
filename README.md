@@ -1,14 +1,20 @@
 # IecString [![Made for B&R](https://raw.githubusercontent.com/hilch/BandR-badges/dfd5e264d7d2dd369fd37449605673f779db437d/Made-For-BrAutomation.svg)](https://www.br-automation.com)
 
-**IecString** is an Automation Studio library of string handling functions.  It is intended to supplement the **AsBrStr** library.
+IecString is an [Automation Studio](https://www.br-automation.com/en-us/products/software/automation-software/automation-studio/) library of string handling functions.  It is intended to supplement the AsBrStr library for [IEC 61131-3](https://en.wikipedia.org/wiki/IEC_61131-3) programming languages.
 
-**NOTE**: This is not an official library.  IecString is provided as-is under the [GNU General Public License v3](https://www.gnu.org/licenses/gpl-3.0.txt) agreement.  Support for this library is provided through the [GitHub Issues List](https://github.com/tmatijevich/UserLog/issues).
+**NOTE**: This is not an official library and is supported through the community.  IecString is provided as-is under the [GNU General Public License v3](https://www.gnu.org/licenses/gpl-3.0.txt) agreement.  Source code, documentation, and issues are managed through [GitHub](https://github.com/tmatijevich/IecString).
+
+## Install
+
+- [Download](https://github.com/tmatijevich/IecString/releases/latest/download/IecString.zip) and extract the archive.
+- Import the IecString package to your Automation Studio's Logical View using **Existing Library** from the toolbox.
 
 ## Features
 
-- Improve memory handling with function argument for destination size and overlap check
-- Manipulate strings in ANSI C and IEC languages
-- Support for functions from the [standard C string library](https://cplusplus.com/reference/cstring/) (*coming soon*)
+- Improve memory safety with:
+    - Destination size check
+    - Overlap check
+- Format strings in ANSI C and IEC languages
 
 ## Functions
 
@@ -18,7 +24,51 @@ Function | Description
 [IecStringConcat](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L10) | Concatenate source to destination up to size of destination or source length
 [IecStringReplace](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L18) | Find in source and replace in destination up to size of destination
 [IecStringFormat](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L28) | Format string with runtime data
+[IecStringInteger](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L37) | Pad a whole number with zeros or spaces
+
+## Build
+
+Clone to a reference location.
+
+```bash
+git clone https://github.com/tmatijevich/IecString.git
+```
+
+Or, add as a submodule to a project's libraries.
+
+```bash
+cd <project_root>
+git submodule add https://github.com/tmatijevich/IecString.git <project_root>/Logical/Libraries/IecString
+```
+
+### Warnings
+
+In Automation Studio 4.11+,
+
+1. Configuration View
+2. Right-click the CPU object and select Properties
+3. Navigate to the Build tab
+4. Add the following to the **Objects ignored for build warnings 9232 and 9233** field
+
+```
+*README*;*LICENSE*;.git;.gitignore;.github
+```
+
+Prior to Automation Studio 4.11,
+
+1. Configuration View
+2. Right-click the CPU object and select Properties
+3. Navigate to the Build tab
+4. Add the following to the **Additional build options** field
+
+```
+-W 9232 9233
+```
 
 ## Dependencies
 
-- `AsBrStr`
+- AsBrStr
+
+## Authors
+
+- [tmatijevich](https://github.com/tmatijevich)
