@@ -2,6 +2,8 @@
 
 IecString is an [Automation Studio](https://www.br-automation.com/en-us/products/software/automation-software/automation-studio/) library of string handling functions.  It is intended to supplement the AsBrStr library for [IEC 61131-3](https://en.wikipedia.org/wiki/IEC_61131-3) programming languages.
 
+![2023-11-21_12 20 40](https://github.com/tmatijevich/IecString/assets/33841634/ed94dafc-efe3-4987-a1ce-e3303e3056d8)
+
 **NOTE**: This is not an official library and is supported through the community.  IecString is provided as-is under the [GNU General Public License v3](https://www.gnu.org/licenses/gpl-3.0.txt) agreement.  Source code, documentation, and issues are managed through [GitHub](https://github.com/tmatijevich/IecString).
 
 ## Install
@@ -42,6 +44,8 @@ git submodule add https://github.com/tmatijevich/IecString.git <project_root>/Lo
 ```
 
 ### Warnings
+
+![161134955-5e71050f-bd1b-49cf-b07c-6408ae3c24ca](https://github.com/tmatijevich/IecString/assets/33841634/f95acd25-1841-4b30-a3a4-283497dc3120)
 
 In Automation Studio 4.11+,
 
