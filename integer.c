@@ -4,6 +4,10 @@
  * 
  * Authors: 
  *   Tyler Matijevich
+ * 
+ * License:
+ *   This file integer.c is part of the IecString project 
+ *   released under the MIT license agreement.
  ******************************************************************************/
 
 #include "main.h"

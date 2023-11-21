@@ -2,13 +2,12 @@
  * File: replace.c
  * Created: 2022-08-03
  * 
- * Contributors: 
- * - Tyler Matijevich
+ * Authors: 
+ *   Tyler Matijevich
  * 
  * License:
- *  This file replace.c is part of the IecString project released under the
- *  GNU General Public License v3.0 agreement.  For more information, please 
- *  visit https://github.com/tmatijevich/IecString/blob/main/LICENSE.
+ *   This file replace.c is part of the IecString project 
+ *   released under the MIT license agreement.
  ******************************************************************************/
 
 #include "main.h"

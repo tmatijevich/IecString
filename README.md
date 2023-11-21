@@ -4,7 +4,7 @@ IecString is an [Automation Studio](https://www.br-automation.com/en-us/products
 
 ![2023-11-21_12 20 40](https://github.com/tmatijevich/IecString/assets/33841634/ed94dafc-efe3-4987-a1ce-e3303e3056d8)
 
-**NOTE**: This is not an official library and is supported through the community.  IecString is provided as-is under the [GNU General Public License v3](https://www.gnu.org/licenses/gpl-3.0.txt) agreement.  Source code, documentation, and issues are managed through [GitHub](https://github.com/tmatijevich/IecString).
+**NOTE**: This is not an official library and is supported through the community.  IecString is provided as-is under the [MIT License](https://mit-license.org/) agreement.  Source code, documentation, and issues are managed through [GitHub](https://github.com/tmatijevich/IecString).
 
 ## Install
 

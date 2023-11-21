@@ -1,14 +1,12 @@
 # File: status.py
 # Created: 2023-04-25
 #
-# Contributors: 
-# - Tyler Matijevich
+# Authors: 
+#   Tyler Matijevich
 #
 # License:
-#  This file status.py is part of the IecString project released under the
-#  GNU General Public License v3.0 agreement.  For more information, please 
-#  visit https://github.com/tmatijevich/IecString/blob/main/LICENSE.
-#
+#   This file status.py is part of the IecString project 
+#   released under the MIT license agreement.
 
 import csv
 import ctypes
