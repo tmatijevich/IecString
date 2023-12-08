@@ -43,3 +43,11 @@ FUNCTION IecStringInteger : DINT (*Pad a whole number with zeros or spaces*)
 		space : USINT; (*Pad with zeros if zero and spaces otherwise*)
 	END_VAR
 END_FUNCTION
+
+FUNCTION IecStringDateTime : DINT (*Format date and/or time*)
+	VAR_INPUT
+		destination : STRING[0]; (*Destination string*)
+		size : UDINT; (*Size of destination*)
+		format : STRING[0]; (*Format string example "yyyy-MM-dd HH:mm"*)
+	END_VAR
+END_FUNCTION
