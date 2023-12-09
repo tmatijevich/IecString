@@ -34,7 +34,7 @@ FUNCTION IecStringFormat : DINT (*Format string with runtime data*)
 	END_VAR
 END_FUNCTION
 
-FUNCTION IecStringInteger : DINT (*Pad a whole number with zeros or spaces*)
+FUNCTION IecStringPadInt : DINT (*Pad integer with zeros or spaces*)
 	VAR_INPUT
 		destination : STRING[0]; (*Destination string*)
 		size : UDINT; (*Size of destination*)
@@ -49,5 +49,6 @@ FUNCTION IecStringDateTime : DINT (*Format date and/or time*)
 		destination : STRING[0]; (*Destination string*)
 		size : UDINT; (*Size of destination*)
 		format : STRING[0]; (*Format string example "yyyy-MM-dd HH:mm"*)
+		date_time : DTStructure;
 	END_VAR
 END_FUNCTION
