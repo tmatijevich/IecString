@@ -20,5 +20,6 @@
   </Files>
   <Dependencies>
     <Dependency ObjectName="AsBrStr" />
+    <Dependency ObjectName="astime" />
   </Dependencies>
 </Library>
