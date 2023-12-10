@@ -45,6 +45,8 @@ int32_t IecStringFormat(char *destination, uint32_t size, char *source,
             continue;
         }
         
+        /* Use strncat instead of strncpy because 
+        strncat adds null terminator */
         /* Temporarily add null terminator to perform concatenation */
         *destination = '\0';
         

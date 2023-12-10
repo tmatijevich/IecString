@@ -21,7 +21,7 @@ int32_t IecStringDateTime(char *destination, uint32_t size,
     
     /* Local variables */
     const char tokens[] = "yMdHhmstf";
-    const char delimeters[] = "-_ .,/:;()[]";
+    const char delimiters[] = "-_ .,/:;()[]";
     const char default_format[] = "yyyy-MM-dd HH:mm";
     char next_char;
     uint32_t match, length, chars_remaining = size - 1;
@@ -50,7 +50,7 @@ int32_t IecStringDateTime(char *destination, uint32_t size,
         else {
             next_char = *format;
             match = 1;
-            if(strspn(&next_char, delimeters)) {
+            if(strspn(&next_char, delimiters)) {
                 strncat(destination, "_", chars_remaining);
                 length = 1;
             }
