@@ -45,7 +45,7 @@ int32_t IecStringReplace(char *destination, uint32_t size, char *find,
             
         /* Compare */
         else if (strncmp(source, find, find_length) == 0) {
-            IecStringCopy(destination, size - offset, replace);
+            FastCopy(destination, size - offset, replace);
             /* Count full or truncated length*/
             min_length = MIN(replace_length, size - offset - 1);
             destination += min_length;
