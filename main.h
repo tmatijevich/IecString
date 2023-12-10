@@ -25,5 +25,6 @@
 
 /* Prototypes */
 uint8_t Overlap(char *destination, uint32_t size, char *source);
+char* FastCopy(char *destination, uint32_t size, char *source);
 
 #endif /* IECSTRING_MAIN_H */
