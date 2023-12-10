@@ -35,6 +35,9 @@ int32_t IecStringDateTime(char *destination, uint32_t size,
 
     if (format == NULL)
         format = (char*)default_format;
+    
+    else if (Overlap(destination, size, format))
+        return IECSTRING_ERROR_OVERLAP;
 
     if (*format == '\0')
         format = (char*)default_format;
@@ -109,11 +112,11 @@ uint32_t FormatDateTimeToken(char *destination, uint32_t bytes_remaining,
                             date_time.month, match, 0);
             return match;
         case 3:
-            IecStringCopy(destination, bytes_remaining, 
+            FastCopy(destination, bytes_remaining, 
                             month_abv[date_time.month]);
             return match;
         case 4:
-            IecStringCopy(destination, bytes_remaining, 
+            FastCopy(destination, bytes_remaining, 
                             month_full[date_time.month]);
             return match;
         default:
