@@ -12,8 +12,8 @@
 
 #include "main.h"
 
-uint32_t FormatDateTimeToken(char *destination, uint32_t chars_remaining,
-                            char *format, DTStructure date_time);
+uint32_t FormatDateTimeToken(char *destination, uint32_t bytes_remaining,
+                            char *format, DTStructure date_time, uint8_t count);
 
 /* Format the current date and/or time */
 int32_t IecStringDateTime(char *destination, uint32_t size, 
@@ -24,7 +24,7 @@ int32_t IecStringDateTime(char *destination, uint32_t size,
     const char delimeters[] = "-_ .,/:;()[]";
     const char default_format[] = "yyyy-MM-dd HH:mm";
     char next_char;
-    uint32_t count, length, chars_remaining = size - 1;
+    uint32_t match, length, chars_remaining = size - 1;
 
     /* Verify parameters */
     if (destination == NULL)
@@ -41,13 +41,15 @@ int32_t IecStringDateTime(char *destination, uint32_t size,
 
     while (*format != '\0' && chars_remaining) {
         *destination = '\0';
-        count = strspn(format, tokens);
-        if (count) 
-            length = FormatDateTimeToken(destination, chars_remaining,
-                                        format, *date_time);
+        match = strspn(format, tokens);
+        if (match) {
+            match = FormatDateTimeToken(destination, chars_remaining + 1,
+                                        format, *date_time, match);
+            length = strlen(destination);
+        }
         else {
             next_char = *format;
-            count = 1;
+            match = 1;
             if(strspn(&next_char, delimeters)) {
                 strncat(destination, "_", chars_remaining);
                 length = 1;
@@ -57,7 +59,7 @@ int32_t IecStringDateTime(char *destination, uint32_t size,
         }
         destination += length;
         chars_remaining -= length;
-        format += count;
+        format += match;
     }
 
     *destination = '\0';
@@ -66,24 +68,57 @@ int32_t IecStringDateTime(char *destination, uint32_t size,
 }
 
 /* Format date/time token */
-uint32_t FormatDateTimeToken(char *destination, uint32_t chars_remaining,
-                            char *format, DTStructure date_time) {
+uint32_t FormatDateTimeToken(char *destination, uint32_t bytes_remaining,
+                            char *format, DTStructure date_time, 
+                            uint8_t count) {
     /* Local variables */
-    uint8_t count;
+    uint8_t match;
+    char month_abv[][4] = {"N/A", "Jan", "Feb", "Mar", "Apr", "May", 
+                            "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", 
+                            "Dec"};
+    char month_full[][10] = {"N/A", "January", "February", "March", "April", 
+                            "May", "June", "July", "August", "September", 
+                            "October", "November", "December"};
 
-    /* yy or yyyy year */
-    count = strspn(format, "y");
-    switch (count) {
-        case 2:
-            IecStringPadInt(destination, chars_remaining, 
-                            date_time.year % 100, 2, 0);
-            return strlen(destination);
-        case 4:
-            IecStringPadInt(destination, chars_remaining, date_time.year, 4, 0);
-            return strlen(destination);
-        default:
+    /* yy yyyy year */
+    match = strspn(format, "y");
+    switch (match) {
+        case 0:
             break;
+        case 2:
+            IecStringPadInt(destination, bytes_remaining, 
+                            date_time.year % 100, 2, 0);
+            return match;
+        case 4:
+            IecStringPadInt(destination, bytes_remaining, date_time.year, 4, 0);
+            return match;
+        default:
+            return match;
     }
 
-    return 0;
+    /* M MM MMM MMMM month */
+    match = strspn(format, "M");
+    if (date_time.month < 1) date_time.month = 1;
+    else if (date_time.month > 12) date_time.month = 12;
+    switch (match) {
+        case 0:
+            break;
+        case 1:
+        case 2:
+            IecStringPadInt(destination, bytes_remaining, 
+                            date_time.month, match, 0);
+            return match;
+        case 3:
+            IecStringCopy(destination, bytes_remaining, 
+                            month_abv[date_time.month]);
+            return match;
+        case 4:
+            IecStringCopy(destination, bytes_remaining, 
+                            month_full[date_time.month]);
+            return match;
+        default:
+            return match;
+    }
+
+    return count;
 }
