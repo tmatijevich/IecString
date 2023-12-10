@@ -30,13 +30,17 @@ int32_t IecStringPadInt(char *destination, uint32_t size, int32_t value,
     char text[CHAR_MAX];
     uint8_t i, offset = 0, char_width, value_width;
 
+    /* Verify parameters */
+    if (destination == NULL)
+        return IECSTRING_ERROR_NULL;
+
     /* Signed exception */
     if (value == INT32_MIN) {
         /* Do not truncate if whole number cannot fit */
-        if (size < CHAR_MAX)
-            return IECSTRING_ERROR_SIZE;
-        else
-            return IecStringCopy(destination, size, "-2147483648");
+        if (size < CHAR_MAX) return IECSTRING_ERROR_SIZE;
+        
+        FastCopy(destination, size, "-2147483648");
+        return 0;
     }
 
     /* Saturate width */
@@ -59,10 +63,10 @@ int32_t IecStringPadInt(char *destination, uint32_t size, int32_t value,
 
     /* Add null terminator and check size */
     text[offset++] = '\0';
-    if (size < offset)
-        return IECSTRING_ERROR_SIZE;
-    else
-        return IecStringCopy(destination, size, text);
+    if (size < offset) return IECSTRING_ERROR_SIZE;
+
+    FastCopy(destination, size, text);
+    return 0;
 }
 
 /* Powers of ten */
