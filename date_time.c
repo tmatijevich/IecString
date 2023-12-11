@@ -76,12 +76,15 @@ uint32_t FormatDateTimeToken(char *destination, uint32_t bytes_remaining,
                             uint8_t count) {
     /* Local variables */
     uint8_t match;
-    char month_abv[][4] = {"N/A", "Jan", "Feb", "Mar", "Apr", "May", 
+    const char month_abv[][4] = {"N/A", "Jan", "Feb", "Mar", "Apr", "May", 
                             "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", 
                             "Dec"};
-    char month_full[][10] = {"N/A", "January", "February", "March", "April", 
+    const char month_full[][10] = {"N/A", "January", "February", "March", "April", 
                             "May", "June", "July", "August", "September", 
                             "October", "November", "December"};
+    const char day_abv[][3] = {"Su", "M", "Tu", "W", "Th", "F", "Sa"};
+    const char day_full[][10] = {"Sunday", "Monday", "Tuesday", "Wednesday", 
+                                "Thursday", "Friday", "Saturday"};
 
     /* yy yyyy year */
     match = strspn(format, "y");
@@ -113,11 +116,34 @@ uint32_t FormatDateTimeToken(char *destination, uint32_t bytes_remaining,
             return match;
         case 3:
             FastCopy(destination, bytes_remaining, 
-                            month_abv[date_time.month]);
+                    (char*)month_abv[date_time.month]);
             return match;
         case 4:
             FastCopy(destination, bytes_remaining, 
-                            month_full[date_time.month]);
+                    (char*)month_full[date_time.month]);
+            return match;
+        default:
+            return match;
+    }
+
+    /* d dd ddd ddd day */
+    match = strspn(format, "d");
+    if (date_time.wday > 6) date_time.wday = 6;
+    switch (match) {
+        case 0:
+            break;
+        case 1:
+        case 2:
+            IecStringPadInt(destination, bytes_remaining, 
+                            date_time.day, match, 0);
+            return match;
+        case 3:
+            FastCopy(destination, bytes_remaining, 
+                    (char*)day_abv[date_time.wday]);
+            return match;
+        case 4:
+            FastCopy(destination, bytes_remaining, 
+                    (char*)day_full[date_time.wday]);
             return match;
         default:
             return match;
