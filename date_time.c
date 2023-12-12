@@ -54,7 +54,7 @@ int32_t IecStringDateTime(char *destination, uint32_t size,
             next_char = *format;
             match = 1;
             if(strspn(&next_char, delimiters)) {
-                strncat(destination, "_", chars_remaining);
+                strncat(destination, &next_char, chars_remaining);
                 length = 1;
             }
             else
@@ -126,7 +126,7 @@ uint32_t FormatDateTimeToken(char *destination, uint32_t bytes_remaining,
             return match;
     }
 
-    /* d dd ddd ddd day */
+    /* d dd ddd dddd day */
     match = strspn(format, "d");
     if (date_time.wday > 6) date_time.wday = 6;
     switch (match) {
@@ -144,6 +144,93 @@ uint32_t FormatDateTimeToken(char *destination, uint32_t bytes_remaining,
         case 4:
             FastCopy(destination, bytes_remaining, 
                     (char*)day_full[date_time.wday]);
+            return match;
+        default:
+            return match;
+    }
+
+    /* H HH 24 hour */
+    match = strspn(format, "H");
+    switch (match) {
+        case 0:
+            break;
+        case 1:
+        case 2:
+            IecStringPadInt(destination, bytes_remaining, 
+                            date_time.hour, match, 0);
+            return match;
+        default:
+            return match;
+    }
+
+    /* h hh 12 hour */
+    match = strspn(format, "h");
+    switch (match) {
+        case 0:
+            break;
+        case 1:
+        case 2:
+            IecStringPadInt(destination, bytes_remaining, 
+                            date_time.hour % 12, match, 0);
+            return match;
+        default:
+            return match;
+    }
+
+    /* m mm minute */
+    match = strspn(format, "m");
+    switch (match) {
+        case 0:
+            break;
+        case 1:
+        case 2:
+            IecStringPadInt(destination, bytes_remaining, 
+                            date_time.minute, match, 0);
+            return match;
+        default:
+            return match;
+    }
+
+    /* s ss second */
+    match = strspn(format, "s");
+    switch (match) {
+        case 0:
+            break;
+        case 1:
+        case 2:
+            IecStringPadInt(destination, bytes_remaining, 
+                            date_time.second, match, 0);
+            return match;
+        default:
+            return match;
+    }
+
+    /* tt morning/afternoon */
+    match = strspn(format, "t");
+    switch (match) {
+        case 0:
+            break;
+        case 2:
+            if (date_time.hour >= 12) FastCopy(destination, bytes_remaining, 
+                                                "PM");
+            else FastCopy(destination, bytes_remaining, "AM");
+            return match;
+        default:
+            return match;
+    }
+
+    /* ff fff milliseconds */
+    match = strspn(format, "f");
+    switch (match) {
+        case 0:
+            break;
+        case 2:
+            IecStringPadInt(destination, bytes_remaining,
+                            date_time.millisec / 10, match, 0);
+            return match;
+        case 3:
+            IecStringPadInt(destination, bytes_remaining,
+                            date_time.millisec, match, 0);
             return match;
         default:
             return match;
