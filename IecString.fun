@@ -34,7 +34,7 @@ FUNCTION IecStringFormat : DINT (*Format string with runtime data*)
 	END_VAR
 END_FUNCTION
 
-FUNCTION IecStringPadInt : DINT (*Convert integer to string with optional padding to width*)
+FUNCTION IecStringInteger : DINT (*Convert integer to string as decimal with optional padding up to width*)
 	VAR_INPUT
 		destination : STRING[0]; (*Destination string*)
 		size : UDINT; (*Size of destination*)

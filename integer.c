@@ -1,12 +1,12 @@
 /*******************************************************************************
- * File: pad.c
+ * File: integer.c
  * Created: 2022-09-20
  * 
  * Authors: 
  *   Tyler Matijevich
  * 
  * License:
- *   This file pad.c is part of the IecString project 
+ *   This file integer.c is part of the IecString project 
  *   released under the MIT license agreement.
  ******************************************************************************/
 
@@ -20,7 +20,7 @@
 /* Prototypes */
 uint8_t NumberOfDigits(uint32_t value, uint8_t count);
 
-int32_t IecStringPadInt(char *destination, uint32_t size, int32_t value, 
+int32_t IecStringInteger(char *destination, uint32_t size, int32_t value, 
                         uint8_t width, unsigned char pad) {
     
     /* Local variables */
