@@ -21,10 +21,9 @@
 uint8_t NumberOfDigits(uint32_t value, uint8_t count);
 
 int32_t IecStringPadInt(char *destination, uint32_t size, int32_t value, 
-                        uint8_t width, uint8_t spaces) {
+                        uint8_t width, unsigned char pad) {
     
     /* Local variables */
-    char pad = spaces ? ' ' : '0';
     char temp[MAX_BYTE];
     uint8_t i = 0, num_digit;
 
@@ -50,9 +49,11 @@ int32_t IecStringPadInt(char *destination, uint32_t size, int32_t value,
     /* Saturate width */
     num_digit = NumberOfDigits(value, 0);
     if (width > MAX_WIDTH) width = MAX_WIDTH;
-    if (width < num_digit + i) width = num_digit + i;
+    else if (width < num_digit + i) width = num_digit + i;
 
     /* Write pads */
+    if (pad < ' ') pad = ' ';
+    else if (pad > '~') pad = '~';
     while (width - num_digit - i)
         temp[i++] = pad;
 
