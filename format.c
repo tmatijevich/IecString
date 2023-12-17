@@ -18,7 +18,6 @@ int32_t IecStringFormat(char *destination, uint32_t size, char *source,
     
     /* Local variables */
     const char bool_text[][6] = {"FALSE", "TRUE"};
-    uint8_t bool_index;
     /* Floats: [<+->]1.23456[e<+->12] = 12 characters + null terminator */
     /* Longs: -2147483648 to 2147483647 = 11 characters + null terminator */
     char number_text[13];
@@ -44,57 +43,43 @@ int32_t IecStringFormat(char *destination, uint32_t size, char *source,
             bytes_remaining--;
             continue;
         }
-        
-        /* Use strncat instead of strncpy because 
-        strncat adds null terminator */
-        /* Temporarily add null terminator to perform concatenation */
+
+        /* Default to zero length */
         *destination = '\0';
-        
-        /* Reset length */
-        length = 0;
         
         switch (*(++source)) {
             case 'b':
-                if (count_bool <= IECSTRING_FORMAT_INDEX) {
-                    bool_index = values->b[count_bool++] > 0 ? true : false;
-                    length = strlen(strncat(destination, 
-                                            bool_text[bool_index], 
-                                            bytes_remaining));
-                }
+                if (count_bool <= IECSTRING_FORMAT_INDEX)
+                    FastCopy(destination, bytes_remaining + 1, 
+                            (char*)bool_text[values->b[count_bool++] > 0]);
                 break;
                 
             case 'f':
                 if (count_float <= IECSTRING_FORMAT_INDEX) {
                     brsftoa((float)values->f[count_float++], 
                             (uint32_t)number_text);
-                    length = strlen(strncat(destination, 
-                                            number_text, 
-                                            bytes_remaining));
+                    FastCopy(destination, bytes_remaining + 1, number_text);
                 }
                 break;
                 
             case 'i':
-                if (count_int <= IECSTRING_FORMAT_INDEX) {
-                    brsitoa(values->i[count_int++], (uint32_t)number_text);
-                    length = strlen(strncat(destination, 
-                                            number_text, 
-                                            bytes_remaining));
-                }
+                if (count_int <= IECSTRING_FORMAT_INDEX)
+                    IecStringInteger(destination, bytes_remaining + 1, 
+                        values->i[count_int++], 0, 0);
                 break;
                 
             case 's':
-                if (count_string <= IECSTRING_FORMAT_INDEX) 
-                    length = strlen(strncat(destination, 
-                                            values->s[count_string++], 
-                                            bytes_remaining));
+                if (count_string <= IECSTRING_FORMAT_INDEX)
+                    FastCopy(destination, bytes_remaining + 1, 
+                            values->s[count_string++]);
                 break;
                 
             case '%':
-                *destination = '%';
-                length = 1;
+                FastCopy(destination, bytes_remaining + 1, "%");
                 break;
         }
         
+        length = strlen(destination);
         destination += length;
         bytes_remaining -= length;
         source++;
