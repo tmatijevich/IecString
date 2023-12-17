@@ -12,23 +12,21 @@
 
 #include "main.h"
 
-/* Maximum of 10 digits for a 32 bit integer */
-#define DIGIT_MAX 10U
-/* Maximum of 12 characters (10 digits, 1 sign, and null terminator) */
-#define CHAR_MAX 12U
+/* Maximum of 12 bytes: 10 digits, 1 sign, and null terminator */
+#define MAX_BYTE 12U
+#define MAX_WIDTH 11U
+#define MAX_DIGIT 10U
 
 /* Prototypes */
-int64_t PowTen(uint8_t exponent);
-uint8_t GetWidth(int32_t value);
-char GetChar(uint8_t value);
+uint8_t NumberOfDigits(uint32_t value, uint8_t count);
 
 int32_t IecStringPadInt(char *destination, uint32_t size, int32_t value, 
                         uint8_t width, uint8_t spaces) {
     
     /* Local variables */
     char pad = spaces ? ' ' : '0';
-    char text[CHAR_MAX];
-    uint8_t i, offset = 0, char_width, value_width;
+    char temp[MAX_BYTE];
+    uint8_t i = 0, num_digit;
 
     /* Verify parameters */
     if (destination == NULL)
@@ -37,78 +35,48 @@ int32_t IecStringPadInt(char *destination, uint32_t size, int32_t value,
     /* Signed exception */
     if (value == INT32_MIN) {
         /* Do not truncate if whole number cannot fit */
-        if (size < CHAR_MAX) return IECSTRING_ERROR_SIZE;
+        if (size < MAX_BYTE) return IECSTRING_ERROR_SIZE;
         
         FastCopy(destination, size, "-2147483648");
         return 0;
     }
 
-    /* Saturate width */
-    value_width = GetWidth(value);
-    char_width = MIN(MAX(width, value_width), DIGIT_MAX);
-
-    /* Signed */
+    /* Write sign */
     if (value < 0) {
-        text[offset++] = '-';
-        value = -value;
+        temp[i++] = '-';
+        value *= -1;
     }
 
-    /* Write text */
-    for (i = char_width; i > 0; i--) {
-        if (i > value_width)
-            text[offset++] = pad;
-        else
-            text[offset++] = GetChar((value % PowTen(i)) / PowTen(i - 1));
+    /* Saturate width */
+    num_digit = NumberOfDigits(value, 0);
+    if (width > MAX_WIDTH) width = MAX_WIDTH;
+    if (width < num_digit + i) width = num_digit + i;
+
+    /* Write pads */
+    while (width - num_digit - i)
+        temp[i++] = pad;
+
+    /* Write digits */
+    i = 0;
+    while (num_digit - i) {
+        temp[width - i - 1] = value % 10 + '0';
+        value /= 10;
+        i++;
     }
 
     /* Add null terminator and check size */
-    text[offset++] = '\0';
-    if (size < offset) return IECSTRING_ERROR_SIZE;
+    temp[width] = '\0';
+    if (size < width + 1) return IECSTRING_ERROR_SIZE;
 
-    FastCopy(destination, size, text);
+    FastCopy(destination, size, temp);
     return 0;
 }
 
-/* Powers of ten */
-int64_t PowTen(uint8_t exponent) {
-	switch (exponent) {
-		case 0: return 1LL;
-		case 1: return 10LL;
-		case 2: return 100LL;
-		case 3: return 1000LL;
-		case 4: return 10000LL;
-		case 5: return 100000LL;
-		case 6: return 1000000LL;
-		case 7: return 10000000LL;
-		case 8: return 100000000LL;
-		case 9: return 1000000000LL;
-		default: return 10000000000LL;
-	}
-}
-
-/* Character width of integer */
-uint8_t GetWidth(int32_t value) {
-	uint8_t i;
-	/* Check widths from 10 to 2, default to 1 */
-	for (i = DIGIT_MAX; i > 1; i--) {
-		if (value / PowTen(i - 1))
-			break;
-	}
-	return i;
-}
-
-/* Digit character */
-char GetChar(uint8_t value) {
-	switch(value) {
-		case 1: return '1';
-		case 2: return '2';
-		case 3: return '3';
-		case 4: return '4';
-		case 5: return '5';
-		case 6: return '6';
-		case 7: return '7';
-		case 8: return '8';
-		case 9: return '9';
-		default: return '0';
-	}
+/* Number of digits in an integer */
+uint8_t NumberOfDigits(uint32_t value, uint8_t count) {
+    value /= 10;
+    if (value)
+        return NumberOfDigits(value, ++count);
+    else
+        return ++count;
 }
