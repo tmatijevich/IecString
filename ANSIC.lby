@@ -16,6 +16,7 @@
     <File Description="Format string">format.c</File>
     <File Description="Check memory overlap">overlap.c</File>
     <File Description="Format integer">integer.c</File>
+    <File Description="Float to string">float.c</File>
     <File Description="Format date/time string">date_time.c</File>
   </Files>
   <Dependencies>

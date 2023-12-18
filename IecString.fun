@@ -44,6 +44,14 @@ FUNCTION IecStringInteger : DINT (*Convert integer to string as decimal with opt
 	END_VAR
 END_FUNCTION
 
+FUNCTION IecStringFloat : DINT (*Convert floating point number to string*)
+	VAR_INPUT
+		destination : STRING[0]; (*Destination string*)
+		size : UDINT; (*Size of destination*)
+		value : REAL; (*Floating point value*)
+	END_VAR
+END_FUNCTION
+
 FUNCTION IecStringDateTime : DINT (*Format date and/or time*)
 	VAR_INPUT
 		destination : STRING[0]; (*Destination string*)
