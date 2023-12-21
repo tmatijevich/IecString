@@ -54,6 +54,7 @@ int32_t IecStringInteger(char *destination, uint32_t size, int32_t value,
     /* Saturate width */
     /* num_digit + i <= width <= MAX_WIDTH*/
     width = MIN(MAX(num_digit + i, width), MAX_WIDTH);
+    if (size < width + 1) return IECSTRING_ERROR_SIZE;
 
     /* Write pads */
     /* ' ' <= pad <= '~' */
@@ -69,8 +70,7 @@ int32_t IecStringInteger(char *destination, uint32_t size, int32_t value,
         i++;
     }
 
-    /* Check size, complete temp string, and copy */
-    if (size < width + 1) return IECSTRING_ERROR_SIZE;
+    /* Complete temp string, and copy */
     temp_string[width] = '\0';
     strcpy(destination, temp_string);
     return 0;
