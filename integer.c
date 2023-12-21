@@ -17,15 +17,13 @@
 #define MAX_WIDTH 11U
 #define MAX_DIGIT 10U
 
-/* Prototypes */
-uint8_t NumberOfDigits(uint32_t value, uint8_t count);
-
 int32_t IecStringInteger(char *destination, uint32_t size, int32_t value, 
                         uint8_t width, unsigned char pad) {
     
     /* Local variables */
-    char temp[MAX_BYTE];
-    uint8_t i = 0, num_digit;
+    char temp_string[MAX_BYTE];
+    uint8_t i = 0, num_digit = 0;
+    int32_t temp_value;
 
     /* Verify parameters */
     if (destination == NULL)
@@ -42,42 +40,41 @@ int32_t IecStringInteger(char *destination, uint32_t size, int32_t value,
 
     /* Write sign */
     if (value < 0) {
-        temp[i++] = '-';
+        temp_string[i++] = '-';
         value *= -1;
     }
 
+    
+    /* Find number of digits */
+    temp_value = value;
+    do {
+        temp_value /= 10;
+        num_digit++;
+    }
+    while (temp_value);
+
     /* Saturate width */
-    num_digit = NumberOfDigits(value, 0);
-    if (width > MAX_WIDTH) width = MAX_WIDTH;
-    else if (width < num_digit + i) width = num_digit + i;
+    /* num_digit + i <= width <= MAX_WIDTH*/
+    width = MIN(MAX(num_digit + i, width), MAX_WIDTH);
 
     /* Write pads */
     if (pad < ' ') pad = ' ';
     else if (pad > '~') pad = '~';
     while (width - num_digit - i)
-        temp[i++] = pad;
+        temp_string[i++] = pad;
 
     /* Write digits */
     i = 0;
     while (num_digit - i) {
-        temp[width - i - 1] = value % 10 + '0';
+        temp_string[width - i - 1] = value % 10 + '0';
         value /= 10;
         i++;
     }
 
     /* Add null terminator and check size */
-    temp[width] = '\0';
+    temp_string[width] = '\0';
     if (size < width + 1) return IECSTRING_ERROR_SIZE;
 
-    FastCopy(destination, size, temp);
+    FastCopy(destination, size, temp_string);
     return 0;
-}
-
-/* Number of digits in an integer */
-uint8_t NumberOfDigits(uint32_t value, uint8_t count) {
-    value /= 10;
-    if (value)
-        return NumberOfDigits(value, ++count);
-    else
-        return ++count;
 }
