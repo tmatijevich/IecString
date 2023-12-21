@@ -33,8 +33,7 @@ int32_t IecStringInteger(char *destination, uint32_t size, int32_t value,
     if (value == INT32_MIN) {
         /* Do not truncate if whole number cannot fit */
         if (size < MAX_BYTE) return IECSTRING_ERROR_SIZE;
-        
-        FastCopy(destination, size, "-2147483648");
+        strcpy(destination, "-2147483648");
         return 0;
     }
 
@@ -43,7 +42,6 @@ int32_t IecStringInteger(char *destination, uint32_t size, int32_t value,
         temp_string[i++] = '-';
         value *= -1;
     }
-
     
     /* Find number of digits */
     temp_value = value;
@@ -58,8 +56,8 @@ int32_t IecStringInteger(char *destination, uint32_t size, int32_t value,
     width = MIN(MAX(num_digit + i, width), MAX_WIDTH);
 
     /* Write pads */
-    if (pad < ' ') pad = ' ';
-    else if (pad > '~') pad = '~';
+    /* ' ' <= pad <= '~' */
+    pad = MIN(MAX(' ', pad), '~');
     while (width - num_digit - i)
         temp_string[i++] = pad;
 
@@ -71,10 +69,9 @@ int32_t IecStringInteger(char *destination, uint32_t size, int32_t value,
         i++;
     }
 
-    /* Add null terminator and check size */
-    temp_string[width] = '\0';
+    /* Check size, complete temp string, and copy */
     if (size < width + 1) return IECSTRING_ERROR_SIZE;
-
-    FastCopy(destination, size, temp_string);
+    temp_string[width] = '\0';
+    strcpy(destination, temp_string);
     return 0;
 }
