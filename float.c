@@ -11,6 +11,7 @@
  ******************************************************************************/
 
 #include "main.h"
+#include <float.h>
 
 /* Prototypes */
 int8_t GetFloatExponent(float value, int8_t exponent);
@@ -60,7 +61,7 @@ int8_t GetFloatExponent(float value, int8_t exponent) {
         value /= 10.0;
         return GetFloatExponent(value, ++exponent);
     }
-    if (value < 1.0) {
+    if (value + FLT_EPSILON < 1.0) {
         value *= 10.0;
         return GetFloatExponent(value, --exponent);
     }
