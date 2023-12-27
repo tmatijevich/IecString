@@ -10,7 +10,9 @@
  *   released under the MIT license agreement.
  ******************************************************************************/
 
-#include "main.h"
+#include <IecString.h>
+#include "stdint.h"
+#include "string.h"
 
 /* Convert floating point number to string */
 int32_t IecStringFloat(char *destination, uint32_t size, float value) {
@@ -18,15 +20,15 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value) {
     /* Local variables */
     uint8_t digits[6] = {0};
     float norm_val;
-    int32_t norm_int;
-    int8_t exp, i;
-    IecStringFormatType values;
+    int32_t norm_int, exp, i, offset = 0, count, notate, zeros, decimal = 0;
+    char text[81];
+
+    strcpy(text, "+X.XXXXXXe+XX");
 
     /* Write sign */
-    strcpy(values.s[0], "+");
     if (value < 0.0) {
         value *= -1.0f;
-        strcpy(values.s[0], "-");
+        text[offset++] = '-';
     }
 
     /* Derive exponent */
@@ -71,14 +73,39 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value) {
     /* Derive significant digits */
     for (i = 5; i >= 0; i--) {
         digits[i] = norm_int % 10;
-        values.i[i] = digits[i];
         norm_int /= 10;
     }
 
-    values.f[0] = exp;
-    IecStringFormat(destination, size, 
-                    "sign: %s, significant digits: %i%i%i%i%i%i, "
-                    "exponent: %f", &values);
+    /* Write characters */
+    /* Use scientific notation */
+    notate = exp < -6 || 5 < exp;
+    /* Number of significant digits displayed */
+    count = 6 * (notate || exp > -2) + (exp + 7) * (!notate && exp < -1);
+    /* Number of leading zeros displayed */
+    zeros = (0 - exp) * (!notate && exp < 0);
+
+    do {
+        text[offset++] = '0' + digits[decimal] * !zeros;
+        decimal += !zeros;
+        zeros -= zeros > 0;
+    }
+    while (!notate && decimal <= exp);
+
+    text[offset++] = '.';
+
+    do {
+        text[offset++] = '0' + digits[decimal] * !zeros;
+        decimal += !zeros;
+        zeros -= zeros > 0;
+    }
+    while (decimal < count);
+
+    text[offset] = '\0';
+    if (notate) {
+        text[offset++] = 'e';
+        IecStringInteger(text + offset, sizeof(text) - offset, exp, 0, ' ');
+    }
+    IecStringCopy(destination, size, text);
 
     return 0;
 }
