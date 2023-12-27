@@ -11,67 +11,74 @@
  ******************************************************************************/
 
 #include "main.h"
-#include <float.h>
-
-/* Prototypes */
-int8_t GetFloatExponent(float value, int8_t exponent);
-float Pow10(int8_t exponent, float value);
 
 /* Convert floating point number to string */
 int32_t IecStringFloat(char *destination, uint32_t size, float value) {
     
     /* Local variables */
-    char sig_digits[7] = {0};
-    float temp;
-    int8_t exponent, i;
+    uint8_t digits[6] = {0};
+    float norm_val;
+    int32_t norm_int;
+    int8_t exp, i;
     IecStringFormatType values;
 
     /* Write sign */
+    strcpy(values.s[0], "+");
     if (value < 0.0) {
-        temp = -value;
+        value *= -1.0f;
         strcpy(values.s[0], "-");
     }
-    else {
-        temp = value;
-        strcpy(values.s[0], "+");
+
+    /* Derive exponent */
+    norm_val = value;
+    exp = 0;
+    while (norm_val) {
+        if (norm_val >= 10.0f) {
+            norm_val /= 10.0f;
+            exp++;
+            continue;
+        }
+        if (norm_val < 1.0f) {
+            norm_val *= 10.0f;
+            exp--;
+            continue;
+        }
+        break;
     }
 
-    /* Write significant digits */
-    exponent = GetFloatExponent(value, 0);
-    temp *= Pow10(5 - exponent, 1.0);
-	temp += 0.5;
+    /* Derive normalized value */
+    norm_val = value;
+    i = 5 - exp;
+    while (i) {
+        if (i > 0) {
+            norm_val *= 10.0f;
+            i--;
+            continue;
+        }
+        if (i < 0) {
+            norm_val /= 10.0f;
+            i++;
+            continue;
+        }
+        break;
+    }
+    norm_int = (int32_t)(norm_val + 0.5);
+    if (norm_int >= 1000000) {
+        norm_int /= 10;
+        exp++;
+    }
+
+    /* Derive significant digits */
     for (i = 5; i >= 0; i--) {
-        sig_digits[i] = (int32_t)(temp) % 10 + '0';
-        temp /= 10.0;
+        digits[i] = norm_int % 10;
+        values.i[i] = digits[i];
+        norm_int /= 10;
     }
-    strcpy(values.s[1], sig_digits);
 
-    values.i[0] = exponent;
-
+    values.f[0] = exp;
     IecStringFormat(destination, size, 
-                    "sign: %s, significant digits: %s, exponent: %i", &values);
+                    "sign: %s, significant digits: %i%i%i%i%i%i, "
+                    "exponent: %f", &values);
 
     return 0;
-}
-
-int8_t GetFloatExponent(float value, int8_t exponent) {
-    if (value == 0.0) return 0;
-    if (value < 0.0) value *= -1.0;
-    if (value >= 10.0) {
-        value /= 10.0;
-        return GetFloatExponent(value, ++exponent);
-    }
-    if (value + FLT_EPSILON < 1.0) {
-        value *= 10.0;
-        return GetFloatExponent(value, --exponent);
-    }
-    return exponent;
-}
-
-float Pow10(int8_t exponent, float value) {
-    if (exponent > 0)
-        return Pow10(--exponent, value * 10.0);
-    if (exponent < 0)
-        return Pow10(++exponent, value / 10.0);
-    return value;
 }
