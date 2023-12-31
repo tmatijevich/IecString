@@ -20,7 +20,8 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value) {
     /* Local variables */
     uint8_t digits[6] = {0};
     float norm_val;
-    int32_t norm_int, exp, i, offset = 0, count, notate, zeros, decimal = 0;
+    int32_t exp, i, offset = 0, count, notate, zeros, decimal = 0;
+    int32_t norm_int, norm_int_max;
     char text[81];
 
     strcpy(text, "+X.XXXXXXe+XX");
@@ -48,9 +49,17 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value) {
         break;
     }
 
+    /* Count characters */
+    /* Use scientific notation */
+    notate = exp < -6 || 5 < exp;
+    /* Number of significant digits displayed */
+    count = 6 * (notate || exp > -2) + (exp + 7) * (!notate && exp < -1);
+    /* Number of leading zeros displayed */
+    zeros = (0 - exp) * (!notate && exp < 0);
+
     /* Derive normalized value */
     norm_val = value;
-    i = 5 - exp;
+    i = count - 1 - exp;
     while (i) {
         if (i > 0) {
             norm_val *= 10.0f;
@@ -64,26 +73,32 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value) {
         }
         break;
     }
+
+    /* Derive maximum integer */
+    for (i = 0, norm_int_max = 1; i < count; i++)
+        norm_int_max *= 10;
+    
+    /* Round normalized integer and check rollover */
     norm_int = (int32_t)(norm_val + 0.5);
-    if (norm_int >= 1000000) {
-        norm_int /= 10;
+    if (norm_int >= norm_int_max) {
+        /* Rounded value exceeds maximum number of significant digits */
+        if (count == 6)
+            norm_int /= 10;
+        /* Write more significant digits */
+        else {
+            count++;
+            zeros -= zeros > 0;
+        }
         exp++;
     }
 
     /* Derive significant digits */
-    for (i = 5; i >= 0; i--) {
+    for (i = count - 1; i >= 0; i--) {
         digits[i] = norm_int % 10;
         norm_int /= 10;
     }
 
     /* Write characters */
-    /* Use scientific notation */
-    notate = exp < -6 || 5 < exp;
-    /* Number of significant digits displayed */
-    count = 6 * (notate || exp > -2) + (exp + 7) * (!notate && exp < -1);
-    /* Number of leading zeros displayed */
-    zeros = (0 - exp) * (!notate && exp < 0);
-
     do {
         text[offset++] = '0' + digits[decimal] * !zeros;
         decimal += !zeros;
