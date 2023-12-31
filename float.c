@@ -90,6 +90,8 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value) {
             zeros -= zeros > 0;
         }
         exp++;
+        /* Recalculate scientific notation flag */
+        notate = exp < -6 || 5 < exp;
     }
 
     /* Derive significant digits */
