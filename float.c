@@ -91,14 +91,16 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value) {
     }
     while (!notate && decimal <= exp);
 
-    text[offset++] = '.';
+    /* Place decimal if significant digits remain */
+    if (decimal < count)
+        text[offset++] = '.';
 
-    do {
+    /* Write remaining significant digits */
+    while (decimal < count) {
         text[offset++] = '0' + digits[decimal] * !zeros;
         decimal += !zeros;
         zeros -= zeros > 0;
     }
-    while (decimal < count);
 
     text[offset] = '\0';
     if (notate) {
