@@ -85,13 +85,11 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value) {
         if (count == 6)
             norm_int /= 10;
         /* Write more significant digits */
-        else {
-            count++;
-            zeros -= zeros > 0;
-        }
         exp++;
+        zeros -= zeros > 0 && (count < 6 || exp >= 0);
+        count += count < 6;
         /* Recalculate scientific notation flag */
-        notate = exp < -6 || 5 < exp;
+        notate = exp <= -6 || 5 < exp;
     }
 
     /* Derive significant digits */
