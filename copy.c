@@ -15,25 +15,28 @@
 /* Copy source to destination up to size of destination or source length */
 int32_t IecStringCopy(char *destination, uint32_t size, char *source) {
     
-    /* Verify parameters */
-    if (destination == NULL || source == NULL)
+    /* Gaurd null pointers */
+    if (!destination || !source)
         return IECSTRING_ERROR_NULL;
     
-    if (size == 0)
+    /* Check for zero size */
+    if (!size)
         return IECSTRING_ERROR_SIZE;
     
     if (Overlap(destination, size, source))
         return IECSTRING_ERROR_OVERLAP;
-        
-    /* Copy and decrement size first to ensure byte for null terminator */
-    while (--size && *source != '\0')
+    
+    /* Decrement size first to ensure byte for null terminator */
+    /* Copy characters */
+    while (--size && *source)
         *destination++ = *source++;
-        
-    /* Null terminator */
+    
+    /* Add null terminator */
     *destination = '\0';
     
-    /* Truncated if source characters remain and no bytes left */
-    return IECSTRING_WARNING_TRUNCATE * (*source != '\0' && size == 0);
+    /* Output is truncated is source characters remain after
+    writing size bytes to desitnation */
+    return IECSTRING_WARNING_TRUNCATE * (*source && !size);
 }
 
 /* Copy without safety checks for private use */
