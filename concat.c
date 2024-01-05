@@ -10,29 +10,51 @@
  *   released under the MIT license agreement.
  ******************************************************************************/
 
-#include "main.h"
+#include <IecString.h>
+#include <stdint.h>
+#include <string.h>
 
 /* Concatenate source to destination up to size of destination or source 
 length */
 int32_t IecStringConcat(char *destination, uint32_t size, char *source) {
     
-    /* Local variables */
-    uint32_t length;
-    
-    /* Verify parameters */
-    if (destination == NULL || source == NULL)
+    /* Gaurd null pointers */
+    if (!destination || !source)
         return IECSTRING_ERROR_NULL;
     
-    if (size == 0)
+    /* Check for zero size */
+    if (!size)
         return IECSTRING_ERROR_SIZE;
     
-    if (Overlap(destination, size, source))
+    /* Check if the size of destination overlaps the length of source */
+    size_t length = strlen(source);
+
+    /* Does destination's start overlap source's length */
+    int overlap = source <= destination && destination <= source + length;
+
+    /* Does destination's end overlap source's length */
+    overlap |= source <= destination + size - 1 && 
+                destination + size - 1 <= source + length;
+
+    /* Does destination's size contain source's length */
+    overlap |= destination < source && source + length < destination + size - 1;
+
+    if (overlap)
         return IECSTRING_ERROR_OVERLAP;
-        
-    /* Append size - 1 - length characters */
+
+    /* Read length of destination to subtract from size and shift pointer */
     length = strlen(destination);
-    strncat(destination, source, size - 1 - length);
+    size -= length;
+    destination += length;
+
+    /* Concatenate characters */
+    while (--size && *source)
+        *destination++ = *source++;
     
-    /* Truncated if combined length exceeds size */
-    return IECSTRING_WARNING_TRUNCATE * (length + strlen(source) > size - 1);
+    /* Add null terminator */
+    *destination = '\0';
+    
+    /* Output is truncated is source characters remain after
+    writing up to size bytes to desitnation */
+    return IECSTRING_WARNING_TRUNCATE * (*source && !size);
 }
