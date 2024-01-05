@@ -10,7 +10,11 @@
  *   released under the MIT license agreement.
  ******************************************************************************/
 
+#ifndef IECSTRING_STANDALONE
 #include <IecString.h>
+#else
+#include "type.h"
+#endif
 #include <stdint.h>
 #include <string.h>
 
