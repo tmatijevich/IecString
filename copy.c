@@ -17,6 +17,7 @@
 /* Copy source to destination up to size of destination or source length */
 int32_t IecStringCopy(char *destination, uint32_t size, char *source) {
     
+#ifndef IECSTRING_NOCHECK
     /* Gaurd null pointers */
     if (!destination || !source)
         return IECSTRING_ERROR_NULL;
@@ -40,6 +41,7 @@ int32_t IecStringCopy(char *destination, uint32_t size, char *source) {
 
     if (overlap)
         return IECSTRING_ERROR_OVERLAP;
+#endif
     
     /* Decrement size first to ensure byte for null terminator */
     /* Copy characters */

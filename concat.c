@@ -18,6 +18,7 @@
 length */
 int32_t IecStringConcat(char *destination, uint32_t size, char *source) {
     
+#ifndef IECSTRING_NOCHECK
     /* Gaurd null pointers */
     if (!destination || !source)
         return IECSTRING_ERROR_NULL;
@@ -41,6 +42,9 @@ int32_t IecStringConcat(char *destination, uint32_t size, char *source) {
 
     if (overlap)
         return IECSTRING_ERROR_OVERLAP;
+#else
+    size_t length;
+#endif
 
     /* Read length of destination to subtract from size and shift pointer */
     length = strlen(destination);
