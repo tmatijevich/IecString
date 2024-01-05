@@ -10,7 +10,9 @@
  *   released under the MIT license agreement.
  ******************************************************************************/
 
-#include "main.h"
+#include <IecString.h>
+#include <stdint.h>
+#include <string.h>
 
 /* Copy source to destination up to size of destination or source length */
 int32_t IecStringCopy(char *destination, uint32_t size, char *source) {
@@ -23,7 +25,20 @@ int32_t IecStringCopy(char *destination, uint32_t size, char *source) {
     if (!size)
         return IECSTRING_ERROR_SIZE;
     
-    if (Overlap(destination, size, source))
+    /* Check if the size of destination overlaps the length of source */
+    size_t length = strlen(source);
+
+    /* Does destination's start overlap source's length */
+    int overlap = source <= destination && destination <= source + length;
+
+    /* Does destination's end overlap source's length */
+    overlap |= source <= destination + size - 1 && 
+                destination + size - 1 <= source + length;
+
+    /* Does destination's size contain source's length */
+    overlap |= destination < source && source + length < destination + size - 1;
+
+    if (overlap)
         return IECSTRING_ERROR_OVERLAP;
     
     /* Decrement size first to ensure byte for null terminator */
