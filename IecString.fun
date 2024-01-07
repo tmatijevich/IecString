@@ -19,9 +19,9 @@ FUNCTION IecStringReplace : DINT (*Find in source and replace in destination*)
 	VAR_INPUT
 		destination : STRING[0]; (*Destination string*)
 		size : UDINT; (*Size of destination*)
+		source : STRING[0]; (*Source string*)
 		find : STRING[0]; (*Search string*)
 		replace : STRING[0]; (*Replace string*)
-		source : STRING[0]; (*Source string*)
 	END_VAR
 END_FUNCTION
 

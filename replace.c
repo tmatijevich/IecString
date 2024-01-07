@@ -22,8 +22,8 @@
 #define MIN(x,y) (((x) < (y)) ? (x) : (y))
 
 /* Find in source and replace in destination */
-int32_t IecStringReplace(char *destination, uint32_t size, char *find, 
-                        char *replace, char *source) {
+int32_t IecStringReplace(char *destination, uint32_t size, char *source, 
+                        char *find, char *replace) {
 #ifndef IECSTRING_NOCHECK
     /* Gaurd null pointers */
     if (!destination || !source || !find || !replace)
