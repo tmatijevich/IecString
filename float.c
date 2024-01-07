@@ -17,6 +17,46 @@
 /* Convert floating point number to string */
 int32_t IecStringFloat(char *destination, uint32_t size, float value) {
     
+    /* Gaurd null pointer */
+    if (!destination)
+        return IECSTRING_ERROR_NULL;
+
+    /* Check for insufficient size */
+    if (size < 7)
+        return IECSTRING_ERROR_SIZE;
+
+    /* Check for zeros, infinities, and illegal numbers */
+    int32_t raw = *(int32_t*)&value;
+    int32_t sign = raw >> 31;
+    int32_t exponent = raw >> 23 & 0xff;
+    int32_t mantissa = raw & 0x7fffff;
+
+    /* Write zero */
+    if (!sign && !exponent && !mantissa) {
+        strcpy(destination, "0");
+        return 0;
+    }
+    if (sign && !exponent && !mantissa) {
+        strcpy(destination, "-0");
+        return 0;
+    }
+
+    /* Write infinity */
+    if (!sign && exponent == 0xff && !mantissa) {
+        strcpy(destination, "inf");
+        return 0;
+    }
+    if (sign && exponent == 0xff && !mantissa) {
+        strcpy(destination, "-inf");
+        return 0;
+    }
+
+    /* Write "Not a Number" */
+    if (exponent == 0xff) {
+        strcpy(destination, "NaN");
+        return 0;
+    }
+
     /* Local variables */
     uint8_t digits[6] = {0};
     float norm_val;
