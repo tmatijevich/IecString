@@ -10,7 +10,12 @@
  *   released under the MIT license agreement.
  ******************************************************************************/
 
+#ifndef IECSTRING_STANDALONE
 #include <IecString.h>
+#else
+#include "type.h"
+#endif
+
 #include <stdint.h>
 #include <string.h>
 
@@ -27,27 +32,17 @@ int32_t IecStringConcat(char *destination, uint32_t size, char *source) {
     if (!size)
         return IECSTRING_ERROR_SIZE;
     
-    /* Check if the size of destination overlaps the length of source */
-    size_t length = strlen(source);
-
-    /* Does destination's start overlap source's length */
-    int overlap = source <= destination && destination <= source + length;
-
-    /* Does destination's end overlap source's length */
-    overlap |= source <= destination + size - 1 && 
-                destination + size - 1 <= source + length;
-
-    /* Does destination's size contain source's length */
-    overlap |= destination < source && source + length < destination + size - 1;
-
-    if (overlap)
+    /* Check if source overlaps destination size */
+    if (destination <= source && source < destination + size)
         return IECSTRING_ERROR_OVERLAP;
-#else
-    size_t length;
+
+    /* Check if destination overlaps source length */
+    if (source <= destination && destination <= source + strlen(source))
+        return IECSTRING_ERROR_OVERLAP;
 #endif
 
     /* Read length of destination to subtract from size and shift pointer */
-    length = strlen(destination);
+    size_t length = strlen(destination);
     size -= length;
     destination += length;
 
