@@ -10,9 +10,15 @@
  *   released under the MIT license agreement.
  ******************************************************************************/
 
+#ifndef IECSTRING_STANDALONE
 #include <IecString.h>
-#include "stdint.h"
-#include "string.h"
+#else
+#include "type.h"
+#endif
+
+#include <stdint.h>
+#include <string.h>
+#include <math.h>
 
 /* Convert floating point number to string */
 int32_t IecStringFloat(char *destination, uint32_t size, float value) {
@@ -22,7 +28,7 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value) {
         return IECSTRING_ERROR_NULL;
 
     /* Check for insufficient size */
-    if (size < 7)
+    if (size < 13)
         return IECSTRING_ERROR_SIZE;
 
     /* Check for zeros, infinities, and illegal numbers */
@@ -56,6 +62,38 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value) {
         strcpy(destination, "NaN");
         return 0;
     }
+
+    /* Write sign */
+    // int i = 0;
+    // if (sign) {
+    //     destination[i++] = '-';
+    //     value *= -1.0f;
+    // }
+
+    /* Find the base 10 exponent */
+    int exp1 = (int)floorf(log10f(value));
+
+    /* Use scientific notation if exponent > 10^5 or 10^-6 > exponent */
+    int sci = exp1 > 5 || -6 > exp1;
+
+    /* Count the number of significant digits displayed up to 6 */
+    /* Always display 6 digits unless the exponent is between -2 and -6 */
+    int count1 = -2 >= exp1 && exp1 >= -6 ? exp1 + 7 : 6;
+
+    /* Count leading zeros */
+    /* Display leading zeros if exponent is between -1 and -6 */
+    int zeros1 = -1 >= exp1 && exp1 >= -6 ? -exp1 : 0;
+
+    /* Normalize the value so all significant digits 
+    are before the decimal point */
+    float norm_val1 = value / powf(10.0f, (float)(exp1 - count1 + 1));
+
+    /* Calculate the maximum normalized value based on count and store in int */
+    int32_t norm_int_max1 = (int32_t)powf(10.0f, (float)count1);
+
+    /* Calculate the normalized value based on count
+    and round to the nearest whole number */
+    int32_t norm_int1 = (int32_t)round(norm_val1);
 
     /* Local variables */
     uint8_t digits[6] = {0};
