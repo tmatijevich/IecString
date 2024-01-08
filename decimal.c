@@ -42,44 +42,42 @@ int32_t IecStringDecimal(char *destination, uint32_t size, int32_t value,
         return 0;
     }
 
-    /* Write sign */
-    char temp[MAX_BYTE];
-    unsigned int i = 0;
-    if (value < 0) {
-        temp[i++] = '-';
-        value *= -1;
-    }
-    
-    /* Find number of digits */
-    int32_t norm_val = value;
-    unsigned int num_digit = 0;
+    /* Find sign and magnitude */
+    unsigned int is_signed = value < 0 ? 1 : 0;
+    value = is_signed ? -value : value;
+
+    /* Find digits */
+    unsigned int num_digits = 0;
+    unsigned int digits[MAX_DIGIT];
     do {
-        norm_val /= 10;
-        num_digit++;
+        digits[num_digits++] = value % 10;
+        value /= 10;
     }
-    while (norm_val);
+    while (value);
 
     /* Saturate width */
-    /* num_digit + i <= width <= MAX_WIDTH*/
-    width = MIN(MAX(num_digit + i, width), MAX_WIDTH);
+    /* num_digits + is_signed <= width <= MAX_WIDTH*/
+    width = MIN(MAX(num_digits + is_signed, width), MAX_WIDTH);
     if (size < width + 1) return IECSTRING_ERROR_SIZE;
+
+    /* Write sign */
+    if (is_signed)
+        *destination++ = '-';
 
     /* Write pads */
     /* ' ' <= pad <= '~' */
     pad = MIN(MAX(' ', pad), '~');
-    while (width - num_digit - i)
-        temp[i++] = pad;
-
-    /* Write digits */
-    i = 0;
-    while (num_digit - i) {
-        temp[width - i - 1] = value % 10 + '0';
-        value /= 10;
-        i++;
+    while (width - num_digits - is_signed) {
+        *destination++ = pad;
+        width--;
     }
 
-    /* Complete temp string, and copy */
-    temp[width] = '\0';
-    strcpy(destination, temp);
+    /* Write digits */
+    while (num_digits) 
+        *destination++ = '0' + digits[--num_digits];
+
+    /* Add null terminator */
+    *destination = '\0';
+
     return 0;
 }
