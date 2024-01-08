@@ -28,6 +28,7 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value) {
         return IECSTRING_ERROR_NULL;
 
     /* Check for insufficient size */
+    /* +X.XXXXXe+XX */
     if (size < 13)
         return IECSTRING_ERROR_SIZE;
 
@@ -64,143 +65,84 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value) {
     }
 
     /* Write sign */
-    // int i = 0;
-    // if (sign) {
-    //     destination[i++] = '-';
-    //     value *= -1.0f;
-    // }
+    if (sign) {
+        *destination++ = '-';
+        value *= -1.0f;
+    }
 
     /* Find the base 10 exponent */
-    int exp1 = (int)floorf(log10f(value));
+    int exp = (int)floorf(log10f(value));
 
     /* Use scientific notation if exponent > 10^5 or 10^-6 > exponent */
-    int sci = exp1 > 5 || -6 > exp1;
+    int sci = exp > 5 || -6 > exp;
 
     /* Count the number of significant digits displayed up to 6 */
     /* Always display 6 digits unless the exponent is between -2 and -6 */
-    int count1 = -2 >= exp1 && exp1 >= -6 ? exp1 + 7 : 6;
+    int count = -2 >= exp && exp >= -6 ? exp + 7 : 6;
 
     /* Count leading zeros */
     /* Display leading zeros if exponent is between -1 and -6 */
-    int zeros1 = -1 >= exp1 && exp1 >= -6 ? -exp1 : 0;
+    int zeros = -1 >= exp && exp >= -6 ? -exp : 0;
 
     /* Normalize the value so all significant digits 
     are before the decimal point */
-    float norm_val1 = value / powf(10.0f, (float)(exp1 - count1 + 1));
+    float norm_val = value / powf(10.0f, (float)(exp - count + 1));
 
     /* Calculate the maximum normalized value based on count and store in int */
-    int32_t norm_int_max1 = (int32_t)powf(10.0f, (float)count1);
+    int32_t norm_int_max = (int32_t)powf(10.0f, (float)count);
 
     /* Calculate the normalized value based on count
     and round to the nearest whole number */
-    int32_t norm_int1 = (int32_t)round(norm_val1);
-
-    /* Local variables */
-    uint8_t digits[6] = {0};
-    float norm_val;
-    int32_t exp, i, offset = 0, count, notate, zeros, decimal = 0;
-    int32_t norm_int, norm_int_max;
-    char text[81];
-
-    strcpy(text, "+X.XXXXXXe+XX");
-
-    /* Write sign */
-    if (value < 0.0) {
-        value *= -1.0f;
-        text[offset++] = '-';
-    }
-
-    /* Derive exponent */
-    norm_val = value;
-    exp = 0;
-    while (norm_val) {
-        if (norm_val >= 10.0f) {
-            norm_val /= 10.0f;
-            exp++;
-            continue;
-        }
-        if (norm_val < 1.0f) {
-            norm_val *= 10.0f;
-            exp--;
-            continue;
-        }
-        break;
-    }
-
-    /* Count characters */
-    /* Use scientific notation */
-    notate = exp < -6 || 5 < exp;
-    /* Number of significant digits displayed */
-    count = 6 * (notate || exp > -2) + (exp + 7) * (!notate && exp < -1);
-    /* Number of leading zeros displayed */
-    zeros = (0 - exp) * (!notate && exp < 0);
-
-    /* Derive normalized value */
-    norm_val = value;
-    i = count - 1 - exp;
-    while (i) {
-        if (i > 0) {
-            norm_val *= 10.0f;
-            i--;
-            continue;
-        }
-        if (i < 0) {
-            norm_val /= 10.0f;
-            i++;
-            continue;
-        }
-        break;
-    }
-
-    /* Derive maximum integer */
-    for (i = 0, norm_int_max = 1; i < count; i++)
-        norm_int_max *= 10;
+    int32_t norm_int = (int32_t)round(norm_val);
     
-    /* Round normalized integer and check rollover */
-    norm_int = (int32_t)(norm_val + 0.5);
+    /* Check for rollover after rounding */
     if (norm_int >= norm_int_max) {
-        /* Rounded value exceeds maximum number of significant digits */
-        if (count == 6)
-            norm_int /= 10;
-        /* Write more significant digits */
+        /* Re-normalize the normalized value if exceeding 6 digits */
+        norm_int = count == 6 ? norm_int / 10 : norm_int;
+        /* Increase the exponent */
         exp++;
-        zeros -= zeros > 0 && (count < 6 || exp >= 0);
+        /* Decrease number of zeros if less than 6 digits 
+        or exponent is now zero */
+        zeros -= zeros > 0 && (count < 6 || exp == 0);
+        /* Increase the number of digits up to 6 */
         count += count < 6;
-        /* Recalculate scientific notation flag */
-        notate = exp <= -6 || 5 < exp;
+        /* Re-evaluate scientific notation including rollovers to 10^-6 */
+        sci = exp > 5 || -6 >= exp;
     }
 
-    /* Derive significant digits */
-    for (i = count - 1; i >= 0; i--) {
-        digits[i] = norm_int % 10;
+    /* Find significant digits */
+    int digits[6] = {0};
+    int d;
+    for (d = count - 1; d >= 0; d--) {
+        digits[d] = norm_int % 10;
         norm_int /= 10;
     }
 
-    /* Write characters */
+    /* Write zeros or digits before decimal point */
+    d = 0;
     do {
-        text[offset++] = '0' + digits[decimal] * !zeros;
-        decimal += !zeros;
+        *destination++ = '0' + digits[d] * !zeros;
+        d += !zeros;
         zeros -= zeros > 0;
     }
-    while (!notate && decimal <= exp);
+    while (!sci && d <= exp);
 
     /* Place decimal if significant digits remain */
-    if (decimal < count)
-        text[offset++] = '.';
+    if (d < count)
+        *destination++ = '.';
 
-    /* Write remaining significant digits */
-    while (decimal < count) {
-        text[offset++] = '0' + digits[decimal] * !zeros;
-        decimal += !zeros;
+    /* Write zeros or digits after decimal point */
+    while (d < count) {
+        *destination++ = '0' + digits[d] * !zeros;
+        d += !zeros;
         zeros -= zeros > 0;
     }
 
-    text[offset] = '\0';
-    if (notate) {
-        text[offset++] = 'e';
-        IecStringInteger(text + offset, sizeof(text) - offset, exp, 0, ' ');
+    *destination = '\0';
+    if (sci) {
+        *destination++ = 'e';
+        IecStringInteger(destination, size - 9, exp, 0, ' ');
     }
-    IecStringCopy(destination, size, text);
 
     return 0;
 }
