@@ -10,7 +10,17 @@
  *   released under the MIT license agreement.
  ******************************************************************************/
 
-#include "main.h"
+#ifndef IECSTRING_STANDALONE
+#include <IecString.h>
+#else
+#include "type.h"
+#endif
+
+#include <stdint.h>
+#include <string.h>
+
+#define MIN(x,y) (((x) < (y)) ? (x) : (y))
+#define MAX(x,y) (((x) > (y)) ? (x) : (y))
 
 /* Maximum of 12 bytes: 10 digits, 1 sign, and null terminator */
 #define MAX_BYTE 12U
@@ -19,14 +29,9 @@
 
 int32_t IecStringInteger(char *destination, uint32_t size, int32_t value, 
                         uint8_t width, unsigned char pad) {
-    
-    /* Local variables */
-    char temp_string[MAX_BYTE];
-    uint8_t i = 0, num_digit = 0;
-    int32_t temp_value;
 
-    /* Verify parameters */
-    if (destination == NULL)
+    /* Gaurd null pointers */
+    if (!destination)
         return IECSTRING_ERROR_NULL;
 
     /* Signed exception */
@@ -38,18 +43,21 @@ int32_t IecStringInteger(char *destination, uint32_t size, int32_t value,
     }
 
     /* Write sign */
+    char temp[MAX_BYTE];
+    unsigned int i = 0;
     if (value < 0) {
-        temp_string[i++] = '-';
+        temp[i++] = '-';
         value *= -1;
     }
     
     /* Find number of digits */
-    temp_value = value;
+    int32_t norm_val = value;
+    unsigned int num_digit = 0;
     do {
-        temp_value /= 10;
+        norm_val /= 10;
         num_digit++;
     }
-    while (temp_value);
+    while (norm_val);
 
     /* Saturate width */
     /* num_digit + i <= width <= MAX_WIDTH*/
@@ -60,18 +68,18 @@ int32_t IecStringInteger(char *destination, uint32_t size, int32_t value,
     /* ' ' <= pad <= '~' */
     pad = MIN(MAX(' ', pad), '~');
     while (width - num_digit - i)
-        temp_string[i++] = pad;
+        temp[i++] = pad;
 
     /* Write digits */
     i = 0;
     while (num_digit - i) {
-        temp_string[width - i - 1] = value % 10 + '0';
+        temp[width - i - 1] = value % 10 + '0';
         value /= 10;
         i++;
     }
 
     /* Complete temp string, and copy */
-    temp_string[width] = '\0';
-    strcpy(destination, temp_string);
+    temp[width] = '\0';
+    strcpy(destination, temp);
     return 0;
 }

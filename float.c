@@ -86,7 +86,7 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value) {
 
     /* Normalize the value so all significant digits 
     are before the decimal point */
-    float norm_val = value / powf(10.0f, (float)(exp - count + 1));
+    float norm_val = value * powf(10.0f, (float)(count - 1 - exp));
 
     /* Calculate the maximum normalized value based on count and store in int */
     int32_t norm_int_max = (int32_t)powf(10.0f, (float)count);
