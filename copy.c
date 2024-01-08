@@ -30,27 +30,28 @@ int32_t IecStringCopy(char *destination, uint32_t size, char *source) {
     /* Check for zero size */
     if (!size)
         return IECSTRING_ERROR_SIZE;
-    
+#endif 
+
+    size_t source_length = strlen(source);
+
+#ifndef IECSTRING_NOCHECK
     /* Check if source overlaps destination size */
     if (destination <= source && source < destination + size)
         return IECSTRING_ERROR_OVERLAP;
 
     /* Check if destination overlaps source length */
-    if (source <= destination && destination <= source + strlen(source))
+    if (source <= destination && destination <= source + source_length)
         return IECSTRING_ERROR_OVERLAP;
 #endif
     
-    /* Decrement size first to ensure byte for null terminator */
-    /* Copy characters */
-    while (--size && *source)
-        *destination++ = *source++;
+    /* Copy size - 1 characters */
+    strncpy(destination, source, size - 1);
     
     /* Add null terminator */
-    *destination = '\0';
+    destination[size - 1] = '\0';
     
-    /* Output is truncated is source characters remain after
-    writing size bytes to desitnation */
-    return IECSTRING_WARNING_TRUNCATE * (*source && !size);
+    /* Warn about truncation if source length exceeds size */
+    return IECSTRING_WARNING_TRUNCATE * (source_length > size - 1);
 }
 
 /* Copy without safety checks for private use */

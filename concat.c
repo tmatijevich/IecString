@@ -31,29 +31,30 @@ int32_t IecStringConcat(char *destination, uint32_t size, char *source) {
     /* Check for zero size */
     if (!size)
         return IECSTRING_ERROR_SIZE;
-    
+#endif 
+
+    size_t source_length = strlen(source);
+
+#ifndef IECSTRING_NOCHECK
     /* Check if source overlaps destination size */
     if (destination <= source && source < destination + size)
         return IECSTRING_ERROR_OVERLAP;
 
     /* Check if destination overlaps source length */
-    if (source <= destination && destination <= source + strlen(source))
+    if (source <= destination && destination <= source + source_length)
         return IECSTRING_ERROR_OVERLAP;
 #endif
 
-    /* Read length of destination to subtract from size and shift pointer */
-    size_t length = strlen(destination);
-    size -= length;
-    destination += length;
+    size_t destination_length = strlen(destination);
 
-    /* Concatenate characters */
-    while (--size && *source)
-        *destination++ = *source++;
-    
+    /* Append size - 1 - destination_length characters */
+    strncpy(destination + destination_length, source, 
+            size - 1 - destination_length);
+
     /* Add null terminator */
-    *destination = '\0';
+    destination[size - 1] = '\0';
     
-    /* Output is truncated is source characters remain after
-    writing up to size bytes to desitnation */
-    return IECSTRING_WARNING_TRUNCATE * (*source && !size);
+    /* Warn about truncation if source length exceeds size */
+    return IECSTRING_WARNING_TRUNCATE * 
+            (source_length > size - 1 - destination_length);
 }
