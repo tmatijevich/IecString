@@ -64,7 +64,7 @@ int32_t IecStringFormat(char *destination, uint32_t size, char *source,
                 
             case 'i':
                 if (count_int <= IECSTRING_FORMAT_INDEX)
-                    IecStringInteger(destination, bytes_remaining + 1, 
+                    IecStringDecimal(destination, bytes_remaining + 1, 
                         values->i[count_int++], 0, 0);
                 break;
                 

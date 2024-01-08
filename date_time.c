@@ -92,11 +92,11 @@ uint32_t FormatDateTimeToken(char *destination, uint32_t bytes_remaining,
         case 0:
             break;
         case 2:
-            IecStringInteger(destination, bytes_remaining, 
+            IecStringDecimal(destination, bytes_remaining, 
                             date_time.year % 100, 2, 0);
             return match;
         case 4:
-            IecStringInteger(destination, bytes_remaining, date_time.year, 4, 0);
+            IecStringDecimal(destination, bytes_remaining, date_time.year, 4, 0);
             return match;
         default:
             return match;
@@ -111,7 +111,7 @@ uint32_t FormatDateTimeToken(char *destination, uint32_t bytes_remaining,
             break;
         case 1:
         case 2:
-            IecStringInteger(destination, bytes_remaining, 
+            IecStringDecimal(destination, bytes_remaining, 
                             date_time.month, match, 0);
             return match;
         case 3:
@@ -134,7 +134,7 @@ uint32_t FormatDateTimeToken(char *destination, uint32_t bytes_remaining,
             break;
         case 1:
         case 2:
-            IecStringInteger(destination, bytes_remaining, 
+            IecStringDecimal(destination, bytes_remaining, 
                             date_time.day, match, 0);
             return match;
         case 3:
@@ -156,7 +156,7 @@ uint32_t FormatDateTimeToken(char *destination, uint32_t bytes_remaining,
             break;
         case 1:
         case 2:
-            IecStringInteger(destination, bytes_remaining, 
+            IecStringDecimal(destination, bytes_remaining, 
                             date_time.hour, match, 0);
             return match;
         default:
@@ -170,7 +170,7 @@ uint32_t FormatDateTimeToken(char *destination, uint32_t bytes_remaining,
             break;
         case 1:
         case 2:
-            IecStringInteger(destination, bytes_remaining, 
+            IecStringDecimal(destination, bytes_remaining, 
                             date_time.hour % 12, match, 0);
             return match;
         default:
@@ -184,7 +184,7 @@ uint32_t FormatDateTimeToken(char *destination, uint32_t bytes_remaining,
             break;
         case 1:
         case 2:
-            IecStringInteger(destination, bytes_remaining, 
+            IecStringDecimal(destination, bytes_remaining, 
                             date_time.minute, match, 0);
             return match;
         default:
@@ -198,7 +198,7 @@ uint32_t FormatDateTimeToken(char *destination, uint32_t bytes_remaining,
             break;
         case 1:
         case 2:
-            IecStringInteger(destination, bytes_remaining, 
+            IecStringDecimal(destination, bytes_remaining, 
                             date_time.second, match, 0);
             return match;
         default:
@@ -225,11 +225,11 @@ uint32_t FormatDateTimeToken(char *destination, uint32_t bytes_remaining,
         case 0:
             break;
         case 2:
-            IecStringInteger(destination, bytes_remaining,
+            IecStringDecimal(destination, bytes_remaining,
                             date_time.millisec / 10, match, 0);
             return match;
         case 3:
-            IecStringInteger(destination, bytes_remaining,
+            IecStringDecimal(destination, bytes_remaining,
                             date_time.millisec, match, 0);
             return match;
         default:

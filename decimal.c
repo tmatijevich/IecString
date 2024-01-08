@@ -1,12 +1,12 @@
 /*******************************************************************************
- * File: integer.c
+ * File: decimal.c
  * Created: 2022-09-20
  * 
  * Authors: 
  *   Tyler Matijevich
  * 
  * License:
- *   This file integer.c is part of the IecString project 
+ *   This file decimal.c is part of the IecString project 
  *   released under the MIT license agreement.
  ******************************************************************************/
 
@@ -27,7 +27,7 @@
 #define MAX_WIDTH 11U
 #define MAX_DIGIT 10U
 
-int32_t IecStringInteger(char *destination, uint32_t size, int32_t value, 
+int32_t IecStringDecimal(char *destination, uint32_t size, int32_t value, 
                         uint8_t width, unsigned char pad) {
 
     /* Gaurd null pointers */

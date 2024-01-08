@@ -141,7 +141,7 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value) {
     *destination = '\0';
     if (sci) {
         *destination++ = 'e';
-        IecStringInteger(destination, size - 9, exp, 0, ' ');
+        IecStringDecimal(destination, size - 9, exp, 0, ' ');
     }
 
     return 0;
