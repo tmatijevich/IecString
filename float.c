@@ -33,10 +33,10 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value) {
         return IECSTRING_ERROR_SIZE;
 
     /* Check for zeros, infinities, and illegal numbers */
-    int32_t raw = *(int32_t*)&value;
-    int32_t sign = raw >> 31;
-    int32_t exponent = raw >> 23 & 0xff;
-    int32_t mantissa = raw & 0x7fffff;
+    uint32_t raw = *(uint32_t*)&value;
+    uint32_t sign = raw >> 31;
+    uint32_t exponent = raw >> 23 & 0xff;
+    uint32_t mantissa = raw & 0x7fffff;
 
     /* Write zero */
     if (!sign && !exponent && !mantissa) {
@@ -86,14 +86,19 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value) {
 
     /* Normalize the value so all significant digits 
     are before the decimal point */
-    float norm_val = value * powf(10.0f, (float)(count - 1 - exp));
+    float norm_val = 1.0f;
+    for (int i = count - 1 - exp; i != 0; i = i > 0 ? i - 1 : i + 1)
+        norm_val *= 10.0f * (i > 0) + 0.1f * (i < 0);
+    norm_val *= value;
 
     /* Calculate the maximum normalized value based on count and store in int */
-    int32_t norm_int_max = (int32_t)powf(10.0f, (float)count);
+    int32_t norm_int_max = 1;
+    for (int i = 0; i < count; i++)
+        norm_int_max *= 10;
 
     /* Calculate the normalized value based on count
     and round to the nearest whole number */
-    int32_t norm_int = (int32_t)round(norm_val);
+    int32_t norm_int = (int32_t)roundf(norm_val);
     
     /* Check for rollover after rounding */
     if (norm_int >= norm_int_max) {
