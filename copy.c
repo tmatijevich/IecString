@@ -19,6 +19,8 @@
 #include <stdint.h>
 #include <string.h>
 
+#define MIN(x,y) (((x) < (y)) ? (x) : (y))
+
 /* Copy source to destination up to size of destination or source length */
 int32_t IecStringCopy(char *destination, uint32_t size, char *source) {
     
@@ -30,7 +32,7 @@ int32_t IecStringCopy(char *destination, uint32_t size, char *source) {
     /* Check for zero size */
     if (!size)
         return IECSTRING_ERROR_SIZE;
-#endif 
+#endif
 
     size_t source_length = strlen(source);
 
@@ -44,13 +46,14 @@ int32_t IecStringCopy(char *destination, uint32_t size, char *source) {
         return IECSTRING_ERROR_OVERLAP;
 #endif
     
-    /* Copy size - 1 characters */
-    strncpy(destination, source, size - 1);
+    /* Copy minimum characters */
+    size_t min_chars = MIN(size - 1, source_length);
+    strncpy(destination, source, min_chars);
     
     /* Add null terminator */
-    destination[size - 1] = '\0';
+    destination[min_chars] = '\0';
     
-    /* Warn about truncation if source length exceeds size */
+    /* Warn if truncated when source length exceeds size */
     return IECSTRING_WARNING_TRUNCATE * (source_length > size - 1);
 }
 

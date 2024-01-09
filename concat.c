@@ -19,6 +19,8 @@
 #include <stdint.h>
 #include <string.h>
 
+#define MIN(x,y) (((x) < (y)) ? (x) : (y))
+
 /* Concatenate source to destination up to size of destination or source 
 length */
 int32_t IecStringConcat(char *destination, uint32_t size, char *source) {
@@ -45,16 +47,15 @@ int32_t IecStringConcat(char *destination, uint32_t size, char *source) {
         return IECSTRING_ERROR_OVERLAP;
 #endif
 
+    /* Append minimum characters */
     size_t destination_length = strlen(destination);
-
-    /* Append size - 1 - destination_length characters */
-    strncpy(destination + destination_length, source, 
-            size - 1 - destination_length);
+    size_t min_chars = MIN(size - 1 - destination_length, source_length);
+    strncpy(destination + destination_length, source, min_chars);
 
     /* Add null terminator */
-    destination[size - 1] = '\0';
+    destination[destination_length + min_chars] = '\0';
     
-    /* Warn about truncation if source length exceeds size */
+    /* Warn if truncated when source length exceeds size */
     return IECSTRING_WARNING_TRUNCATE * 
             (source_length > size - 1 - destination_length);
 }
