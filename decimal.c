@@ -34,10 +34,18 @@ int32_t IecStringDecimal(char *destination, uint32_t size, int32_t value,
     if (!destination)
         return IECSTRING_ERROR_NULL;
 
+    /* Check for zero size */
+    if (!size)
+        return IECSTRING_ERROR_SIZE;
+
     /* Signed exception */
     if (value == INT32_MIN) {
         /* Do not truncate if whole number cannot fit */
-        if (size < MAX_BYTE) return IECSTRING_ERROR_SIZE;
+        if (size < MAX_BYTE) {
+            /* Clear destination */
+            *destination = '\0';
+            return IECSTRING_ERROR_SIZE;
+        }
         strcpy(destination, "-2147483648");
         return 0;
     }
@@ -58,7 +66,11 @@ int32_t IecStringDecimal(char *destination, uint32_t size, int32_t value,
     /* Saturate width */
     /* num_digits + is_signed <= width <= MAX_WIDTH*/
     width = MIN(MAX(num_digits + is_signed, width), MAX_WIDTH);
-    if (size < width + 1) return IECSTRING_ERROR_SIZE;
+    if (size < width + 1) {
+        /* Clear destination */
+        *destination = '\0';
+        return IECSTRING_ERROR_SIZE;
+    }
 
     /* Write sign */
     if (is_signed)

@@ -27,10 +27,17 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value) {
     if (!destination)
         return IECSTRING_ERROR_NULL;
 
+    /* Check for zero size */
+    if (!size)
+        return IECSTRING_ERROR_SIZE;
+    
     /* Check for insufficient size */
     /* +X.XXXXXe+XX */
-    if (size < 13)
+    if (size < 13) {
+        /* Clear destination */
+        *destination = '\0';
         return IECSTRING_ERROR_SIZE;
+    }
 
     /* Check for zeros, infinities, and illegal numbers */
     uint32_t raw = *(uint32_t*)&value;

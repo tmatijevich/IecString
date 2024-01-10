@@ -79,7 +79,9 @@ int32_t IecStringFormat(char *destination, uint32_t size, char *source,
                                 (float)values->f[count_float++]);
                 break;
                 
+            /* Integer/decimal */
             case 'i':
+            case 'd':
                 if (count_int > IECSTRING_FORMAT_INDEX)
                     break;
 

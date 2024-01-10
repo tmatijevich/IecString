@@ -24,7 +24,7 @@
 /* Find in source and replace in destination */
 int32_t IecStringReplace(char *destination, uint32_t size, char *source, 
                         char *find, char *replace) {
-#ifndef IECSTRING_NOCHECK
+
     /* Gaurd null pointers */
     if (!destination || !source || !find || !replace)
         return IECSTRING_ERROR_NULL;
@@ -32,14 +32,12 @@ int32_t IecStringReplace(char *destination, uint32_t size, char *source,
     /* Check for zero size*/
     if (!size)
         return IECSTRING_ERROR_SIZE;
-#endif
 
     /* Store lengths */
     size_t source_length = strlen(source);
     size_t find_length = strlen(find);
     size_t replace_length = strlen(replace);
-    
-#ifndef IECSTRING_NOCHECK
+
     /* Check if source overlaps destination size */
     if (destination <= source && source < destination + size)
         return IECSTRING_ERROR_OVERLAP;
@@ -63,7 +61,6 @@ int32_t IecStringReplace(char *destination, uint32_t size, char *source,
     /* Check if destination overlaps replace length */
     if (replace <= destination && destination <= replace + replace_length)
         return IECSTRING_ERROR_OVERLAP;
-#endif
 
     /* Find and replace, otherwise copy */
     uint32_t i = 0;
