@@ -24,7 +24,6 @@
 /* Copy source to destination up to size of destination or source length */
 int32_t IecStringCopy(char *destination, uint32_t size, char *source) {
     
-#ifndef IECSTRING_NOCHECK
     /* Gaurd null pointers */
     if (!destination || !source)
         return IECSTRING_ERROR_NULL;
@@ -32,26 +31,27 @@ int32_t IecStringCopy(char *destination, uint32_t size, char *source) {
     /* Check for zero size */
     if (!size)
         return IECSTRING_ERROR_SIZE;
-#endif
 
-    size_t source_length = strlen(source);
-
-#ifndef IECSTRING_NOCHECK
     /* Check if source overlaps destination size */
     if (destination <= source && source < destination + size)
         return IECSTRING_ERROR_OVERLAP;
 
     /* Check if destination overlaps source length */
+    size_t source_length = strlen(source);
     if (source <= destination && destination <= source + source_length)
         return IECSTRING_ERROR_OVERLAP;
-#endif
+
+    /* Performance considerations:
+    strncpy performed better than while loop
+    strncpy performed better than strncat
+    */
     
-    /* Copy minimum characters */
-    size_t min_chars = MIN(size - 1, source_length);
-    strncpy(destination, source, min_chars);
+    /* Copy the safe and optimal number of characters */
+    size_t min_char_count = MIN(size - 1, source_length);
+    strncpy(destination, source, min_char_count);
     
     /* Add null terminator */
-    destination[min_chars] = '\0';
+    destination[min_char_count] = '\0';
     
     /* Warn if truncated when source length exceeds size */
     return IECSTRING_WARNING_TRUNCATE * (source_length > size - 1);
