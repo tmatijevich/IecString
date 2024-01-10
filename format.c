@@ -10,30 +10,44 @@
  *   released under the MIT license agreement.
  ******************************************************************************/
 
-#include "main.h"
+#ifndef IECSTRING_STANDALONE
+#include <IecString.h>
+#else
+#include "type.h"
+int32_t IecStringCopy(char *destination, uint32_t size, char *source);
+int32_t IecStringFloat(char *destination, uint32_t size, float value);
+int32_t IecStringDecimal(char *destination, uint32_t size, int32_t value, 
+                        uint8_t width, unsigned char pad);
+#endif
+
+#include <stdint.h>
+#include <string.h>
 
 /* Format string with runtime data */
 int32_t IecStringFormat(char *destination, uint32_t size, char *source, 
                         IecStringFormatType *values) {
     
-    /* Local variables */
-    const char bool_text[][6] = {"FALSE", "TRUE"};
-    /* Floats: [<+->]1.23456[e<+->12] = 12 characters + null terminator */
-    /* Longs: -2147483648 to 2147483647 = 11 characters + null terminator */
-    char number_text[13];
-    uint8_t count_bool = 0, count_float = 0, count_int = 0, count_string = 0;
-    uint32_t length, bytes_remaining = size;
-    
-    /* Verify parameters */
-    if (destination == NULL || source == NULL || values == NULL)
+    /* Gaurd null pointers */
+    if (!destination || !source || !values)
         return IECSTRING_ERROR_NULL;
-    
-    if (size == 0)
+
+    /* Check for zero size */
+    if (!size)
         return IECSTRING_ERROR_SIZE;
-    
-    if (Overlap(destination, size, source))
+
+    /* Check if source overlaps destination size */
+    if (destination <= source && source < destination + size)
+        return IECSTRING_ERROR_OVERLAP;
+
+    /* Check if destination overlaps source length */
+    if (source <= destination && destination <= source + strlen(source))
         return IECSTRING_ERROR_OVERLAP;
         
+    /* Local variables */
+    int count_bool = 0, count_float = 0, count_int = 0, count_string = 0;
+    uint32_t bytes_remaining = size;
+    size_t length;
+
     /* Format each character from source */
     while (*source && bytes_remaining > 1) {
         /* Directly copy source character if it is not a specifier */
