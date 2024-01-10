@@ -21,7 +21,6 @@
     <File Description="Format date/time string">date_time.c</File>
   </Files>
   <Dependencies>
-    <Dependency ObjectName="AsBrStr" />
     <Dependency ObjectName="astime" />
   </Dependencies>
 </Library>
