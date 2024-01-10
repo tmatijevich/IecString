@@ -22,7 +22,7 @@ int32_t IecStringFormat(char *destination, uint32_t size, char *source,
     /* Longs: -2147483648 to 2147483647 = 11 characters + null terminator */
     char number_text[13];
     uint8_t count_bool = 0, count_float = 0, count_int = 0, count_string = 0;
-    uint32_t length, bytes_remaining = size - 1;
+    uint32_t length, bytes_remaining = size;
     
     /* Verify parameters */
     if (destination == NULL || source == NULL || values == NULL)
@@ -34,48 +34,55 @@ int32_t IecStringFormat(char *destination, uint32_t size, char *source,
     if (Overlap(destination, size, source))
         return IECSTRING_ERROR_OVERLAP;
         
-    /* Format */
-    while (*source != '\0' && bytes_remaining) {
-        
-        /* Copy if no specifier */
+    /* Format each character from source */
+    while (*source && bytes_remaining > 1) {
+        /* Directly copy source character if it is not a specifier */
         if (*source != '%') {
             *destination++ = *source++;
             bytes_remaining--;
             continue;
         }
 
-        /* Default to zero length */
+        /* Force string length of zero if nothing is written */
         *destination = '\0';
         
         switch (*(++source)) {
             case 'b':
-                if (count_bool <= IECSTRING_FORMAT_INDEX)
-                    FastCopy(destination, bytes_remaining + 1, 
-                            (char*)bool_text[values->b[count_bool++] > 0]);
+                if (count_bool > IECSTRING_FORMAT_INDEX)
+                    break;
+                
+                IecStringCopy(destination, bytes_remaining, 
+                                values->b[count_bool++] ? "TRUE" : "FALSE");
                 break;
                 
+            /* LREAL/double casted to REAL/float */
+            case 'r':
             case 'f':
-                if (count_float <= IECSTRING_FORMAT_INDEX) {
-                    brsftoa((float)values->f[count_float++], 
-                            (uint32_t)number_text);
-                    FastCopy(destination, bytes_remaining + 1, number_text);
-                }
+                if (count_float > IECSTRING_FORMAT_INDEX)
+                    break;
+
+                IecStringFloat(destination, bytes_remaining, 
+                                (float)values->f[count_float++]);
                 break;
                 
             case 'i':
-                if (count_int <= IECSTRING_FORMAT_INDEX)
-                    IecStringDecimal(destination, bytes_remaining + 1, 
-                        values->i[count_int++], 0, 0);
+                if (count_int > IECSTRING_FORMAT_INDEX)
+                    break;
+
+                IecStringDecimal(destination, bytes_remaining, 
+                                values->i[count_int++], 0, 0);
                 break;
                 
             case 's':
-                if (count_string <= IECSTRING_FORMAT_INDEX)
-                    FastCopy(destination, bytes_remaining + 1, 
-                            values->s[count_string++]);
+                if (count_string > IECSTRING_FORMAT_INDEX)
+                    break;
+
+                IecStringCopy(destination, bytes_remaining, 
+                                values->s[count_string++]);
                 break;
                 
             case '%':
-                FastCopy(destination, bytes_remaining + 1, "%");
+                IecStringCopy(destination, bytes_remaining, "%");
                 break;
         }
         
@@ -85,10 +92,9 @@ int32_t IecStringFormat(char *destination, uint32_t size, char *source,
         source++;
     }
     
-    /* Null terminator */
+    /* Add null terminator */
     *destination = '\0';
     
-    /* Truncated if source characters remain and no bytes left */
-    return IECSTRING_WARNING_TRUNCATE * (*source != '\0' && 
-        bytes_remaining == 0);
+    /* Warn if truncated when source characters remain unwritten */
+    return IECSTRING_WARNING_TRUNCATE * (*source && bytes_remaining <= 1);
 }
