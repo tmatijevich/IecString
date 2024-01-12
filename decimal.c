@@ -40,7 +40,6 @@ int32_t IecStringDecimal(char *destination, uint32_t size, int32_t value,
 
     /* Signed exception */
     if (value == INT32_MIN) {
-        /* Do not truncate if whole number cannot fit */
         if (size < MAX_BYTE) {
             /* Clear destination */
             *destination = '\0';
