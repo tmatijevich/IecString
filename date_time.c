@@ -15,6 +15,9 @@
 uint32_t FormatDateTimeToken(char *destination, uint32_t bytes_remaining,
                             char *format, DTStructure date_time, uint8_t count);
 
+#define TOKENS "yMdHhmstf"
+#define DELIMETERS "-_ .,/:;()[]"
+
 /* Format the current date and/or time */
 int32_t IecStringDateTime(char *destination, uint32_t size, 
                             char *format, DTStructure *date_time) {
@@ -42,27 +45,118 @@ int32_t IecStringDateTime(char *destination, uint32_t size,
     if (*format == '\0')
         format = (char*)default_format;
 
-    while (*format != '\0' && chars_remaining) {
-        *destination = '\0';
-        match = strspn(format, tokens);
-        if (match) {
-            match = FormatDateTimeToken(destination, chars_remaining + 1,
-                                        format, *date_time, match);
-            length = strlen(destination);
+    int match_count;
+    uint32_t bytes_remaining = size;
+    size_t current_length;
+
+    const char month_text_abbreviation[][4] = {
+        "N/A",
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec"
+    };
+    const char month_text_full[][10] = {
+        "N/A",
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+    };
+    const char day_abv[][3] = {"Su", "M", "Tu", "W", "Th", "F", "Sa"};
+    const char day_full[][10] = {"Sunday", "Monday", "Tuesday", "Wednesday", 
+                                "Thursday", "Friday", "Saturday"};
+
+    while (*format && bytes_remaining > 1) {
+        /* Does format match any tokens or delimeters? */
+        match_count = strspn(format, TOKENS DELIMETERS);
+
+        /* Continue loop if nothing matches */
+        if (!match_count) {
+            format++;
+            continue;
         }
-        else {
-            next_char = *format;
-            match = 1;
-            if(strspn(&next_char, delimiters)) {
-                strncat(destination, &next_char, chars_remaining);
-                length = 1;
+
+        /* Enter a do-while in order to break and continue the parent while */
+        do {
+            /* Match delimeters */
+            match_count = strspn(format, DELIMETERS);
+            if (match_count) {
+                /* Copy up to match_count delimeter characters from format */
+                IecStringCopy(destination, 
+                              MIN(bytes_remaining, match_count + 1),
+                              format);
+                /* "Break" do-while */
+                continue;
             }
-            else
-                length = 0;
+
+            /* Match year: yy yyyy */
+            match_count = strspn(format, "y");
+            switch (match_count) {
+                case 0:
+                    /* Break switch to attempt more matches */
+                    break;
+                case 2:
+                    IecStringDecimal(destination, bytes_remaining, 
+                                     date_time->year % 100, match_count, 0);
+                    continue;
+                case 4:
+                    IecStringDecimal(destination, bytes_remaining, 
+                                     date_time->year, match_count, 0);
+                default:
+                    /* "Break" do-while */
+                    continue;
+            }
+
+            /* Match month: M MM MMM MMMM */
+            match_count = strspn(format, "M");
+            date_time->month = MIN(MAX(1, date_time->month), 12);
+            switch (match_count) {
+                case 0:
+                    /* Break switch to attempt more matches */
+                    break;
+                case 1:
+                    /* Go to case 2 */
+                case 2:
+                    IecStringDecimal(destination, bytes_remaining, 
+                                     date_time->month, 
+                                     match_count, '0');
+                    continue;
+                case 3:
+                    IecStringCopy(destination, bytes_remaining, 
+                                  month_text_abbreviation[date_time->month]);
+                    continue;
+                case 4:
+                    IecStringCopy(destination, bytes_remaining, 
+                                  month_text_full[date_time->month]);
+                default:
+                    /* "Break" do-while */
+                    continue;
+            }
         }
-        destination += length;
-        chars_remaining -= length;
-        format += match;
+        while (0);
+
+        current_length = strlen(destination);
+        destination += current_length;
+        bytes_remaining -= current_length;
+        /* Protect missed match count */
+        format += MAX(match_count, 1);
     }
 
     *destination = '\0';
