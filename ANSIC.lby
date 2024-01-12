@@ -9,13 +9,11 @@
     <File Description="Library license">LICENSE</File>
     <File Description="Write status list">status.csv</File>
     <File Description="Generate status numbers">status.py</File>
-    <File Description="Common header">main.h</File>
     <File Description="Standalone type and constant declarations">type.h</File>
     <File Description="Copy string">copy.c</File>
     <File Description="Concatenate string">concat.c</File>
     <File Description="Find and replace substring">replace.c</File>
     <File Description="Format string">format.c</File>
-    <File Description="Check memory overlap">overlap.c</File>
     <File Description="Format decimal">decimal.c</File>
     <File Description="Float to string">float.c</File>
     <File Description="Format date/time string">date_time.c</File>
