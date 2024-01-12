@@ -10,37 +10,53 @@
  *   released under the MIT license agreement.
  ******************************************************************************/
 
-#include "main.h"
+#ifndef IECSTRING_STANDALONE
+#include <IecString.h>
+#else
+#include "type.h"
+int32_t IecStringCopy(char *destination, uint32_t size, char *source);
+int32_t IecStringDecimal(char *destination, uint32_t size, int32_t value, 
+                        uint8_t width, unsigned char pad);
+#endif
+
+#include <stdint.h>
+#include <string.h>
+
+#define MIN(x,y) (((x) < (y)) ? (x) : (y))
+#define MAX(x,y) (((x) > (y)) ? (x) : (y))
 
 #define TOKENS "yMdHhmstf"
 #define DELIMETERS "-_ .,/:;()[]"
+#define DEFAULT_FORMAT "yyyy-MM-dd HH:mm"
 
 /* Format the current date and/or time */
 int32_t IecStringDateTime(char *destination, uint32_t size, 
                             char *format, DTStructure *date_time) {
-    
-    /* Local variables */
-    const char tokens[] = "yMdHhmstf";
-    const char delimiters[] = "-_ .,/:;()[]";
-    const char default_format[] = "yyyy-MM-dd HH:mm";
-    char next_char;
-    uint32_t match, length, chars_remaining = size - 1;
 
-    /* Verify parameters */
-    if (destination == NULL)
+    /* Gaurd null pointers */
+    if (!destination)
         return IECSTRING_ERROR_NULL;
 
-    if (size == 0)
+    /* Check for zero size */
+    if (!size)
         return IECSTRING_ERROR_SIZE;
-
-    if (format == NULL)
-        format = (char*)default_format;
     
-    else if (Overlap(destination, size, format))
+    /* Apply default format */
+    /* if null pointer */
+    if (!format)
+        format = DEFAULT_FORMAT;
+
+    /* or if empty string */
+    if (!(*format))
+        format = DEFAULT_FORMAT;
+
+    /* Check if source overlaps destination size */
+    if (destination <= format && format < destination + size)
         return IECSTRING_ERROR_OVERLAP;
 
-    if (*format == '\0')
-        format = (char*)default_format;
+    /* Check if destination overlaps source length */
+    if (format <= destination && destination <= format + strlen(format))
+        return IECSTRING_ERROR_OVERLAP;
 
     int match_count;
     uint32_t bytes_remaining = size;
@@ -302,5 +318,6 @@ int32_t IecStringDateTime(char *destination, uint32_t size,
     /* Add null terminator */
     *destination = '\0';
     
-    return 0;
+    /* Warn if truncated when source characters remain unwritten */
+    return IECSTRING_WARNING_TRUNCATE * (*format && bytes_remaining <= 1);
 }
