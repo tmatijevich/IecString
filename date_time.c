@@ -168,11 +168,11 @@ int32_t IecStringDateTime(char *destination, uint32_t size,
                     continue;
                 case 3:
                     IecStringCopy(destination, bytes_remaining, 
-                                  month_text_abbreviation[date_time->month]);
+                        (char*)month_text_abbreviation[date_time->month]);
                     continue;
                 case 4:
                     IecStringCopy(destination, bytes_remaining, 
-                                  month_text_full[date_time->month]);
+                        (char*)month_text_full[date_time->month]);
                 default:
                     /* "Break" do-while */
                     continue;
@@ -194,11 +194,11 @@ int32_t IecStringDateTime(char *destination, uint32_t size,
                     continue;
                 case 3:
                     IecStringCopy(destination, bytes_remaining, 
-                                  day_text_abbreviation[date_time->wday]);
+                        (char*)day_text_abbreviation[date_time->wday]);
                     continue;
                 case 4:
                     IecStringCopy(destination, bytes_remaining, 
-                                  day_text_full[date_time->wday]);
+                        (char*)day_text_full[date_time->wday]);
                 default:
                     /* "Break" do-while */
                     continue;
