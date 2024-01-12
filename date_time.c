@@ -12,9 +12,6 @@
 
 #include "main.h"
 
-uint32_t FormatDateTimeToken(char *destination, uint32_t bytes_remaining,
-                            char *format, DTStructure date_time, uint8_t count);
-
 #define TOKENS "yMdHhmstf"
 #define DELIMETERS "-_ .,/:;()[]"
 
@@ -79,9 +76,24 @@ int32_t IecStringDateTime(char *destination, uint32_t size,
         "November",
         "December"
     };
-    const char day_abv[][3] = {"Su", "M", "Tu", "W", "Th", "F", "Sa"};
-    const char day_full[][10] = {"Sunday", "Monday", "Tuesday", "Wednesday", 
-                                "Thursday", "Friday", "Saturday"};
+    const char day_text_abbreviation[][3] = {
+        "Su",
+        "M",
+        "Tu",
+        "W",
+        "Th",
+        "F",
+        "Sa"
+    };
+    const char day_text_full[][10] = {
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+    };
 
     while (*format && bytes_remaining > 1) {
         /* Does format match any tokens or delimeters? */
@@ -149,6 +161,134 @@ int32_t IecStringDateTime(char *destination, uint32_t size,
                     /* "Break" do-while */
                     continue;
             }
+
+            /* Match day: d dd ddd dddd */
+            match_count = strspn(format, "d");
+            date_time->wday = MIN(date_time->wday, 6);
+            switch (match_count) {
+                case 0:
+                    /* Break switch to attempt more matches */
+                    break;
+                case 1:
+                    /* Go to case 2 */
+                case 2:
+                    IecStringDecimal(destination, bytes_remaining, 
+                                     date_time->day, 
+                                     match_count, '0');
+                    continue;
+                case 3:
+                    IecStringCopy(destination, bytes_remaining, 
+                                  day_text_abbreviation[date_time->wday]);
+                    continue;
+                case 4:
+                    IecStringCopy(destination, bytes_remaining, 
+                                  day_text_full[date_time->wday]);
+                default:
+                    /* "Break" do-while */
+                    continue;
+            }
+
+            /* Match 24 hour: H HH */
+            match_count = strspn(format, "H");
+            switch (match_count) {
+                case 0:
+                    /* Break switch to attempt more matches */
+                    break;
+                case 1:
+                    /* Go to case 2 */
+                case 2:
+                    IecStringDecimal(destination, bytes_remaining, 
+                                     date_time->hour, 
+                                     match_count, '0');
+                default:
+                    /* "Break" do-while */
+                    continue;
+            }
+
+            /* Match 12 hour: h hh */
+            match_count = strspn(format, "h");
+            switch (match_count) {
+                case 0:
+                    /* Break switch to attempt more matches */
+                    break;
+                case 1:
+                    /* Go to case 2 */
+                case 2:
+                    IecStringDecimal(destination, bytes_remaining, 
+                                     date_time->hour % 12, 
+                                     match_count, '0');
+                default:
+                    /* "Break" do-while */
+                    continue;
+            }
+
+            /* Match minuite: m mm */
+            match_count = strspn(format, "m");
+            switch (match_count) {
+                case 0:
+                    /* Break switch to attempt more matches */
+                    break;
+                case 1:
+                    /* Go to case 2 */
+                case 2:
+                    IecStringDecimal(destination, bytes_remaining, 
+                                     date_time->minute, 
+                                     match_count, '0');
+                default:
+                    /* "Break" do-while */
+                    continue;
+            }
+
+            /* Match seconds: s ss */
+            match_count = strspn(format, "s");
+            switch (match_count) {
+                case 0:
+                    /* Break switch to attempt more matches */
+                    break;
+                case 1:
+                    /* Go to case 2 */
+                case 2:
+                    IecStringDecimal(destination, bytes_remaining, 
+                                     date_time->second, 
+                                     match_count, '0');
+                default:
+                    /* "Break" do-while */
+                    continue;
+            }
+
+            /* Match morning/afternoon: tt */
+            match_count = strspn(format, "t");
+            switch (match_count) {
+                case 0:
+                    /* Break switch to attempt more matches */
+                    break;
+                case 2:
+                    IecStringCopy(destination, bytes_remaining,
+                                  date_time->hour >= 12 ? "PM" : "AM");
+                default:
+                    /* "Break" do-while */
+                    continue;
+            }
+
+            /* Match milliseconds: ff fff */
+            match_count = strspn(format, "f");
+            switch (match_count) {
+                case 0:
+                    /* Break switch to attempt more matches */
+                    break;
+                case 2:
+                    IecStringDecimal(destination, bytes_remaining, 
+                                     date_time->millisec / 10, 
+                                     match_count, '0');
+                    continue;
+                case 3:
+                    IecStringDecimal(destination, bytes_remaining, 
+                                     date_time->millisec, 
+                                     match_count, '0');
+                default:
+                    /* "Break" do-while */
+                    continue;
+            }
         }
         while (0);
 
@@ -159,176 +299,8 @@ int32_t IecStringDateTime(char *destination, uint32_t size,
         format += MAX(match_count, 1);
     }
 
+    /* Add null terminator */
     *destination = '\0';
     
     return 0;
-}
-
-/* Format date/time token */
-uint32_t FormatDateTimeToken(char *destination, uint32_t bytes_remaining,
-                            char *format, DTStructure date_time, 
-                            uint8_t count) {
-    /* Local variables */
-    uint8_t match;
-    const char month_abv[][4] = {"N/A", "Jan", "Feb", "Mar", "Apr", "May", 
-                            "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", 
-                            "Dec"};
-    const char month_full[][10] = {"N/A", "January", "February", "March", "April", 
-                            "May", "June", "July", "August", "September", 
-                            "October", "November", "December"};
-    const char day_abv[][3] = {"Su", "M", "Tu", "W", "Th", "F", "Sa"};
-    const char day_full[][10] = {"Sunday", "Monday", "Tuesday", "Wednesday", 
-                                "Thursday", "Friday", "Saturday"};
-
-    /* yy yyyy year */
-    match = strspn(format, "y");
-    switch (match) {
-        case 0:
-            break;
-        case 2:
-            IecStringDecimal(destination, bytes_remaining, 
-                            date_time.year % 100, 2, 0);
-            return match;
-        case 4:
-            IecStringDecimal(destination, bytes_remaining, date_time.year, 4, 0);
-            return match;
-        default:
-            return match;
-    }
-
-    /* M MM MMM MMMM month */
-    match = strspn(format, "M");
-    if (date_time.month < 1) date_time.month = 1;
-    else if (date_time.month > 12) date_time.month = 12;
-    switch (match) {
-        case 0:
-            break;
-        case 1:
-        case 2:
-            IecStringDecimal(destination, bytes_remaining, 
-                            date_time.month, match, 0);
-            return match;
-        case 3:
-            FastCopy(destination, bytes_remaining, 
-                    (char*)month_abv[date_time.month]);
-            return match;
-        case 4:
-            FastCopy(destination, bytes_remaining, 
-                    (char*)month_full[date_time.month]);
-            return match;
-        default:
-            return match;
-    }
-
-    /* d dd ddd dddd day */
-    match = strspn(format, "d");
-    if (date_time.wday > 6) date_time.wday = 6;
-    switch (match) {
-        case 0:
-            break;
-        case 1:
-        case 2:
-            IecStringDecimal(destination, bytes_remaining, 
-                            date_time.day, match, 0);
-            return match;
-        case 3:
-            FastCopy(destination, bytes_remaining, 
-                    (char*)day_abv[date_time.wday]);
-            return match;
-        case 4:
-            FastCopy(destination, bytes_remaining, 
-                    (char*)day_full[date_time.wday]);
-            return match;
-        default:
-            return match;
-    }
-
-    /* H HH 24 hour */
-    match = strspn(format, "H");
-    switch (match) {
-        case 0:
-            break;
-        case 1:
-        case 2:
-            IecStringDecimal(destination, bytes_remaining, 
-                            date_time.hour, match, 0);
-            return match;
-        default:
-            return match;
-    }
-
-    /* h hh 12 hour */
-    match = strspn(format, "h");
-    switch (match) {
-        case 0:
-            break;
-        case 1:
-        case 2:
-            IecStringDecimal(destination, bytes_remaining, 
-                            date_time.hour % 12, match, 0);
-            return match;
-        default:
-            return match;
-    }
-
-    /* m mm minute */
-    match = strspn(format, "m");
-    switch (match) {
-        case 0:
-            break;
-        case 1:
-        case 2:
-            IecStringDecimal(destination, bytes_remaining, 
-                            date_time.minute, match, 0);
-            return match;
-        default:
-            return match;
-    }
-
-    /* s ss second */
-    match = strspn(format, "s");
-    switch (match) {
-        case 0:
-            break;
-        case 1:
-        case 2:
-            IecStringDecimal(destination, bytes_remaining, 
-                            date_time.second, match, 0);
-            return match;
-        default:
-            return match;
-    }
-
-    /* tt morning/afternoon */
-    match = strspn(format, "t");
-    switch (match) {
-        case 0:
-            break;
-        case 2:
-            if (date_time.hour >= 12) FastCopy(destination, bytes_remaining, 
-                                                "PM");
-            else FastCopy(destination, bytes_remaining, "AM");
-            return match;
-        default:
-            return match;
-    }
-
-    /* ff fff milliseconds */
-    match = strspn(format, "f");
-    switch (match) {
-        case 0:
-            break;
-        case 2:
-            IecStringDecimal(destination, bytes_remaining,
-                            date_time.millisec / 10, match, 0);
-            return match;
-        case 3:
-            IecStringDecimal(destination, bytes_remaining,
-                            date_time.millisec, match, 0);
-            return match;
-        default:
-            return match;
-    }
-
-    return count;
 }
