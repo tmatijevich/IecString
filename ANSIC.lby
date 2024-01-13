@@ -7,8 +7,6 @@
     <File Description="Constants">IecString.var</File>
     <File Description="Library information">README.md</File>
     <File Description="Library license">LICENSE</File>
-    <File Description="Write status list">status.csv</File>
-    <File Description="Generate status numbers">status.py</File>
     <File Description="Standalone type and constant declarations">type.h</File>
     <File Description="Copy string">copy.c</File>
     <File Description="Concatenate string">concat.c</File>

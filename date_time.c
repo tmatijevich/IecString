@@ -39,7 +39,7 @@ int32_t IecStringDateTime(char *destination, uint32_t size,
 
     /* Check for zero size */
     if (!size)
-        return IECSTRING_ERROR_SIZE;
+        return IECSTRING_ERROR_SIZE_ZERO;
     
     /* Apply default format */
     /* if null pointer */

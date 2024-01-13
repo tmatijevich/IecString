@@ -32,7 +32,7 @@ int32_t IecStringConcat(char *destination, uint32_t size, char *source) {
     /* Check for valid size */
     size_t destination_length = strlen(destination);
     if (size <= destination_length)
-        return IECSTRING_ERROR_SIZE;
+        return IECSTRING_ERROR_SIZE_INVALID;
 
     /* Check if source overlaps destination size */
     if (destination <= source && source < destination + size)

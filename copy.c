@@ -30,7 +30,7 @@ int32_t IecStringCopy(char *destination, uint32_t size, char *source) {
     
     /* Check for zero size */
     if (!size)
-        return IECSTRING_ERROR_SIZE;
+        return IECSTRING_ERROR_SIZE_ZERO;
 
     /* Check if source overlaps destination size */
     if (destination <= source && source < destination + size)

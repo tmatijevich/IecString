@@ -29,14 +29,14 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value) {
 
     /* Check for zero size */
     if (!size)
-        return IECSTRING_ERROR_SIZE;
+        return IECSTRING_ERROR_SIZE_ZERO;
     
     /* Check for insufficient size */
     /* +X.XXXXXe+XX */
     if (size < 13) {
         /* Clear destination */
         *destination = '\0';
-        return IECSTRING_ERROR_SIZE;
+        return IECSTRING_ERROR_SIZE_INVALID;
     }
 
     /* Check for zeros, infinities, and illegal numbers */
