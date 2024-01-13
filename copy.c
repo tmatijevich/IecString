@@ -56,21 +56,3 @@ int32_t IecStringCopy(char *destination, uint32_t size, char *source) {
     /* Warn if truncated when source length exceeds size */
     return IECSTRING_WARNING_TRUNCATE * (source_length > size - 1);
 }
-
-/* Copy without safety checks for private use */
-char* FastCopy(char *destination, uint32_t size, char *source) {
-    /* Skip:
-       - Null pointer checks
-       - Destination size check
-       - Memory overlap check
-       - Truncation warning check
-    */
-    
-    /* Copy and decrement size first to ensure byte for null terminator */
-    while (--size && *source != '\0')
-        *destination++ = *source++;
-    
-    /* Null terminator */
-    *destination = '\0';
-    return destination;
-}
