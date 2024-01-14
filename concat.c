@@ -28,6 +28,10 @@ int32_t IecStringConcat(char *destination, uint32_t size, char *source) {
     /* Gaurd null pointers */
     if (!destination || !source)
         return IECSTRING_ERROR_NULL;
+
+    /* Check for zero size */
+    if (!size)
+        return IECSTRING_ERROR_SIZE_ZERO;
     
     /* Check for valid size */
     size_t destination_length = strlen(destination);
