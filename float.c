@@ -20,6 +20,19 @@
 #include <string.h>
 #include <math.h>
 
+/* Maximum size of number without scientific notation */
+#define MAX_BYTE_NUM 9
+/* Maximum size of number with scientific notation: +X.XXXXXe+XX */
+#define MAX_BYTE 13
+/* Maximum exponent without scientific notation */
+#define MAX_EXP 5
+/* Minimum exponent without scientific notation */
+#define MIN_EXP (-6)
+/* Maximum negative exponent */
+#define MAX_NEG_EXP (-1)
+/* Maximum number of significant digits */
+#define MAX_DIGIT 6
+
 /* Convert floating point number to string */
 int32_t IecStringFloat(char *destination, uint32_t size, float value) {
     
