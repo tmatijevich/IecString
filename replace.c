@@ -64,22 +64,24 @@ int32_t IecStringReplace(char *destination, uint32_t size, char *source,
 
     /* Find and replace, otherwise copy */
     uint32_t i = 0;
-    size_t min_chars;
+    size_t min_char_count;
     while (*source && i < size - 1) {
-        /* Do not compare source against find if not enough characters left*/
-        if (source_length - i < find_length) {
-            *destination++ = *source++;
-            i++;
-            continue;
+        /* Break if nothing to find or not enough characters left to compare */
+        if (find_length == 0 || source_length - i < find_length) {
+            strncpy(destination, source, size - 1 - i);
+            min_char_count = MIN(source_length, size - 1 - i);
+            destination += min_char_count;
+            source += min_char_count;
+            break;
         }
 
         /* Compare source against find */
         if (strncmp(source, find, find_length) == 0) {
             strncpy(destination, replace, size - 1 - i);
-            min_chars = MIN(replace_length, size - 1 - i);
-            destination += min_chars;
+            min_char_count = MIN(replace_length, size - 1 - i);
+            destination += min_char_count;
             source += find_length;
-            i += min_chars;
+            i += min_char_count;
             continue;
         }
 
