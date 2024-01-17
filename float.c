@@ -100,7 +100,10 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value) {
 
     /* Count leading zeros */
     /* Display leading zeros if exponent is between -1 and -6 */
-    int zeros = -1 >= exp && exp >= -6 ? -exp : 0;
+    int leading_zeros = -1 >= exp && exp >= -6 ? -exp : 0;
+
+    /* Count trailing zeros */
+    int trailing_zeros = 5 >= exp && exp >= 1 ? exp : 0;
 
     /* Normalize the value so all significant digits 
     are before the decimal point */
@@ -124,9 +127,9 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value) {
         norm_int = count == MAX_DIGIT ? norm_int / 10 : norm_int;
         /* Increase the exponent */
         exp++;
-        /* Decrease number of zeros if less than 6 digits 
+        /* Decrease number of leading zeros if less than 6 digits 
         or exponent is now zero */
-        zeros -= zeros > 0 && (count < MAX_DIGIT || exp == 0);
+        leading_zeros -= leading_zeros > 0 && (count < MAX_DIGIT || exp == 0);
         /* Increase the number of digits up to 6 */
         count += count < MAX_DIGIT;
         /* Re-evaluate scientific notation including rollovers to 10^-6 */
@@ -141,12 +144,12 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value) {
         norm_int /= 10;
     }
 
-    /* Write zeros or digits before decimal point */
+    /* Write leading zeros or digits before decimal point */
     d = 0;
     do {
-        *destination++ = '0' + digits[d] * !zeros;
-        d += !zeros;
-        zeros -= zeros > 0;
+        *destination++ = '0' + digits[d] * !leading_zeros;
+        d += !leading_zeros;
+        leading_zeros -= leading_zeros > 0;
     }
     while (!sci && d <= exp);
 
@@ -155,16 +158,18 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value) {
         *destination++ = '.';
 
     /* Write zeros or digits after decimal point */
-    while (d < count) {
-        *destination++ = '0' + digits[d] * !zeros;
-        d += !zeros;
-        zeros -= zeros > 0;
+    while (d < count || trailing_zeros) {
+        *destination++ = '0' + 
+            (d < MAX_DIGIT && !leading_zeros ? digits[d] : 0);
+        trailing_zeros -= d >= MAX_DIGIT;
+        d += !leading_zeros;
+        leading_zeros -= leading_zeros > 0;
     }
 
     *destination = '\0';
     if (sci) {
         *destination++ = 'e';
-        IecStringDecimal(destination, 4, exp, 2, '0', 1);
+        IecStringDecimal(destination, 4, exp, 3, '0', 1);
     }
 
     return 0;
