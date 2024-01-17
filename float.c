@@ -17,13 +17,12 @@
 #endif
 
 #include <stdint.h>
+#include <stdbool.h>
 #include <string.h>
 #include <math.h>
 
-/* Maximum size of number without scientific notation */
-#define MAX_BYTE_NUM 9
-/* Maximum size of number with scientific notation: +X.XXXXXe+XX */
-#define MAX_BYTE 13
+/* Maximum size of output string: <+|->XXXXXX.XXXXXX or <+|->X.XXXXXXe<+|->XX */
+#define MAX_BYTE 15
 /* Maximum exponent without scientific notation */
 #define MAX_EXP 5
 /* Minimum exponent without scientific notation */
@@ -31,7 +30,7 @@
 /* Maximum negative exponent */
 #define MAX_NEG_EXP (-1)
 /* Maximum number of significant digits */
-#define MAX_DIGIT 6
+#define MAX_DIGIT 7
 
 /* Convert floating point number to string */
 int32_t IecStringFloat(char *destination, uint32_t size, float value) {
@@ -45,8 +44,7 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value) {
         return IECSTRING_ERROR_SIZE_ZERO;
     
     /* Check for insufficient size */
-    /* +X.XXXXXe+XX */
-    if (size < 13) {
+    if (size < MAX_BYTE) {
         /* Clear destination */
         *destination = '\0';
         return IECSTRING_ERROR_SIZE_INVALID;
@@ -96,9 +94,9 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value) {
     /* Use scientific notation if exponent > 10^5 or 10^-6 > exponent */
     int sci = exp > 5 || -6 > exp;
 
-    /* Count the number of significant digits displayed up to 6 */
+    /* Count the number of significant digits to be displayed */
     /* Always display 6 digits unless the exponent is between -2 and -6 */
-    int count = -2 >= exp && exp >= -6 ? exp + 7 : 6;
+    int count = -2 >= exp && exp >= -6 ? exp + 7 : MAX_DIGIT;
 
     /* Count leading zeros */
     /* Display leading zeros if exponent is between -1 and -6 */
@@ -123,20 +121,20 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value) {
     /* Check for rollover after rounding */
     if (norm_int >= norm_int_max) {
         /* Re-normalize the normalized value if exceeding 6 digits */
-        norm_int = count == 6 ? norm_int / 10 : norm_int;
+        norm_int = count == MAX_DIGIT ? norm_int / 10 : norm_int;
         /* Increase the exponent */
         exp++;
         /* Decrease number of zeros if less than 6 digits 
         or exponent is now zero */
-        zeros -= zeros > 0 && (count < 6 || exp == 0);
+        zeros -= zeros > 0 && (count < MAX_DIGIT || exp == 0);
         /* Increase the number of digits up to 6 */
-        count += count < 6;
+        count += count < MAX_DIGIT;
         /* Re-evaluate scientific notation including rollovers to 10^-6 */
         sci = exp > 5 || -6 >= exp;
     }
 
     /* Find significant digits */
-    int digits[6] = {0};
+    int digits[MAX_DIGIT] = {0};
     int d;
     for (d = count - 1; d >= 0; d--) {
         digits[d] = norm_int % 10;
@@ -166,7 +164,7 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value) {
     *destination = '\0';
     if (sci) {
         *destination++ = 'e';
-        IecStringDecimal(destination, size - 9, exp, 0, ' ', 1);
+        IecStringDecimal(destination, 4, exp, 2, '0', 1);
     }
 
     return 0;
