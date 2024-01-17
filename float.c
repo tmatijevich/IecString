@@ -166,7 +166,7 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value) {
     *destination = '\0';
     if (sci) {
         *destination++ = 'e';
-        IecStringDecimal(destination, size - 9, exp, 0, ' ');
+        IecStringDecimal(destination, size - 9, exp, 0, ' ', 1);
     }
 
     return 0;

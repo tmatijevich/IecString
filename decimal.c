@@ -28,7 +28,7 @@
 #define MAX_DIGIT 10U
 
 int32_t IecStringDecimal(char *destination, uint32_t size, int32_t value, 
-                        uint8_t width, unsigned char pad) {
+                        uint8_t width, unsigned char pad, unsigned char sign) {
 
     /* Gaurd null pointers */
     if (!destination)
@@ -51,6 +51,7 @@ int32_t IecStringDecimal(char *destination, uint32_t size, int32_t value,
 
     /* Find sign and magnitude */
     unsigned int is_signed = value < 0 ? 1 : 0;
+    sign = sign || is_signed ? 1 : 0;
     value = is_signed ? -value : value;
 
     /* Find digits */
@@ -63,22 +64,22 @@ int32_t IecStringDecimal(char *destination, uint32_t size, int32_t value,
     while (value);
 
     /* Saturate width */
-    /* num_digits + is_signed <= width <= MAX_WIDTH*/
-    width = MIN(MAX(num_digits + is_signed, width), MAX_WIDTH);
-    if (size < width + 1) {
+    /* num_digits + sign <= width <= MAX_WIDTH*/
+    width = MIN(MAX(num_digits + sign, width), MAX_WIDTH);
+    if (size <= width) {
         /* Clear destination */
         *destination = '\0';
         return IECSTRING_ERROR_SIZE_INVALID;
     }
 
     /* Write sign */
-    if (is_signed)
-        *destination++ = '-';
+    if (sign)
+        *destination++ = is_signed ? '-' : '+';
 
     /* Write pads */
     /* ' ' <= pad <= '~' */
     pad = MIN(MAX(' ', pad), '~');
-    while (width - num_digits - is_signed) {
+    while (width - num_digits - sign) {
         *destination++ = pad;
         width--;
     }

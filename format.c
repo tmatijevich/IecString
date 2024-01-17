@@ -86,7 +86,7 @@ int32_t IecStringFormat(char *destination, uint32_t size, char *source,
                     break;
 
                 IecStringDecimal(destination, bytes_remaining, 
-                                values->i[count_int++], 0, 0);
+                                values->i[count_int++], 0, 0, 0);
                 break;
                 
             case 's':
