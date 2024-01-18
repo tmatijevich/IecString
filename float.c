@@ -27,12 +27,10 @@
 #define MAX_EXP 5
 /* Minimum exponent without scientific notation */
 #define MIN_EXP (-6)
-/* Maximum negative exponent */
-#define MAX_NEG_EXP (-1)
 /* Maximum number of significant digits */
 #define MAX_DIGIT 7
 
-/* Convert floating point number to string */
+/* Convert float to string */
 int32_t IecStringFloat(char *destination, uint32_t size, float value) {
     
     /* Gaurd null pointer */
@@ -88,50 +86,48 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value) {
         value *= -1.0f;
     }
 
-    /* Find the base 10 exponent */
+    /* Calculate the base 10 exponent */
     int exp = (int)floorf(log10f(value));
 
-    /* Use scientific notation if exponent > 10^5 or 10^-6 > exponent */
-    int sci = exp > 5 || -6 > exp;
+    /* Use scientific notation if large exponent */
+    int sci = exp < MIN_EXP || MAX_EXP < exp;
 
-    /* Count the number of significant digits to be displayed */
-    /* Always display 6 digits unless the exponent is between -2 and -6 */
-    int count = -2 >= exp && exp >= -6 ? exp + 7 : MAX_DIGIT;
+    /* Count the number of significant digits */
+    /* Add exponent if exponent is between MIN_EXP and 0 */
+    int num_sd = MAX_DIGIT + exp * (MIN_EXP <= exp && exp < 0);
 
     /* Count leading zeros */
-    /* Display leading zeros if exponent is between -1 and -6 */
-    int leading_zeros = -1 >= exp && exp >= -6 ? -exp : 0;
+    int leading = MAX_DIGIT - num_sd;
 
     /* Count trailing zeros */
-    int trailing_zeros = 5 >= exp && exp >= 1 ? exp : 0;
+    int trailing = ((MAX_EXP - MIN_EXP + 1) - MAX_DIGIT - (MAX_EXP - exp)) * 
+        (num_sd == MAX_DIGIT && !sci);
 
-    /* Normalize the value so all significant digits 
-    are before the decimal point */
+    /* Normalize significant digits before the decimal point */
     float norm_val = 1.0f;
-    for (int i = count - 1 - exp; i != 0; i = i > 0 ? i - 1 : i + 1)
+    for (int i = num_sd - 1 - exp; i != 0; i += (i < 0) - (i > 0))
         norm_val *= 10.0f * (i > 0) + 0.1f * (i < 0);
     norm_val *= value;
 
-    /* Calculate the maximum normalized value based on count and store in int */
-    int32_t norm_int_max = 1;
-    for (int i = 0; i < count; i++)
-        norm_int_max *= 10;
-
-    /* Calculate the normalized value based on count
-    and round to the nearest whole number */
+    /* Convert normalized value to int with rounding */
     int32_t norm_int = (int32_t)roundf(norm_val);
+
+    /* Calculate the maximum normalized value */
+    int32_t norm_max = 1;
+    for (int i = 0; i < num_sd; i++)
+        norm_max *= 10;
     
     /* Check for rollover after rounding */
-    if (norm_int >= norm_int_max) {
+    if (norm_int >= norm_max) {
         /* Re-normalize the normalized value if exceeding 6 digits */
-        norm_int = count == MAX_DIGIT ? norm_int / 10 : norm_int;
+        norm_int = num_sd == MAX_DIGIT ? norm_int / 10 : norm_int;
         /* Increase the exponent */
         exp++;
         /* Decrease number of leading zeros if less than 6 digits 
         or exponent is now zero */
-        leading_zeros -= leading_zeros > 0 && (count < MAX_DIGIT || exp == 0);
+        leading -= leading > 0 && (num_sd < MAX_DIGIT || exp == 0);
         /* Increase the number of digits up to 6 */
-        count += count < MAX_DIGIT;
+        num_sd += num_sd < MAX_DIGIT;
         /* Re-evaluate scientific notation including rollovers to 10^-6 */
         sci = exp > 5 || -6 >= exp;
     }
@@ -139,7 +135,7 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value) {
     /* Find significant digits */
     int digits[MAX_DIGIT] = {0};
     int d;
-    for (d = count - 1; d >= 0; d--) {
+    for (d = num_sd - 1; d >= 0; d--) {
         digits[d] = norm_int % 10;
         norm_int /= 10;
     }
@@ -147,23 +143,23 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value) {
     /* Write leading zeros or digits before decimal point */
     d = 0;
     do {
-        *destination++ = '0' + digits[d] * !leading_zeros;
-        d += !leading_zeros;
-        leading_zeros -= leading_zeros > 0;
+        *destination++ = '0' + digits[d] * !leading;
+        d += !leading;
+        leading -= leading > 0;
     }
     while (!sci && d <= exp);
 
     /* Place decimal if significant digits remain */
-    if (d < count)
+    if (d < num_sd)
         *destination++ = '.';
 
     /* Write zeros or digits after decimal point */
-    while (d < count || trailing_zeros) {
+    while (d < num_sd || trailing) {
         *destination++ = '0' + 
-            (d < MAX_DIGIT && !leading_zeros ? digits[d] : 0);
-        trailing_zeros -= d >= MAX_DIGIT;
-        d += !leading_zeros;
-        leading_zeros -= leading_zeros > 0;
+            (d < MAX_DIGIT && !leading ? digits[d] : 0);
+        trailing -= d >= MAX_DIGIT;
+        d += !leading;
+        leading -= leading > 0;
     }
 
     *destination = '\0';
