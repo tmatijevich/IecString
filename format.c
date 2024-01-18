@@ -47,6 +47,7 @@ int32_t IecStringFormat(char *destination, uint32_t size, char *source,
     int count_bool = 0, count_float = 0, count_int = 0, count_string = 0;
     uint32_t bytes_remaining = size;
     size_t length;
+    int32_t status;
 
     /* Format each character from source */
     while (*source && bytes_remaining > 1) {
@@ -59,14 +60,15 @@ int32_t IecStringFormat(char *destination, uint32_t size, char *source,
 
         /* Force string length of zero if nothing is written */
         *destination = '\0';
+        status = 0;
         
         switch (*(++source)) {
             case 'b':
                 if (count_bool > IECSTRING_FORMAT_INDEX)
                     break;
                 
-                IecStringCopy(destination, bytes_remaining, 
-                                values->b[count_bool++] ? "TRUE" : "FALSE");
+                status = IecStringCopy(destination, bytes_remaining, 
+                    values->b[count_bool++] ? "TRUE" : "FALSE");
                 break;
                 
             /* LREAL/double casted to REAL/float */
@@ -75,8 +77,8 @@ int32_t IecStringFormat(char *destination, uint32_t size, char *source,
                 if (count_float > IECSTRING_FORMAT_INDEX)
                     break;
 
-                IecStringFloat(destination, bytes_remaining, 
-                                (float)values->f[count_float++]);
+                status = IecStringFloat(destination, bytes_remaining, 
+                    (float)values->f[count_float++]);
                 break;
                 
             /* Integer/decimal */
@@ -85,20 +87,21 @@ int32_t IecStringFormat(char *destination, uint32_t size, char *source,
                 if (count_int > IECSTRING_FORMAT_INDEX)
                     break;
 
-                IecStringDecimal(destination, bytes_remaining, 
-                                values->i[count_int++], 0, 0, 0);
+                status = IecStringDecimal(destination, bytes_remaining, 
+                    values->i[count_int++], 0, 0, 0);
                 break;
                 
             case 's':
                 if (count_string > IECSTRING_FORMAT_INDEX)
                     break;
 
-                IecStringCopy(destination, bytes_remaining, 
-                                values->s[count_string++]);
+                status = IecStringCopy(destination, bytes_remaining, 
+                    values->s[count_string++]);
                 break;
                 
             case '%':
-                IecStringCopy(destination, bytes_remaining, "%");
+                *destination = '%';
+                *(destination + 1) = '\0';
                 break;
         }
         
@@ -112,5 +115,6 @@ int32_t IecStringFormat(char *destination, uint32_t size, char *source,
     *destination = '\0';
     
     /* Warn if truncated when source characters remain unwritten */
-    return IECSTRING_WARNING_TRUNCATE * (*source && bytes_remaining <= 1);
+    return IECSTRING_WARNING_TRUNCATE * 
+        ((*source && bytes_remaining <= 1) || status);
 }
