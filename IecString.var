@@ -4,11 +4,19 @@ VAR CONSTANT
 END_VAR
 (*Status numbers*)
 VAR CONSTANT
+	IECSTRING_ERROR_NONE : DINT := 0; (*No error*)
 	IECSTRING_ERROR_NULL : DINT := -515898392; (*One or more string parameters are null*)
 	IECSTRING_ERROR_SIZE_ZERO : DINT := -515897392; (*Size of destination is zero*)
 	IECSTRING_ERROR_SIZE_INVALID : DINT := -515897382; (*Size of destination is insufficient to perform function*)
 	IECSTRING_ERROR_OVERLAP : DINT := -515896392; (*The size of destination overlaps with a source string's length*)
 	IECSTRING_WARNING_TRUNCATE : DINT := -1589637216; (*The string written to destination has been truncated*)
+END_VAR
+(*Format flags*)
+VAR CONSTANT
+	IECSTRING_FLAG_NONE : USINT := 0; (*No option selected*)
+	IECSTRING_FLAG_SIGN : USINT := 1; (*Preceed number with + or - sign*)
+	IECSTRING_FLAG_SPACES : USINT := 2; (*Left-pad number with spaces instead of zeros to fill width*)
+	IECSTRING_FLAG_E_NOTATION : USINT := 4; (*Use scientific notation*)
 END_VAR
 (*ASCII Characters*)
 VAR CONSTANT
