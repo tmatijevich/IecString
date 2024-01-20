@@ -27,8 +27,8 @@
 #define MAX_WIDTH 11U
 #define MAX_DIGIT 10U
 
-int32_t IecStringDecimal(char *destination, uint32_t size, int32_t value, 
-                        uint8_t width, unsigned char pad, unsigned char sign) {
+int32_t IecStringDecimal(char *destination, uint32_t size, int32_t value,
+                         uint8_t width, unsigned char flags) {
 
     /* Gaurd null pointers */
     if (!destination)
@@ -51,7 +51,7 @@ int32_t IecStringDecimal(char *destination, uint32_t size, int32_t value,
 
     /* Find sign and magnitude */
     unsigned int is_signed = value < 0 ? 1 : 0;
-    sign = sign || is_signed ? 1 : 0;
+    unsigned int sign = flags & IECSTRING_FLAG_SIGN || is_signed ? 1 : 0;
     value = is_signed ? -value : value;
 
     /* Find digits */
@@ -77,8 +77,7 @@ int32_t IecStringDecimal(char *destination, uint32_t size, int32_t value,
         *destination++ = is_signed ? '-' : '+';
 
     /* Write pads */
-    /* ' ' <= pad <= '~' */
-    pad = MIN(MAX(' ', pad), '~');
+    char pad = flags & IECSTRING_FLAG_SPACES ? ' ' : '0';
     while (width - num_digits - sign) {
         *destination++ = pad;
         width--;

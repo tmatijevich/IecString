@@ -40,8 +40,7 @@ FUNCTION IecStringDecimal : DINT (*Convert integer to string as decimal with opt
 		size : UDINT; (*Size of destination*)
 		value : DINT; (*Signed integer*)
 		width : USINT; (*Minimum character width including sign*)
-		pad : USINT; (*Pad character*)
-		sign : USINT; (*Use sign + or -*)
+		flags : USINT; (*Format flags*)
 	END_VAR
 END_FUNCTION
 

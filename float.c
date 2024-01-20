@@ -172,7 +172,8 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value) {
     *destination = '\0';
     if (sci) {
         *destination++ = 'e';
-        IecStringDecimal(destination, EXP_BYTE, exp, EXP_WIDTH, '0', 1);
+        IecStringDecimal(destination, EXP_BYTE, exp, EXP_WIDTH,
+                         IECSTRING_FLAG_SIGN);
     }
 
     return 0;

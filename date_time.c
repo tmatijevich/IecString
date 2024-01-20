@@ -143,11 +143,11 @@ int32_t IecStringDateTime(char *destination, uint32_t size,
                 case 2:
                     IecStringDecimal(destination, bytes_remaining, 
                                      date_time->year % 100, 
-                                     match_count, '0', 0);
+                                     match_count, IECSTRING_FLAG_NONE);
                     continue;
                 case 4:
                     IecStringDecimal(destination, bytes_remaining, 
-                                     date_time->year, match_count, '0', 0);
+                                     date_time->year, match_count, IECSTRING_FLAG_NONE);
                 default:
                     /* "Break" do-while */
                     continue;
@@ -165,7 +165,7 @@ int32_t IecStringDateTime(char *destination, uint32_t size,
                 case 2:
                     IecStringDecimal(destination, bytes_remaining, 
                                      date_time->month, 
-                                     match_count, '0', 0);
+                                     match_count, IECSTRING_FLAG_NONE);
                     continue;
                 case 3:
                     IecStringCopy(destination, bytes_remaining, 
@@ -191,7 +191,7 @@ int32_t IecStringDateTime(char *destination, uint32_t size,
                 case 2:
                     IecStringDecimal(destination, bytes_remaining, 
                                      date_time->day, 
-                                     match_count, '0', 0);
+                                     match_count, IECSTRING_FLAG_NONE);
                     continue;
                 case 3:
                     IecStringCopy(destination, bytes_remaining, 
@@ -216,7 +216,7 @@ int32_t IecStringDateTime(char *destination, uint32_t size,
                 case 2:
                     IecStringDecimal(destination, bytes_remaining, 
                                      date_time->hour, 
-                                     match_count, '0', 0);
+                                     match_count, IECSTRING_FLAG_NONE);
                 default:
                     /* "Break" do-while */
                     continue;
@@ -233,7 +233,7 @@ int32_t IecStringDateTime(char *destination, uint32_t size,
                 case 2:
                     IecStringDecimal(destination, bytes_remaining, 
                                      date_time->hour % 12, 
-                                     match_count, '0', 0);
+                                     match_count, IECSTRING_FLAG_NONE);
                 default:
                     /* "Break" do-while */
                     continue;
@@ -250,7 +250,7 @@ int32_t IecStringDateTime(char *destination, uint32_t size,
                 case 2:
                     IecStringDecimal(destination, bytes_remaining, 
                                      date_time->minute, 
-                                     match_count, '0', 0);
+                                     match_count, IECSTRING_FLAG_NONE);
                 default:
                     /* "Break" do-while */
                     continue;
@@ -267,7 +267,7 @@ int32_t IecStringDateTime(char *destination, uint32_t size,
                 case 2:
                     IecStringDecimal(destination, bytes_remaining, 
                                      date_time->second, 
-                                     match_count, '0', 0);
+                                     match_count, IECSTRING_FLAG_NONE);
                 default:
                     /* "Break" do-while */
                     continue;
@@ -296,12 +296,12 @@ int32_t IecStringDateTime(char *destination, uint32_t size,
                 case 2:
                     IecStringDecimal(destination, bytes_remaining, 
                                      date_time->millisec / 10, 
-                                     match_count, '0', 0);
+                                     match_count, IECSTRING_FLAG_NONE);
                     continue;
                 case 3:
                     IecStringDecimal(destination, bytes_remaining, 
                                      date_time->millisec, 
-                                     match_count, '0', 0);
+                                     match_count, IECSTRING_FLAG_NONE);
                 default:
                     /* "Break" do-while */
                     continue;
