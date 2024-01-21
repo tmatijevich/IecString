@@ -31,6 +31,7 @@
 #define EXP_WIDTH 3
 
 #define MIN(x,y) (((x) < (y)) ? (x) : (y))
+#define MAX(x,y) (((x) > (y)) ? (x) : (y))
 
 /* Convert float to string */
 int32_t IecStringFloat(char *destination, uint32_t size, float value,
@@ -101,12 +102,18 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value,
     /* Add exponent if exponent is between MIN_EXP and 0 */
     int num_sd = MAX_DIGIT + MIN(0, exp * !sci + MIN_EXP + precision);
 
-    /* Count leading zeros */
-    int leading = (0 - exp) * (!sci && exp < 0);
+    /* Count leading zeros for negative exponents */
+    int leading = sci || exp >= 0 ? 0 : 0 - exp;
 
     /* Count trailing zeros */
-    int trailing = ((MAX_EXP + 1 + precision) - MAX_DIGIT - (MAX_EXP - exp)) * 
-        (num_sd == MAX_DIGIT && !sci);
+    int trailing = MAX_EXP + 1 - MIN_EXP - MAX_DIGIT;
+    /* Subtract from maximum */
+    trailing -= MAX_EXP >= exp ? MAX_EXP - exp : 0;
+    /* Subtract unused precision */
+    trailing += precision + MIN_EXP;
+    trailing *= !sci;
+    /* Saturate at zero */
+    trailing = MAX(0, trailing);
 
     /* Normalize significant digits before the decimal point */
     double norm_val = 1.0;
@@ -125,15 +132,16 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value,
     /* Check for rollover after rounding */
     if (norm_int >= norm_max) {
         /* Re-normalize if exceeds max */
-        norm_int = num_sd == MAX_DIGIT ? norm_int / 10 : norm_int;
+        norm_int = num_sd == MAX_DIGIT || sci ? norm_int / 10 : norm_int;
         /* Increase the exponent */
         exp++;
         /* Decrease leading zero count if missing significant digits */
-        leading -= leading > 0 && num_sd < MAX_DIGIT;
+        leading -= num_sd < MAX_DIGIT && !sci;
         /* Increase number of significant digits */
-        num_sd += num_sd < MAX_DIGIT;
-        /* Re-evaluate scientific notation including rollovers to MIN_EXP */
-        sci = exp <= MIN_EXP || MAX_EXP < exp;
+        num_sd += num_sd < MAX_DIGIT && !sci;
+        /* Re-evaluate scientific notation */
+        sci |= MAX_EXP < exp;
+        sci &= exp != 0;
     }
 
     /* Determine the total width */
