@@ -30,8 +30,12 @@
 #define EXP_BYTE 4
 #define EXP_WIDTH 3
 
+#define MIN(x,y) (((x) < (y)) ? (x) : (y))
+
 /* Convert float to string */
-int32_t IecStringFloat(char *destination, uint32_t size, float value) {
+int32_t IecStringFloat(char *destination, uint32_t size, float value,
+                       unsigned char width, unsigned char precision, 
+                       unsigned char flags) {
     
     /* Gaurd null pointer */
     if (!destination)
@@ -89,18 +93,19 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value) {
     /* Calculate the base 10 exponent */
     int exp = (int)floorf(log10f(value));
 
-    /* Use scientific notation if large exponent */
-    int sci = exp < MIN_EXP || MAX_EXP < exp;
+    /* Use scientific notation if large exponent or not enough precision */
+    precision = MIN(precision, 0 - MIN_EXP);
+    int sci = exp < MIN_EXP || MAX_EXP < exp || precision + exp < 0;
 
     /* Count the number of significant digits */
     /* Add exponent if exponent is between MIN_EXP and 0 */
-    int num_sd = MAX_DIGIT + exp * (MIN_EXP <= exp && exp < 0);
+    int num_sd = MAX_DIGIT + MIN(0, exp * !sci + MIN_EXP + precision);
 
     /* Count leading zeros */
-    int leading = MAX_DIGIT - num_sd;
+    int leading = (0 - exp) * (!sci && exp < 0);
 
     /* Count trailing zeros */
-    int trailing = ((MAX_EXP - MIN_EXP + 1) - MAX_DIGIT - (MAX_EXP - exp)) * 
+    int trailing = ((MAX_EXP + 1 + precision) - MAX_DIGIT - (MAX_EXP - exp)) * 
         (num_sd == MAX_DIGIT && !sci);
 
     /* Normalize significant digits before the decimal point */
@@ -132,7 +137,7 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value) {
     }
 
     /* Determine the total width */
-    int width = sign + leading + num_sd + 1 + trailing + sci * (1 + EXP_WIDTH);
+    width = sign + leading + num_sd + 1 + trailing + sci * (1 + EXP_WIDTH);
     if (size <= width) {
         /* Clear destination */
         *destination = '\0';
@@ -160,7 +165,8 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value) {
     while (!sci && d <= exp);
 
     /* Place decimal */
-    *destination++ = '.';
+    if (d < num_sd)
+        *destination++ = '.';
 
     /* Write zeros or significant digits after decimal point */
     while (d < num_sd || trailing) {

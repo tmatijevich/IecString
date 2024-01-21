@@ -39,7 +39,7 @@ FUNCTION IecStringDecimal : DINT (*Convert integer to string as decimal with opt
 		destination : STRING[0]; (*Destination string*)
 		size : UDINT; (*Size of destination*)
 		value : DINT; (*Signed integer*)
-		width : USINT; (*Minimum character width including sign*)
+		width : USINT; (*Minimum character width*)
 		flags : USINT; (*Format flags*)
 	END_VAR
 END_FUNCTION
@@ -49,6 +49,9 @@ FUNCTION IecStringFloat : DINT (*Convert floating point number to string*)
 		destination : STRING[0]; (*Destination string*)
 		size : UDINT; (*Size of destination*)
 		value : REAL; (*Floating point value*)
+		width : USINT; (*Minimum character width*)
+		precision : USINT; (*Decimal precision*)
+		flags : USINT; (*Format flags*)
 	END_VAR
 END_FUNCTION
 

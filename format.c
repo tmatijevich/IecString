@@ -69,7 +69,7 @@ int32_t IecStringFormat(char *destination, uint32_t size, char *source,
                     break;
 
                 status = IecStringFloat(destination, bytes_remaining, 
-                    (float)values->f[count_float++]);
+                    (float)values->f[count_float++], 0, 6, IECSTRING_FLAG_NONE);
                 break;
                 
             /* Integer/decimal */
