@@ -10,15 +10,7 @@
  *   released under the MIT license agreement.
  ******************************************************************************/
 
-#ifndef IECSTRING_STANDALONE
 #include <IecString.h>
-#else
-#include "type.h"
-int32_t IecStringCopy(char *destination, uint32_t size, char *source);
-int32_t IecStringDecimal(char *destination, uint32_t size, int32_t value, 
-                        uint8_t width, unsigned char pad);
-#endif
-
 #include <stdint.h>
 #include <string.h>
 

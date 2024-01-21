@@ -10,12 +10,7 @@
  *   released under the MIT license agreement.
  ******************************************************************************/
 
-#ifndef IECSTRING_STANDALONE
 #include <IecString.h>
-#else
-#include "type.h"
-#endif
-
 #include <stdint.h>
 #include <string.h>
 
@@ -93,7 +88,7 @@ int32_t IecStringReplace(char *destination, uint32_t size, char *source,
     /* Add null terminator */
     *destination = '\0';
     
-    /* Output is truncated is source characters remain after
+    /* Output is truncated if source characters remain after
     writing size bytes to desitnation */
     return IECSTRING_WARNING_TRUNCATE * (*source && i == size - 1);
 }

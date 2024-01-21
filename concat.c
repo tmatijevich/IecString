@@ -10,12 +10,7 @@
  *   released under the MIT license agreement.
  ******************************************************************************/
 
-#ifndef IECSTRING_STANDALONE
 #include <IecString.h>
-#else
-#include "type.h"
-#endif
-
 #include <stdint.h>
 #include <string.h>
 
@@ -46,11 +41,6 @@ int32_t IecStringConcat(char *destination, uint32_t size, char *source) {
     size_t source_length = strlen(source);
     if (source <= destination && destination <= source + source_length)
         return IECSTRING_ERROR_OVERLAP;
-
-    /* Performance considerations:
-    strncpy performed better than while loop
-    strncpy performed better than strncat
-    */
 
     /* Append the safe and optimal number of character */
     size_t min_char_count = MIN(size - 1 - destination_length, source_length);
