@@ -60,7 +60,7 @@ int32_t IecStringDecimal(char *destination, uint32_t size, int32_t value,
 
     /* Saturate width */
     /* num_digits + sign <= width <= MAX_WIDTH*/
-    width = MIN(MAX(num_digits + sign, width), MAX_WIDTH);
+    width = MIN(MAX(num_digits + sign, width), MAX_DIGIT + sign);
     if (size <= width) {
         /* Clear destination */
         *destination = '\0';
