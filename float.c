@@ -23,6 +23,8 @@
 
 /* Maximum size of output string: <+|->XXXXXX.XXXXXX or <+|->X.XXXXXXe<+|->XX */
 #define MAX_BYTE 15
+/* Maximum size for special numbers (infinity, zero, not a number) */
+#define MAX_BYTE_SPECIAL 5
 /* Maximum exponent without scientific notation */
 #define MAX_EXP 5
 /* Minimum exponent without scientific notation */
@@ -45,7 +47,7 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value) {
         return IECSTRING_ERROR_SIZE_ZERO;
     
     /* Check for insufficient size */
-    if (size < MAX_BYTE) {
+    if (size < MAX_BYTE_SPECIAL) {
         /* Clear destination */
         *destination = '\0';
         return IECSTRING_ERROR_SIZE_INVALID;
@@ -132,6 +134,14 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value) {
         num_sd += num_sd < MAX_DIGIT;
         /* Re-evaluate scientific notation including rollovers to MIN_EXP */
         sci = exp <= MIN_EXP || MAX_EXP < exp;
+    }
+
+    /* Determine the total width */
+    int width = sign + leading + num_sd + 1 + trailing + sci * (1 + EXP_WIDTH);
+    if (size <= width) {
+        /* Clear destination */
+        *destination = '\0';
+        return IECSTRING_ERROR_SIZE_INVALID;
     }
 
     /* Calculate significant digits */
