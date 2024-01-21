@@ -99,8 +99,8 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value,
     int sci = exp < MIN_EXP || MAX_EXP < exp || precision + exp < 0;
 
     /* Count the number of significant digits */
-    /* Add exponent if exponent is between MIN_EXP and 0 */
-    int num_sd = MAX_DIGIT + MIN(0, exp * !sci + MIN_EXP + precision);
+    int num_sd = MAX(0, MIN(exp + 1 + precision, MAX_DIGIT));
+    num_sd = sci ? 1 + precision : num_sd;
 
     /* Count leading zeros for negative exponents */
     int leading = sci || exp >= 0 ? 0 : 0 - exp;
