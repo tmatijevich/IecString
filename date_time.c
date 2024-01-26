@@ -23,7 +23,7 @@
 
 /* Format the current date and/or time */
 int32_t IecStringDateTime(char *destination, uint32_t size, 
-                            char *format, DTStructure *date_time) {
+                          DTStructure *value, char *format) {
 
     /* Gaurd null pointers */
     if (!destination)
@@ -134,12 +134,12 @@ int32_t IecStringDateTime(char *destination, uint32_t size,
                     break;
                 case 2:
                     IecStringDecimal(destination, bytes_remaining, 
-                                     date_time->year % 100, 
+                                     value->year % 100, 
                                      match_count, IECSTRING_FLAG_NONE);
                     continue;
                 case 4:
                     IecStringDecimal(destination, bytes_remaining, 
-                                     date_time->year, match_count, IECSTRING_FLAG_NONE);
+                                     value->year, match_count, IECSTRING_FLAG_NONE);
                 default:
                     /* "Break" do-while */
                     continue;
@@ -147,7 +147,7 @@ int32_t IecStringDateTime(char *destination, uint32_t size,
 
             /* Match month: M MM MMM MMMM */
             match_count = strspn(format, "M");
-            date_time->month = MIN(MAX(1, date_time->month), 12);
+            value->month = MIN(MAX(1, value->month), 12);
             switch (match_count) {
                 case 0:
                     /* Break switch to attempt more matches */
@@ -156,16 +156,16 @@ int32_t IecStringDateTime(char *destination, uint32_t size,
                     /* Go to case 2 */
                 case 2:
                     IecStringDecimal(destination, bytes_remaining, 
-                                     date_time->month, 
+                                     value->month, 
                                      match_count, IECSTRING_FLAG_NONE);
                     continue;
                 case 3:
                     IecStringCopy(destination, bytes_remaining, 
-                        (char*)month_text_abbreviation[date_time->month]);
+                        (char*)month_text_abbreviation[value->month]);
                     continue;
                 case 4:
                     IecStringCopy(destination, bytes_remaining, 
-                        (char*)month_text_full[date_time->month]);
+                        (char*)month_text_full[value->month]);
                 default:
                     /* "Break" do-while */
                     continue;
@@ -173,7 +173,7 @@ int32_t IecStringDateTime(char *destination, uint32_t size,
 
             /* Match day: d dd ddd dddd */
             match_count = strspn(format, "d");
-            date_time->wday = MIN(date_time->wday, 6);
+            value->wday = MIN(value->wday, 6);
             switch (match_count) {
                 case 0:
                     /* Break switch to attempt more matches */
@@ -182,16 +182,16 @@ int32_t IecStringDateTime(char *destination, uint32_t size,
                     /* Go to case 2 */
                 case 2:
                     IecStringDecimal(destination, bytes_remaining, 
-                                     date_time->day, 
+                                     value->day, 
                                      match_count, IECSTRING_FLAG_NONE);
                     continue;
                 case 3:
                     IecStringCopy(destination, bytes_remaining, 
-                        (char*)day_text_abbreviation[date_time->wday]);
+                        (char*)day_text_abbreviation[value->wday]);
                     continue;
                 case 4:
                     IecStringCopy(destination, bytes_remaining, 
-                        (char*)day_text_full[date_time->wday]);
+                        (char*)day_text_full[value->wday]);
                 default:
                     /* "Break" do-while */
                     continue;
@@ -207,7 +207,7 @@ int32_t IecStringDateTime(char *destination, uint32_t size,
                     /* Go to case 2 */
                 case 2:
                     IecStringDecimal(destination, bytes_remaining, 
-                                     date_time->hour, 
+                                     value->hour, 
                                      match_count, IECSTRING_FLAG_NONE);
                 default:
                     /* "Break" do-while */
@@ -224,7 +224,7 @@ int32_t IecStringDateTime(char *destination, uint32_t size,
                     /* Go to case 2 */
                 case 2:
                     IecStringDecimal(destination, bytes_remaining, 
-                                     date_time->hour % 12, 
+                                     value->hour % 12, 
                                      match_count, IECSTRING_FLAG_NONE);
                 default:
                     /* "Break" do-while */
@@ -241,7 +241,7 @@ int32_t IecStringDateTime(char *destination, uint32_t size,
                     /* Go to case 2 */
                 case 2:
                     IecStringDecimal(destination, bytes_remaining, 
-                                     date_time->minute, 
+                                     value->minute, 
                                      match_count, IECSTRING_FLAG_NONE);
                 default:
                     /* "Break" do-while */
@@ -258,7 +258,7 @@ int32_t IecStringDateTime(char *destination, uint32_t size,
                     /* Go to case 2 */
                 case 2:
                     IecStringDecimal(destination, bytes_remaining, 
-                                     date_time->second, 
+                                     value->second, 
                                      match_count, IECSTRING_FLAG_NONE);
                 default:
                     /* "Break" do-while */
@@ -273,7 +273,7 @@ int32_t IecStringDateTime(char *destination, uint32_t size,
                     break;
                 case 2:
                     IecStringCopy(destination, bytes_remaining,
-                                  date_time->hour >= 12 ? "PM" : "AM");
+                                  value->hour >= 12 ? "PM" : "AM");
                 default:
                     /* "Break" do-while */
                     continue;
@@ -287,12 +287,12 @@ int32_t IecStringDateTime(char *destination, uint32_t size,
                     break;
                 case 2:
                     IecStringDecimal(destination, bytes_remaining, 
-                                     date_time->millisec / 10, 
+                                     value->millisec / 10, 
                                      match_count, IECSTRING_FLAG_NONE);
                     continue;
                 case 3:
                     IecStringDecimal(destination, bytes_remaining, 
-                                     date_time->millisec, 
+                                     value->millisec, 
                                      match_count, IECSTRING_FLAG_NONE);
                 default:
                     /* "Break" do-while */
