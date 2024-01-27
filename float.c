@@ -122,7 +122,7 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value,
     norm_val *= value;
 
     /* Convert normalized value to int with rounding */
-    int32_t norm_int = (int32_t)roundf(norm_val);
+    int32_t norm_int = (int32_t)round(norm_val);
 
     /* Calculate the maximum normalized value */
     int32_t norm_max = 1;
