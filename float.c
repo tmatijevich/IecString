@@ -92,7 +92,7 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value,
     }
 
     /* Calculate the base 10 exponent */
-    int exp = (int)floorf(log10f(value));
+    int exp = (int)floor(log10(value));
 
     /* Use scientific notation if large exponent or not enough precision */
     precision = MIN(precision, 0 - MIN_EXP);
