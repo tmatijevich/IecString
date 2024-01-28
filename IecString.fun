@@ -34,7 +34,7 @@ FUNCTION IecStringFormat : DINT (*Format string with runtime data*)
 	END_VAR
 END_FUNCTION
 
-FUNCTION IecStringDecimal : DINT (*Convert integer to string as decimal with optional padding up to width*)
+FUNCTION IecStringDecimal : DINT (*Convert integer to string as decimal*)
 	VAR_INPUT
 		destination : STRING[0]; (*Destination string*)
 		size : UDINT; (*Size of destination*)
@@ -44,7 +44,7 @@ FUNCTION IecStringDecimal : DINT (*Convert integer to string as decimal with opt
 	END_VAR
 END_FUNCTION
 
-FUNCTION IecStringFloat : DINT (*Convert floating point number to string*)
+FUNCTION IecStringFloat : DINT (*Convert float to string*)
 	VAR_INPUT
 		destination : STRING[0]; (*Destination string*)
 		size : UDINT; (*Size of destination*)
@@ -60,6 +60,6 @@ FUNCTION IecStringDateTime : DINT (*Format date and/or time*)
 		destination : STRING[0]; (*Destination string*)
 		size : UDINT; (*Size of destination*)
 		value : DTStructure; (*Date time value*)
-		format : STRING[0]; (*Format string, example "yyyy-MM-dd HH:mm"*)
+		format : STRING[0]; (*Format string*)
 	END_VAR
 END_FUNCTION
