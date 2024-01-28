@@ -34,7 +34,7 @@ Function | Description
 # Install
 
 - [Download](https://github.com/tmatijevich/IecString/releases/latest/download/IecString.zip) and extract the archive.
-- Import the IecString package to your project's logical view using **existing library** from the toolbox.
+- Import the IecString library to your project's logical view using **existing library** from the toolbox.
 
 
 ### Dependencies
