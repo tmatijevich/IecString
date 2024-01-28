@@ -55,7 +55,8 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value,
     }
 
     /* Check for zeros, infinities, and illegal numbers */
-    uint32_t raw = *(uint32_t *)&value;
+    uint32_t raw;
+	memcpy(&raw, &value, sizeof(raw));
     uint32_t sign = raw >> 31;
     uint32_t exponent = raw >> 23 & 0xff;
     uint32_t mantissa = raw & 0x7fffff;

@@ -38,7 +38,7 @@ int32_t IecStringFormat(char *destination, uint32_t size, char *source,
     int count_bool = 0, count_float = 0, count_int = 0, count_string = 0;
     uint32_t bytes_remaining = size;
     size_t length;
-    int32_t status;
+    int32_t status = 0;
 
     /* Format each character from source */
     while (*source && bytes_remaining > 1)
