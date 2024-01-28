@@ -1,12 +1,12 @@
 /*******************************************************************************
  * File: replace.c
  * Created: 2022-08-03
- * 
- * Authors: 
+ *
+ * Authors:
  *   Tyler Matijevich
- * 
+ *
  * License:
- *   This file replace.c is part of the IecString project 
+ *   This file replace.c is part of the IecString project
  *   released under the MIT license agreement.
  ******************************************************************************/
 
@@ -14,12 +14,12 @@
 #include <stdint.h>
 #include <string.h>
 
-#define MIN(x,y) (((x) < (y)) ? (x) : (y))
+#define MIN(x, y) (((x) < (y)) ? (x) : (y))
 
 /* Find in source and replace in destination */
-int32_t IecStringReplace(char *destination, uint32_t size, char *source, 
-                        char *find, char *replace) {
-
+int32_t IecStringReplace(char *destination, uint32_t size, char *source,
+                         char *find, char *replace)
+{
     /* Gaurd null pointers */
     if (!destination || !source || !find || !replace)
         return IECSTRING_ERROR_NULL;
@@ -60,9 +60,11 @@ int32_t IecStringReplace(char *destination, uint32_t size, char *source,
     /* Find and replace, otherwise copy */
     uint32_t i = 0;
     size_t min_char_count;
-    while (*source && i < size - 1) {
+    while (*source && i < size - 1)
+    {
         /* Break if nothing to find or not enough characters left to compare */
-        if (find_length == 0 || source_length - i < find_length) {
+        if (find_length == 0 || source_length - i < find_length)
+        {
             strncpy(destination, source, size - 1 - i);
             min_char_count = MIN(source_length, size - 1 - i);
             destination += min_char_count;
@@ -71,7 +73,8 @@ int32_t IecStringReplace(char *destination, uint32_t size, char *source,
         }
 
         /* Compare source against find */
-        if (strncmp(source, find, find_length) == 0) {
+        if (strncmp(source, find, find_length) == 0)
+        {
             strncpy(destination, replace, size - 1 - i);
             min_char_count = MIN(replace_length, size - 1 - i);
             destination += min_char_count;
@@ -84,11 +87,10 @@ int32_t IecStringReplace(char *destination, uint32_t size, char *source,
         *destination++ = *source++;
         i++;
     }
-    
+
     /* Add null terminator */
     *destination = '\0';
-    
-    /* Output is truncated if source characters remain after
-    writing size bytes to desitnation */
+
+    /* Truncated if source characters remain and destination is full */
     return IECSTRING_WARNING_TRUNCATE * (*source && i == size - 1);
 }

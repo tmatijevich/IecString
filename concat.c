@@ -1,12 +1,12 @@
 /*******************************************************************************
  * File: concat.c
  * Created: 2022-08-03
- * 
- * Authors: 
+ *
+ * Authors:
  *   Tyler Matijevich
- * 
+ *
  * License:
- *   This file concat.c is part of the IecString project 
+ *   This file concat.c is part of the IecString project
  *   released under the MIT license agreement.
  ******************************************************************************/
 
@@ -14,12 +14,12 @@
 #include <stdint.h>
 #include <string.h>
 
-#define MIN(x,y) (((x) < (y)) ? (x) : (y))
+#define MIN(x, y) (((x) < (y)) ? (x) : (y))
 
-/* Concatenate source to destination up to size of destination 
-or source length */
-int32_t IecStringConcat(char *destination, uint32_t size, char *source) {
-    
+/* Concatenate source to destination up to size of destination or source length
+*/
+int32_t IecStringConcat(char *destination, uint32_t size, char *source)
+{
     /* Gaurd null pointers */
     if (!destination || !source)
         return IECSTRING_ERROR_NULL;
@@ -27,7 +27,7 @@ int32_t IecStringConcat(char *destination, uint32_t size, char *source) {
     /* Check for zero size */
     if (!size)
         return IECSTRING_ERROR_SIZE_ZERO;
-    
+
     /* Check for valid size */
     size_t destination_length = strlen(destination);
     if (size <= destination_length)
@@ -48,8 +48,8 @@ int32_t IecStringConcat(char *destination, uint32_t size, char *source) {
 
     /* Add null terminator */
     destination[destination_length + min_char_count] = '\0';
-    
-    /* Warn if truncated when source length exceeds size */
-    return IECSTRING_WARNING_TRUNCATE * 
-            (source_length > size - 1 - destination_length);
+
+    /* Truncated if source length exceeds size */
+    return IECSTRING_WARNING_TRUNCATE *
+           (source_length > size - 1 - destination_length);
 }

@@ -1,12 +1,12 @@
 /*******************************************************************************
  * File: decimal.c
  * Created: 2022-09-20
- * 
- * Authors: 
+ *
+ * Authors:
  *   Tyler Matijevich
- * 
+ *
  * License:
- *   This file decimal.c is part of the IecString project 
+ *   This file decimal.c is part of the IecString project
  *   released under the MIT license agreement.
  ******************************************************************************/
 
@@ -14,8 +14,8 @@
 #include <stdint.h>
 #include <string.h>
 
-#define MIN(x,y) (((x) < (y)) ? (x) : (y))
-#define MAX(x,y) (((x) > (y)) ? (x) : (y))
+#define MIN(x, y) (((x) < (y)) ? (x) : (y))
+#define MAX(x, y) (((x) > (y)) ? (x) : (y))
 
 /* Maximum of 12 bytes: 10 digits, 1 sign, and null terminator */
 #define MAX_BYTE 12U
@@ -23,8 +23,8 @@
 #define MAX_DIGIT 10U
 
 int32_t IecStringDecimal(char *destination, uint32_t size, int32_t value,
-                         uint8_t width, unsigned char flags) {
-
+                         uint8_t width, unsigned char flags)
+{
     /* Gaurd null pointers */
     if (!destination)
         return IECSTRING_ERROR_NULL;
@@ -34,8 +34,10 @@ int32_t IecStringDecimal(char *destination, uint32_t size, int32_t value,
         return IECSTRING_ERROR_SIZE_ZERO;
 
     /* Signed exception */
-    if (value == INT32_MIN) {
-        if (size < MAX_BYTE) {
+    if (value == INT32_MIN)
+    {
+        if (size < MAX_BYTE)
+        {
             /* Clear destination */
             *destination = '\0';
             return IECSTRING_ERROR_SIZE_INVALID;
@@ -52,16 +54,17 @@ int32_t IecStringDecimal(char *destination, uint32_t size, int32_t value,
     /* Find digits */
     unsigned int num_digits = 0;
     unsigned int digits[MAX_DIGIT];
-    do {
+    do
+    {
         digits[num_digits++] = value % 10;
         value /= 10;
-    }
-    while (value);
+    } while (value);
 
     /* Saturate width */
     /* num_digits + sign <= width <= MAX_WIDTH*/
     width = MIN(MAX(num_digits + sign, width), MAX_DIGIT + sign);
-    if (size <= width) {
+    if (size <= width)
+    {
         /* Clear destination */
         *destination = '\0';
         return IECSTRING_ERROR_SIZE_INVALID;
@@ -73,17 +76,18 @@ int32_t IecStringDecimal(char *destination, uint32_t size, int32_t value,
 
     /* Write pads */
     char pad = flags & IECSTRING_FLAG_SPACES ? ' ' : '0';
-    while (width - num_digits - sign) {
+    while (width - num_digits - sign)
+    {
         *destination++ = pad;
         width--;
     }
 
     /* Write digits */
-    while (num_digits) 
+    while (num_digits)
         *destination++ = '0' + digits[--num_digits];
 
     /* Add null terminator */
     *destination = '\0';
 
-    return 0;
+    return IECSTRING_ERROR_NONE;
 }

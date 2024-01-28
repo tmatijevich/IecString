@@ -1,12 +1,12 @@
 /*******************************************************************************
  * File: float.c
  * Created: 2023-12-17
- * 
- * Authors: 
+ *
+ * Authors:
  *   Tyler Matijevich
- * 
+ *
  * License:
- *   This file float.c is part of the IecString project 
+ *   This file float.c is part of the IecString project
  *   released under the MIT license agreement.
  ******************************************************************************/
 
@@ -30,14 +30,14 @@
 #define EXP_BYTE 4
 #define EXP_WIDTH 3
 
-#define MIN(x,y) (((x) < (y)) ? (x) : (y))
-#define MAX(x,y) (((x) > (y)) ? (x) : (y))
+#define MIN(x, y) (((x) < (y)) ? (x) : (y))
+#define MAX(x, y) (((x) > (y)) ? (x) : (y))
 
 /* Convert float to string */
 int32_t IecStringFloat(char *destination, uint32_t size, float value,
-                       unsigned char width, unsigned char precision, 
-                       unsigned char flags) {
-    
+                       unsigned char width, unsigned char precision,
+                       unsigned char flags)
+{
     /* Gaurd null pointer */
     if (!destination)
         return IECSTRING_ERROR_NULL;
@@ -45,48 +45,55 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value,
     /* Check for zero size */
     if (!size)
         return IECSTRING_ERROR_SIZE_ZERO;
-    
+
     /* Check for insufficient size */
-    if (size < MAX_BYTE_SPECIAL) {
+    if (size < MAX_BYTE_SPECIAL)
+    {
         /* Clear destination */
         *destination = '\0';
         return IECSTRING_ERROR_SIZE_INVALID;
     }
 
     /* Check for zeros, infinities, and illegal numbers */
-    uint32_t raw = *(uint32_t*)&value;
+    uint32_t raw = *(uint32_t *)&value;
     uint32_t sign = raw >> 31;
     uint32_t exponent = raw >> 23 & 0xff;
     uint32_t mantissa = raw & 0x7fffff;
 
     /* Write zero */
-    if (!sign && !exponent && !mantissa) {
+    if (!sign && !exponent && !mantissa)
+    {
         strcpy(destination, "0");
         return 0;
     }
-    if (sign && !exponent && !mantissa) {
+    if (sign && !exponent && !mantissa)
+    {
         strcpy(destination, "-0");
         return 0;
     }
 
     /* Write infinity */
-    if (!sign && exponent == 0xff && !mantissa) {
+    if (!sign && exponent == 0xff && !mantissa)
+    {
         strcpy(destination, "inf");
         return 0;
     }
-    if (sign && exponent == 0xff && !mantissa) {
+    if (sign && exponent == 0xff && !mantissa)
+    {
         strcpy(destination, "-inf");
         return 0;
     }
 
     /* Write "Not a Number" */
-    if (exponent == 0xff) {
+    if (exponent == 0xff)
+    {
         strcpy(destination, "NaN");
         return 0;
     }
 
     /* Write sign */
-    if (sign) {
+    if (sign)
+    {
         *destination++ = '-';
         value *= -1.0f;
     }
@@ -128,9 +135,10 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value,
     int32_t norm_max = 1;
     for (int i = 0; i < num_sd; i++)
         norm_max *= 10;
-    
+
     /* Check for rollover after rounding */
-    if (norm_int >= norm_max) {
+    if (norm_int >= norm_max)
+    {
         /* Re-normalize if exceeds max */
         norm_int = num_sd == MAX_DIGIT || sci ? norm_int / 10 : norm_int;
         /* Increase the exponent */
@@ -146,7 +154,8 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value,
 
     /* Determine the total width */
     width = sign + leading + num_sd + 1 + trailing + sci * (1 + EXP_WIDTH);
-    if (size <= width) {
+    if (size <= width)
+    {
         /* Clear destination */
         *destination = '\0';
         return IECSTRING_ERROR_SIZE_INVALID;
@@ -155,29 +164,31 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value,
     /* Calculate significant digits */
     int digits[MAX_DIGIT] = {0};
     int d;
-    for (d = num_sd - 1; d >= 0; d--) {
+    for (d = num_sd - 1; d >= 0; d--)
+    {
         digits[d] = norm_int % 10;
         norm_int /= 10;
     }
 
     /* Write leading zeros or significant digits before decimal point */
     d = 0;
-    do {
+    do
+    {
         /* Write digit if no leading zeros remain */
         *destination++ = '0' + digits[d] * !leading;
         /* Update digit count if no leading zeros remain */
         d += !leading;
         /* Update leading zeros */
         leading -= leading > 0;
-    }
-    while (!sci && d <= exp);
+    } while (!sci && d <= exp);
 
     /* Place decimal */
     if (d < num_sd)
         *destination++ = '.';
 
     /* Write zeros or significant digits after decimal point */
-    while (d < num_sd || trailing) {
+    while (d < num_sd || trailing)
+    {
         /* Write digit if no more leading zeros and digits remain */
         *destination++ = '0' + (d < MAX_DIGIT && !leading ? digits[d] : 0);
         /* Update trailing zero count if no digits remain */
@@ -189,7 +200,8 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value,
     }
 
     *destination = '\0';
-    if (sci) {
+    if (sci)
+    {
         *destination++ = 'e';
         IecStringDecimal(destination, EXP_BYTE, exp, EXP_WIDTH,
                          IECSTRING_FLAG_SIGN);
