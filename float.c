@@ -125,7 +125,8 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value,
 
     /* Normalize significant digits before the decimal point */
     double norm_val = 1.0;
-    for (int i = num_sd - 1 - exp; i != 0; i += i > 0 ? -1 : 1)
+	int i;
+    for (i = num_sd - 1 - exp; i != 0; i += i > 0 ? -1 : 1)
         norm_val *= i > 0 ? 10.0 : 0.1;
     norm_val *= value;
 
@@ -134,7 +135,7 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value,
 
     /* Calculate the maximum normalized value */
     int32_t norm_max = 1;
-    for (int i = 0; i < num_sd; i++)
+    for (i = 0; i < num_sd; i++)
         norm_max *= 10;
 
     /* Check for rollover after rounding */
