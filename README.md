@@ -27,8 +27,8 @@ Function | Read | Write | Description
 [IecStringConcat](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L10) | :mag: | :memo: | Concatenate source to destination up to size of destination or source length
 [IecStringReplace](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L18) | :mag: | :memo: | Find in source and replace in destination
 [IecStringFormat](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L28) | :mag: | :memo: | Format string with runtime data
-[IecStringDecimal](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L37) | :mag: | :memo: | Convert integer to string as decimal
-[IecStringFloat](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L47) | :mag: | :memo: | Convert float to string
+[IecStringDecimal](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L37) | | :memo: | Convert integer to string as decimal
+[IecStringFloat](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L47) | | :memo: | Convert float to string
 [IecStringDateTime](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L58) | :mag: | :memo: | Format date and/or time
 
 # Install
