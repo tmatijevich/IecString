@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?AutomationStudio FileVersion="4.9"?>
+<Package Version="2.00.1" xmlns="http://br-automation.co.at/AS/Package">
+  <Objects>
+    <Object Type="File" Description="Library information">README.md</Object>
+    <Object Type="File" Description="Library license">LICENSE</Object>
+    <Object Type="File" Description="Library header">main.h</Object>
+    <Object Type="File" Description="Copy string">copy.c</Object>
+    <Object Type="File" Description="Concatenate string">concat.c</Object>
+    <Object Type="File" Description="Find and replace substring">replace.c</Object>
+    <Object Type="File" Description="Format runtime values">format.c</Object>
+    <Object Type="File" Description="Format decimal">decimal.c</Object>
+    <Object Type="File" Description="Format float">float.c</Object>
+    <Object Type="File" Description="Format date/time">date_time.c</Object>
+  </Objects>
+</Package>
