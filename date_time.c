@@ -10,12 +10,7 @@
  *   released under the MIT license agreement.
  ******************************************************************************/
 
-#include <IecString.h>
-#include <stdint.h>
-#include <string.h>
-
-#define MIN(x, y) (((x) < (y)) ? (x) : (y))
-#define MAX(x, y) (((x) > (y)) ? (x) : (y))
+#include "main.h"
 
 #define TOKENS "yMdHhmstf"
 #define DELIMETERS "-_ .,/:;()[]"

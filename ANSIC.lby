@@ -7,6 +7,7 @@
     <File Description="Constants">IecString.var</File>
     <File Description="Library information">README.md</File>
     <File Description="Library license">LICENSE</File>
+    <File Description="Common header">main.h</File>
     <File Description="Copy string">copy.c</File>
     <File Description="Concatenate string">concat.c</File>
     <File Description="Find and replace substring">replace.c</File>

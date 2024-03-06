@@ -10,12 +10,7 @@
  *   released under the MIT license agreement.
  ******************************************************************************/
 
-#include <IecString.h>
-#include <stdint.h>
-#include <string.h>
-
-#define MIN(x, y) (((x) < (y)) ? (x) : (y))
-#define MAX(x, y) (((x) > (y)) ? (x) : (y))
+#include "main.h"
 
 /* Maximum of 12 bytes: 10 digits, 1 sign, and null terminator */
 #define MAX_BYTE 12U

@@ -10,11 +10,7 @@
  *   released under the MIT license agreement.
  ******************************************************************************/
 
-#include <IecString.h>
-#include <stdint.h>
-#include <stdbool.h>
-#include <string.h>
-#include <math.h>
+#include "main.h"
 
 /* Maximum size of output string: <+|->XXXXXX.XXXXXX or <+|->X.XXXXXXe<+|->XX */
 #define MAX_BYTE 15
@@ -29,9 +25,6 @@
 /* Exponent of +38 to -38 is four bytes and three characters */
 #define EXP_BYTE 4
 #define EXP_WIDTH 3
-
-#define MIN(x, y) (((x) < (y)) ? (x) : (y))
-#define MAX(x, y) (((x) > (y)) ? (x) : (y))
 
 /* Convert float to string */
 int32_t IecStringFloat(char *destination, uint32_t size, float value,

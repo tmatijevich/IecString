@@ -10,11 +10,7 @@
  *   released under the MIT license agreement.
  ******************************************************************************/
 
-#include <IecString.h>
-#include <stdint.h>
-#include <string.h>
-
-#define MIN(x, y) (((x) < (y)) ? (x) : (y))
+#include "main.h"
 
 /* Concatenate source to destination up to size of destination or source length
 */

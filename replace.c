@@ -10,11 +10,7 @@
  *   released under the MIT license agreement.
  ******************************************************************************/
 
-#include <IecString.h>
-#include <stdint.h>
-#include <string.h>
-
-#define MIN(x, y) (((x) < (y)) ? (x) : (y))
+#include "main.h"
 
 /* Find in source and replace in destination */
 int32_t IecStringReplace(char *destination, uint32_t size, char *source,
