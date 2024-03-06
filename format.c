@@ -10,9 +10,7 @@
  *   released under the MIT license agreement.
  ******************************************************************************/
 
-#include <IecString.h>
-#include <stdint.h>
-#include <string.h>
+#include "main.h"
 
 /* Format string with runtime data */
 int32_t IecStringFormat(char *destination, uint32_t size, char *source,
