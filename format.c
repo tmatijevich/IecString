@@ -20,7 +20,11 @@ int32_t IecStringFormat(char *destination, uint32_t size, char *source,
 {
     /* Gaurd null pointers */
     if (!destination || !source || !values)
+    {
+        /* Copy if no values */
+        IecStringCopy(destination, size, source);
         return IECSTRING_ERROR_NULL;
+    }
 
     /* Check for zero size */
     if (!size)
