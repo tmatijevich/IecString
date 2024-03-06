@@ -21,35 +21,35 @@ The functions **enhance** string manipulation, **protect** memory, and support A
 * :white_check_mark: Compatible with ANSI C/C++ and IEC 61131-3
 
 
-Function | Description
----|---
-[IecStringCopy](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L2) | Copy source to destination up to size of destination or source length
-[IecStringConcat](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L10) | Concatenate source to destination up to size of destination or source length
-[IecStringReplace](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L18) | Find in source and replace in destination
-[IecStringFormat](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L28) | Format string with runtime data
-[IecStringDecimal](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L37) | Convert integer to string as decimal
-[IecStringFloat](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L47) | Convert float to string
-[IecStringDateTime](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L58) | Format date and/or time
+Function | Read | Write | Description
+---|---|---|---
+[IecStringCopy](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L2) | :mag: | :memo: | Copy source to destination up to size of destination or source length
+[IecStringConcat](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L10) | :mag: | :memo: | Concatenate source to destination up to size of destination or source length
+[IecStringReplace](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L18) | :mag: | :memo: | Find in source and replace in destination
+[IecStringFormat](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L28) | :mag: | :memo: | Format string with runtime data
+[IecStringDecimal](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L37) | :mag: | :memo: | Convert integer to string as decimal
+[IecStringFloat](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L47) | :mag: | :memo: | Convert float to string
+[IecStringDateTime](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L58) | :mag: | :memo: | Format date and/or time
 
 # Install
 
-- [Download](https://github.com/tmatijevich/IecString/releases/latest/download/IecString.zip) the binaries and extract the archive.
-- Import the IecString library to your project's logical view using **existing library** from the toolbox.
+- [Download](https://github.com/tmatijevich/IecString/releases/latest/download/IecString.zip) the binaries and extract the archive
+- Add to the project as **existing library** from the toolbox in logical view
 
 # Build
 
-Clone or download the source files.  Reference or import as existing library to the project.
+- Clone or download source files
+- Add to the project as **existing library**
+    - Option to add as **reference**
 
-```
-git clone https://github.com/tmatijevich/IecString.git
-```
-
-Alternatively, add as submodule to project repository.  Again, import as existing library to the project.
+Alternatively, add as submodule to an existing project repository.
 
 ```
 cd <repository>
 git submodule add https://github.com/tmatijevich/IecString.git <project>/Logical/Libraries/IecString
 ```
+
+Then add to project as **existing library**.
 
 # Performance & Unit Tests
 
