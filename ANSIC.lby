@@ -12,6 +12,7 @@
     <File Description="Concatenate string">concat.c</File>
     <File Description="Compare strings">compare.c</File>
     <File Description="String length">length.c</File>
+    <File Description="Find substring">find.c</File>
     <File Description="Find and replace substring">replace.c</File>
     <File Description="Format runtime values">format.c</File>
     <File Description="Format decimal">decimal.c</File>
