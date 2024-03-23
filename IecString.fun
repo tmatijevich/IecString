@@ -23,6 +23,12 @@ FUNCTION IecStringCompare : INT (*Compare characters of two strings*)
 	END_VAR
 END_FUNCTION
 
+FUNCTION IecStringLength : UDINT (*Determine the length of a string*)
+	VAR_INPUT
+		source : STRING[0]; (*Source string*)
+	END_VAR
+END_FUNCTION
+
 FUNCTION IecStringReplace : DINT (*Find in source and replace in destination*)
 	VAR_INPUT
 		destination : STRING[0]; (*Destination string*)
