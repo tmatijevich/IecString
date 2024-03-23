@@ -36,6 +36,13 @@ FUNCTION IecStringFind : UDINT (*Find substring in source*)
 	END_VAR
 END_FUNCTION
 
+FUNCTION IecStringStartsWith : BOOL (*Does source start with prefix*)
+	VAR_INPUT
+		source : STRING[0]; (*Source string*)
+		prefix : STRING[0]; (*Prefix string*)
+	END_VAR
+END_FUNCTION
+
 FUNCTION IecStringReplace : DINT (*Find in source and replace in destination*)
 	VAR_INPUT
 		destination : STRING[0]; (*Destination string*)
