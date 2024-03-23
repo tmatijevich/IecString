@@ -15,6 +15,14 @@ FUNCTION IecStringConcat : DINT (*Concatenate source to destination up to size o
 	END_VAR
 END_FUNCTION
 
+FUNCTION IecStringCompare : INT (*Compare characters of two strings*)
+	VAR_INPUT
+		string1 : STRING[0]; (*First string*)
+		string2 : STRING[0]; (*Second string*)
+		characters : UDINT; (*Maximum number of characters to compare*)
+	END_VAR
+END_FUNCTION
+
 FUNCTION IecStringReplace : DINT (*Find in source and replace in destination*)
 	VAR_INPUT
 		destination : STRING[0]; (*Destination string*)
