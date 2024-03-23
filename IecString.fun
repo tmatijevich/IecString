@@ -43,6 +43,13 @@ FUNCTION IecStringStartsWith : BOOL (*Does source start with prefix*)
 	END_VAR
 END_FUNCTION
 
+FUNCTION IecStringEndsWith : BOOL (*Does source end with suffix*)
+	VAR_INPUT
+		source : STRING[0]; (*Source string*)
+		suffix : STRING[0]; (*Suffix string*)
+	END_VAR
+END_FUNCTION
+
 FUNCTION IecStringReplace : DINT (*Find in source and replace in destination*)
 	VAR_INPUT
 		destination : STRING[0]; (*Destination string*)
