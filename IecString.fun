@@ -29,13 +29,6 @@ FUNCTION IecStringLength : UDINT (*Determine the length of a string*)
 	END_VAR
 END_FUNCTION
 
-FUNCTION IecStringFind : UDINT (*Find substring in source*)
-	VAR_INPUT
-		source : STRING[0]; (*Source string*)
-		find : STRING[0]; (*Search string*)
-	END_VAR
-END_FUNCTION
-
 FUNCTION IecStringStartsWith : BOOL (*Does source start with prefix*)
 	VAR_INPUT
 		source : STRING[0]; (*Source string*)
