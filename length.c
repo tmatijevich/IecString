@@ -12,7 +12,12 @@
 
 #include "main.h"
 
+/* Determine the length of a string */
 uint32_t IecStringLength(char *source)
 {
+    /* Guard null pointers */
+    if (!source)
+        return 0;
+
     return (uint32_t)strlen(source);
 }
