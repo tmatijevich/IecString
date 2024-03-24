@@ -12,6 +12,7 @@
 
 #include "main.h"
 
+/* Does source start with prefix */
 uint8_t IecStringStartsWith(char *source, char *prefix)
 {
     /* Guard null pointers */
