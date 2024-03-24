@@ -37,7 +37,7 @@ Function | Read | Write | Description
 [IecStringDateTime](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L86) | :mag: | :memo: | Format date and/or time
 
 :mag: The functions marked in the read column are **reading** from memory.  
-:memo: The functions marked in the write column are **writing** to memory *within the size* of destination.
+:memo: The functions marked in the write column are **writing** to memory *within the size* of `destination`.
 
 # Install
 
