@@ -25,11 +25,18 @@ Function | Read | Write | Description
 ---|---|---|---
 [IecStringCopy](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L2) | :mag: | :memo: | Copy source to destination up to size of destination or source length
 [IecStringConcat](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L10) | :mag: | :memo: | Concatenate source to destination up to size of destination or source length
-[IecStringReplace](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L18) | :mag: | :memo: | Find in source and replace in destination
-[IecStringFormat](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L28) | :mag: | :memo: | Format string with runtime data
-[IecStringDecimal](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L37) | | :memo: | Convert integer to string as decimal
-[IecStringFloat](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L47) | | :memo: | Convert float to string
-[IecStringDateTime](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L58) | :mag: | :memo: | Format date and/or time
+[IecStringCompare](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L18) | :mag: | | Compare characters of two strings
+[IecStringLength](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L26) | :mag: | | Determine the length of a string
+[IecStringStartsWith](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L32) | :mag: | | Does source start with prefix
+[IecStringEndsWith](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L39) | :mag: | | Does source end with suffix
+[IecStringReplace](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L46) | :mag: | :memo: | Find in source and replace in destination
+[IecStringFormat](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L56) | :mag: | :memo: | Format string with runtime data
+[IecStringDecimal](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L65) | | :memo: | Convert integer to string as decimal
+[IecStringFloat](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L75) | | :memo: | Convert float to string
+[IecStringDateTime](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L86) | :mag: | :memo: | Format date and/or time
+
+:mag: The functions marked in the read column are **reading** from memory.  
+:memo: The functions marked in the write column are **writing** to memory *within the size* of destination.
 
 # Install
 
