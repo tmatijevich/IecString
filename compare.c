@@ -12,7 +12,12 @@
 
 #include "main.h"
 
+/* Compare characters of two strings */
 int16_t IecStringCompare(char *string1, char *string2, uint32_t characters)
 {
+    /* Guard null pointers */
+    if (!string1 || !string2)
+        return string1 ? 1 : -1;
+
     return strncmp(string1, string2, characters);
 }
