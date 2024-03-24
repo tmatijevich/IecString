@@ -7,6 +7,10 @@
     <Object Type="File" Description="Library header">main.h</Object>
     <Object Type="File" Description="Copy string">copy.c</Object>
     <Object Type="File" Description="Concatenate string">concat.c</Object>
+    <Object Type="File" Description="Compare strings">compare.c</Object>
+    <Object Type="File" Description="String length">length.c</Object>
+    <Object Type="File" Description="Starts with prefix">start.c</Object>
+    <Object Type="File" Description="Ends with suffix">end.c</Object>
     <Object Type="File" Description="Find and replace substring">replace.c</Object>
     <Object Type="File" Description="Format runtime values">format.c</Object>
     <Object Type="File" Description="Format decimal">decimal.c</Object>
