@@ -62,6 +62,10 @@ typedef struct IecStringFormatType
 #ifdef IECSTRING_HEADER_EXPLICIT
 int32_t IecStringCopy(char *destination, uint32_t size, char *source);
 int32_t IecStringConcat(char *destination, uint32_t size, char *source);
+int16_t IecStringCompare(char *string1, char *string2, uint32_t characters);
+uint32_t IecStringLength(char *source);
+uint8_t IecStringStartsWith(char *source, char *prefix);
+uint8_t IecStringEndsWith(char *source, char *suffix);
 int32_t IecStringReplace(char *destination, uint32_t size, char *source,
                          char *find, char *replace);
 int32_t IecStringFormat(char *destination, uint32_t size, char *source, 
