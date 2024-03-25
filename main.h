@@ -13,6 +13,11 @@
 #ifndef IECSTRING_MAIN_H
 #define IECSTRING_MAIN_H
 
+#ifdef __cplusplus
+extern "C" 
+{
+#endif
+
 /* Headers */
 #ifndef IECSTRING_HEADER_EXPLICIT
 #include <IecString.h>
@@ -78,6 +83,10 @@ int32_t IecStringFloat(char *destination, uint32_t size, float value,
                        unsigned char flags);
 int32_t IecStringDateTime(char *destination, uint32_t size, 
                           DTStructure *value, char *format);
+#endif
+
+#ifdef __cplusplus
+};
 #endif
 
 #endif /* IECSTRING_MAIN_H */
