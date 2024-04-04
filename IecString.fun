@@ -74,6 +74,18 @@ FUNCTION IecStringReplace : DINT (*Find in source and replace in destination*)
 	END_VAR
 END_FUNCTION
 
+FUNCTION IecStringSplit : DINT (*Split source into tokens*)
+	VAR_INPUT
+		destination : STRING[0]; (*Destination string for first token*)
+		size : UDINT; (*Size of destination*)
+		source : STRING[0]; (*Source string*)
+		delimiters : STRING[0]; (*List of delimiter characters*)
+	END_VAR
+	VAR_IN_OUT
+		address : UDINT; (*Address to the next token in source*)
+	END_VAR
+END_FUNCTION
+
 FUNCTION IecStringFormat : DINT (*Format string with runtime data*)
 	VAR_INPUT
 		destination : STRING[0]; (*Destination string*)

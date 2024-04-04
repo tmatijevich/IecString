@@ -18,6 +18,7 @@
     <File Description="Starts with prefix">start.c</File>
     <File Description="Ends with suffix">end.c</File>
     <File Description="Find and replace substring">replace.c</File>
+    <File Description="Split string">split.c</File>
     <File Description="Format runtime values">format.c</File>
     <File Description="Format decimal">decimal.c</File>
     <File Description="Format float">float.c</File>
