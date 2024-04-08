@@ -50,6 +50,13 @@ FUNCTION IecStringFind : UDINT (*Find substring in source*)
 	END_VAR
 END_FUNCTION
 
+FUNCTION IecStringFirstOf : UDINT (*First occurrence of any character from find in source*)
+	VAR_INPUT
+		source : STRING[0]; (*Source string*)
+		find : STRING[0]; (*Search string*)
+	END_VAR
+END_FUNCTION
+
 FUNCTION IecStringStartsWith : BOOL (*Does source start with prefix*)
 	VAR_INPUT
 		source : STRING[0]; (*Source string*)

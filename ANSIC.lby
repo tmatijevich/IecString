@@ -15,6 +15,7 @@
     <File Description="First character occurrence">first.c</File>
     <File Description="Last character occurrence">last.c</File>
     <File Description="Find substring">find.c</File>
+    <File Description="First of any character">first_of.c</File>
     <File Description="Starts with prefix">start.c</File>
     <File Description="Ends with suffix">end.c</File>
     <File Description="Find and replace substring">replace.c</File>
