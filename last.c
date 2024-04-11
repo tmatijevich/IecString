@@ -12,7 +12,7 @@
 
 #include "main.h"
 
-/* Find last occurrence of character in source */
+/* Last occurrence of character in source */
 uint32_t IecStringLast(char *source, uint8_t character)
 {
     /* Guard null pointers */

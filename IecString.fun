@@ -29,14 +29,14 @@ FUNCTION IecStringLength : UDINT (*Determine the length of a string*)
 	END_VAR
 END_FUNCTION
 
-FUNCTION IecStringFirst : UDINT (*Find first occurrence of character in source*)
+FUNCTION IecStringFirst : UDINT (*First occurrence of character in source*)
 	VAR_INPUT
 		source : STRING[0]; (*Source string*)
 		character : USINT; (*Search character*)
 	END_VAR
 END_FUNCTION
 
-FUNCTION IecStringLast : UDINT (*Find last occurrence of character in source*)
+FUNCTION IecStringLast : UDINT (*Last occurrence of character in source*)
 	VAR_INPUT
 		source : STRING[0]; (*Source string*)
 		character : USINT; (*Search character*)

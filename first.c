@@ -12,7 +12,7 @@
 
 #include "main.h"
 
-/* Find first occurrence of character in source */
+/* First occurrence of character in source */
 uint32_t IecStringFirst(char *source, uint8_t character)
 {
     /* Guard null pointers */
