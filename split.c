@@ -29,8 +29,8 @@ int32_t IecStringSplit(char *destination, uint32_t size, char *source,
         return IECSTRING_ERROR_OVERLAP;
 
     /* Check if destination overlaps source length */
-    size_t source_length = strlen(source);
-    if (source <= destination && destination <= source + source_length)
+    size_t length = strlen(source);
+    if (source <= destination && destination <= source + length)
         return IECSTRING_ERROR_OVERLAP;
 
     /* Check if delimeters overlaps destination size */
@@ -38,8 +38,8 @@ int32_t IecStringSplit(char *destination, uint32_t size, char *source,
         return IECSTRING_ERROR_OVERLAP;
 
     /* Check if destination overlaps delimeters length */
-    size_t upper_bound = delimeters + strlen(delimeters);
-    if (delimeters <= destination && destination <= upper_bound)
+    length = strlen(delimeters);
+    if (delimeters <= destination && destination <= delimeters + length)
         return IECSTRING_ERROR_OVERLAP;
 
     /* Return the number of characters in the initial portion containing 
