@@ -20,6 +20,6 @@ uint32_t IecStringFind(char *source, char *find)
         return 0;
 
     /* Returns a pointer to the first occurence of find in source */
-    /* Returns a null pointer if find in not in source */
+    /* Returns a null pointer if find is not in source */
     return (uint32_t)strstr(source, find);
 }
