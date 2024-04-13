@@ -50,7 +50,14 @@ FUNCTION IecStringFind : UDINT (*Find substring in source*)
 	END_VAR
 END_FUNCTION
 
-FUNCTION IecStringFirstOf : UDINT (*First occurrence of any character from find in source*)
+FUNCTION IecStringFirstIn : UDINT (*First occurrence in source of any character from find*)
+	VAR_INPUT
+		source : STRING[0]; (*Source string*)
+		find : STRING[0]; (*Search string*)
+	END_VAR
+END_FUNCTION
+
+FUNCTION IecStringLengthIn : UDINT (*Initial length in source containing only characters from find*)
 	VAR_INPUT
 		source : STRING[0]; (*Source string*)
 		find : STRING[0]; (*Search string*)
