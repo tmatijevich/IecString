@@ -82,3 +82,9 @@ See the [IecStringHelp](https://github.com/tmatijevich/IecStringHelp).  This hel
 ### Authors
 
 - Tyler Matijevich ([@tmatijevich](https://github.com/tmatijevich))
+
+### Related Projects
+
+- [intel/safestringlib](https://github.com/intel/safestringlib)
+- [B&R/BrbLibs](https://github.com/br-automation-com/BrbLibs-lib-src)
+- [Loupe/StringExt](https://github.com/loupeteam/StringExt)
