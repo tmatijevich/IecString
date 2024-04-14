@@ -69,18 +69,23 @@ int32_t IecStringCopy(char *destination, uint32_t size, char *source);
 int32_t IecStringConcat(char *destination, uint32_t size, char *source);
 int16_t IecStringCompare(char *string1, char *string2, uint32_t characters);
 uint32_t IecStringLength(char *source);
+uint32_t IecStringFirst(char *source, uint8_t character);
+uint32_t IecStringLast(char *source, uint8_t character);
+uint32_t IecStringFind(char *source, char *find);
+uint32_t IecStringFirstIn(char *source, char *find);
+uint32_t IecStringLengthIn(char *source, char *find);
 uint8_t IecStringStartsWith(char *source, char *prefix);
 uint8_t IecStringEndsWith(char *source, char *suffix);
-int32_t IecStringReplace(char *destination, uint32_t size, char *source,
+int32_t IecStringReplace(char *destination, uint32_t size, char *source, 
                          char *find, char *replace);
+uint32_t IecStringSplit(char *destination, uint32_t size, char *source, 
+                        char *delimiters, uint32_t* address);
 int32_t IecStringFormat(char *destination, uint32_t size, char *source, 
                         IecStringFormatType *values);
-int32_t IecStringDecimal(char *destination, uint32_t size, 
-                         signed long value, unsigned char width, 
-                         unsigned char flags);
+int32_t IecStringDecimal(char *destination, uint32_t size, int32_t value, 
+                         uint8_t width, uint8_t flags);
 int32_t IecStringFloat(char *destination, uint32_t size, float value,
-                       unsigned char width, unsigned char precision,
-                       unsigned char flags);
+                       uint8_t width, uint8_t precision, uint8_t flags);
 int32_t IecStringDateTime(char *destination, uint32_t size, 
                           DTStructure *value, char *format);
 #endif

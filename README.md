@@ -28,13 +28,19 @@ Function | Read | Write | Description
 [IecStringConcat](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L10) | :mag: | :memo: | Concatenate source to destination up to size of destination or source length
 [IecStringCompare](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L18) | :mag: | | Compare characters of two strings
 [IecStringLength](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L26) | :mag: | | Determine the length of a string
-[IecStringStartsWith](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L32) | :mag: | | Does source start with prefix
-[IecStringEndsWith](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L39) | :mag: | | Does source end with suffix
-[IecStringReplace](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L46) | :mag: | :memo: | Find in source and replace in destination
-[IecStringFormat](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L56) | :mag: | :memo: | Format string with runtime data
-[IecStringDecimal](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L65) | | :memo: | Convert integer to string as decimal
-[IecStringFloat](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L75) | | :memo: | Convert float to string
-[IecStringDateTime](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L86) | :mag: | :memo: | Format date and/or time
+[IecStringFirst](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L32) | :mag: |  | First occurrence of character in source
+[IecStringLast](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L39) | :mag: |  | Last occurrence of character in source
+[IecStringFind](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L46) | :mag: |  | Find substring in source
+[IecStringFirstIn](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L53) | :mag: |  | First occurrence in source of any character from find
+[IecStringLengthIn](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L60) | :mag: |  | Initial length in source containing only characters from find
+[IecStringStartsWith](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L67) | :mag: | | Does source start with prefix
+[IecStringEndsWith](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L74) | :mag: | | Does source end with suffix
+[IecStringReplace](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L81) | :mag: | :memo: | Find in source and replace in destination
+[IecStringSplit](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L91) | :mag: | :memo: | Split source into tokens
+[IecStringFormat](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L103) | :mag: | :memo: | Format string with runtime data
+[IecStringDecimal](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L112) | | :memo: | Convert integer to string as decimal
+[IecStringFloat](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L122) | | :memo: | Convert float to string
+[IecStringDateTime](https://github.com/tmatijevich/IecString/blob/main/IecString.fun#L133) | :mag: | :memo: | Format date and/or time
 
 :mag: The functions marked in the read column are **reading** from memory.  
 :memo: The functions marked in the write column are **writing** to memory *within the size* of `destination`.
@@ -76,3 +82,9 @@ See the [IecStringHelp](https://github.com/tmatijevich/IecStringHelp).  This hel
 ### Authors
 
 - Tyler Matijevich ([@tmatijevich](https://github.com/tmatijevich))
+
+### Related Projects
+
+- [intel/safestringlib](https://github.com/intel/safestringlib)
+- [B&R/BrbLibs](https://github.com/br-automation-com/BrbLibs-lib-src)
+- [Loupe/StringExt](https://github.com/loupeteam/StringExt)
