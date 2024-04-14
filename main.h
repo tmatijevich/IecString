@@ -78,7 +78,7 @@ uint8_t IecStringStartsWith(char *source, char *prefix);
 uint8_t IecStringEndsWith(char *source, char *suffix);
 int32_t IecStringReplace(char *destination, uint32_t size, char *source, 
                          char *find, char *replace);
-uint32_t IecStringSplit(char *destination, uint32_t size, char *source, 
+int32_t IecStringSplit(char *destination, uint32_t size, char *source, 
                         char *delimiters, uint32_t* address);
 int32_t IecStringFormat(char *destination, uint32_t size, char *source, 
                         IecStringFormatType *values);
